@@ -2,6 +2,8 @@
 pragma solidity >0.8.0;
 
 contract StateMachine {
+    // CONTRACT VARIABLES 
+
     struct Transition {
         string name;
         string previousState;
@@ -14,12 +16,29 @@ contract StateMachine {
     mapping (string => bool) existingStates;
     bool setupCompleted;
     string currentState;
-    address owner; 
 
-    modifier isOwner {
-        require(msg.sender == owner);
-        _;
+    // CONSTRUCTOR
+    constructor (string memory _startState, string[] memory _states, Transition[] memory _transitions) {
+        for (uint i = 0; i < _states.length; i++) {
+            existingStates[_states[i]] = true;
+        }
+
+        require(existingStates[_startState]);
+        currentState = _startState;
+        
+        for (uint i = 0; i < _transitions.length; i++) {
+            require(existingStates[_transitions[i].previousState]);
+            require(existingStates[_transitions[i].nextState]);
+            require(!transitions[_transitions[i].name].exists);
+            require(_transitions[i].authorized.length > 0);
+            require(_transitions[i].exists);
+            transitions[_transitions[i].name] = _transitions[i];
+        }
+
+        setupCompleted = true;
     }
+
+    // MODIFIERS
 
     modifier isSetupCompleted {
         require(setupCompleted);
@@ -40,26 +59,7 @@ contract StateMachine {
         _;
     }
 
-    function setupStateMachine (string[] memory _states, Transition[] memory _transitions) private isOwner {
-        for (uint i = 0; i < _states.length; i++) {
-            existingStates[_states[i]] = true;
-        }
-
-        for (uint i = 0; i < _transitions.length; i++) {
-            require(existingStates[_transitions[i].previousState]);
-            require(existingStates[_transitions[i].nextState]);
-            require(!transitions[_transitions[i].name].exists);
-            require(_transitions[i].authorized.length > 0);
-            require(_transitions[i].exists);
-            transitions[_transitions[i].name] = _transitions[i];
-        }
-
-        setupCompleted = true;
-    }
-
-    constructor () {
-        owner = msg.sender;
-    }
+    // FUNCTIONS
 
     function fireTransition(string memory _name) public isSetupCompleted isAuthorized(_name) {
         require(transitions[_name].exists);
