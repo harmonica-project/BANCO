@@ -8,58 +8,77 @@ contract StateMachine {
         string name;
         string previousState;
         string nextState;
-        address[] authorized;
+        string[] authorized;
         bool exists;
     }
 
+    struct Participant {
+        string name;
+        address addr;
+    }
+
     mapping (string => Transition) transitions;
+    mapping (string => address) participants;
     mapping (string => bool) existingStates;
     string currentState;
 
     // CONSTRUCTOR
-    constructor (string memory _startState, string[] memory _states, Transition[] memory _transitions) {
+    constructor (string memory _startState, string[] memory _states, Transition[] memory _transitions, Participant[] memory _participants) {
         for (uint i = 0; i < _states.length; i++) {
             existingStates[_states[i]] = true;
         }
 
-        require(existingStates[_startState]);
+        for (uint i = 0; i < _participants.length; i++) {
+            participants[_participants[i].name] = _participants[i].addr;
+        }
+
+        require(existingStates[_startState], "Start state does not exist.");
         currentState = _startState;
         
         for (uint i = 0; i < _transitions.length; i++) {
-            require(existingStates[_transitions[i].previousState]);
-            require(existingStates[_transitions[i].nextState]);
-            require(!transitions[_transitions[i].name].exists);
-            require(_transitions[i].authorized.length > 0);
-            require(_transitions[i].exists);
+            require(existingStates[_transitions[i].previousState], "previousState of transition does not exist.");
+            require(existingStates[_transitions[i].nextState], "nextState of transition does not exist.");
+            require(!transitions[_transitions[i].name].exists, "Transition duplicate.");
+            require(checkAuthorized(_transitions[i].authorized), "Transaction participant do not exist or no participant specified.");
+            require(_transitions[i].exists, "Transaction exists field must be set to true.");
             transitions[_transitions[i].name] = _transitions[i];
         }
     }
 
     // MODIFIERS
 
-    modifier isAuthorized(string memory _name) {
+    modifier isAuthorized(string memory _txname) {
         bool found;
 
-        for (uint i = 0; i < transitions[_name].authorized.length; i++) {
-            if (transitions[_name].authorized[i] == msg.sender) {
+        for (uint i = 0; i < transitions[_txname].authorized.length; i++) {
+            if (participants[transitions[_txname].authorized[i]] == msg.sender) {
                 found = true;
                 break;
             }
         }
 
-        require(found);
+        require(found, "Participant not authorized.");
         _;
     }
 
     // FUNCTIONS
 
-    function fireTransition(string memory _name) public isAuthorized(_name) {
-        require(transitions[_name].exists);
-        require(keccak256(abi.encode(transitions[_name].previousState)) == keccak256(abi.encode(currentState)));
-        currentState = transitions[_name].nextState;
+    function checkAuthorized(string[] memory authorized) private pure returns (bool) {
+        // checks if all participants authorized exists, and if they are at least one
+        return (authorized.length > 0); 
+    }
+
+    function fireTransition(string memory _txname) public isAuthorized(_txname) {
+        require(transitions[_txname].exists, "Transition does not exist.");
+        require(keccak256(abi.encode(transitions[_txname].previousState)) == keccak256(abi.encode(currentState)), "Current state does not allow firing this transition.");
+        currentState = transitions[_txname].nextState;
     }
 
     function getCurrentState() public view returns (string memory) {
         return currentState;
+    }
+
+    function getParticipantAddr(string memory _name) public view returns (address) {
+        return participants[_name];
     }
 }

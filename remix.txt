@@ -1,0 +1,4 @@
+"Stored"
+["Stored","Shipped","Received"]
+[["ship","Stored","Shipped",["shipper"],true],["receive","Shipped","Received",["receiver"],true]]
+[["shipper", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"],["receiver", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"]]
