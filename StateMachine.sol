@@ -14,7 +14,6 @@ contract StateMachine {
 
     mapping (string => Transition) transitions;
     mapping (string => bool) existingStates;
-    bool setupCompleted;
     string currentState;
 
     // CONSTRUCTOR
