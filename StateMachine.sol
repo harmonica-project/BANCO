@@ -33,16 +33,9 @@ contract StateMachine {
             require(_transitions[i].exists);
             transitions[_transitions[i].name] = _transitions[i];
         }
-
-        setupCompleted = true;
     }
 
     // MODIFIERS
-
-    modifier isSetupCompleted {
-        require(setupCompleted);
-        _;
-    }
 
     modifier isAuthorized(string memory _name) {
         bool found;
