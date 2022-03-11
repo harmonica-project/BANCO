@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="TraceabilityBC">
+			<and abstract="true" mandatory="true" name="Participants">
+				<and abstract="true" mandatory="true" name="ParticipantType">
+					<or name="Oracle">
+						<feature name="IOTSensor"/>
+						<feature name="Service"/>
+					</or>
+					<feature mandatory="true" name="Human"/>
+				</and>
+				<and abstract="true" mandatory="true" name="ParticipantMg">
+					<or abstract="true" mandatory="true" name="Add">
+						<feature name="AddAtSetup"/>
+						<feature name="AddDynamically"/>
+					</or>
+					<feature name="Remove"/>
+					<feature name="Modify"/>
+				</and>
+			</and>
+			<and abstract="true" mandatory="true" name="Storage">
+				<graphics key="collapsed" value="false"/>
+				<and abstract="true" name="Database">
+					<feature name="MongoDB"/>
+				</and>
+				<alt abstract="true" mandatory="true" name="StorageType">
+					<feature name="Hybrid"/>
+					<feature name="OffChain"/>
+					<feature name="OnChain"/>
+				</alt>
+				<feature name="EventsEmission">
+					<graphics key="collapsed" value="false"/>
+				</feature>
+			</and>
+			<alt abstract="true" mandatory="true" name="Method">
+				<feature name="StateMachine"/>
+				<alt abstract="true" name="AssetTracking">
+					<feature name="TokenizedAssets"/>
+					<feature name="DataAssets"/>
+				</alt>
+				<feature name="RecordHistory"/>
+			</alt>
+			<and abstract="true" mandatory="true" name="Frontend">
+				<graphics key="collapsed" value="false"/>
+				<alt abstract="true" mandatory="true" name="TransactionSignature">
+					<feature name="SelfConfirmedTransaction"/>
+					<feature name="DelegatedTransaction"/>
+				</alt>
+			</and>
+			<alt abstract="true" mandatory="true" name="BlockchainNetwork">
+				<graphics key="collapsed" value="false"/>
+				<feature name="Mainnet"/>
+				<feature name="Testnet"/>
+			</alt>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<disj>
+					<var>OffChain</var>
+					<var>Hybrid</var>
+				</disj>
+				<var>Database</var>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

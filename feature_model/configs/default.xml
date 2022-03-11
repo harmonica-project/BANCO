@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<feature automatic="selected" name="TraceabilityBC"/>
+	<feature automatic="selected" name="Participants"/>
+	<feature automatic="selected" name="ParticipantType"/>
+	<feature name="Oracle"/>
+	<feature name="IOTSensor"/>
+	<feature name="Service"/>
+	<feature automatic="selected" name="Human"/>
+	<feature automatic="selected" name="ParticipantMg"/>
+	<feature automatic="selected" name="Add"/>
+	<feature name="AddAtSetup"/>
+	<feature name="AddDynamically"/>
+	<feature name="Remove"/>
+	<feature name="Modify"/>
+	<feature automatic="selected" name="Storage"/>
+	<feature name="Database"/>
+	<feature name="MongoDB"/>
+	<feature automatic="selected" name="StorageType"/>
+	<feature name="Hybrid"/>
+	<feature name="OffChain"/>
+	<feature name="OnChain"/>
+	<feature automatic="selected" name="Process"/>
+	<feature automatic="selected" name="Frontend"/>
+</configuration>
