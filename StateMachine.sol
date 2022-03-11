@@ -53,7 +53,7 @@ contract StateMachine {
 
     // FUNCTIONS
 
-    function fireTransition(string memory _name) public isSetupCompleted isAuthorized(_name) {
+    function fireTransition(string memory _name) public isAuthorized(_name) {
         require(transitions[_name].exists);
         require(keccak256(abi.encode(transitions[_name].previousState)) == keccak256(abi.encode(currentState)));
         currentState = transitions[_name].nextState;
