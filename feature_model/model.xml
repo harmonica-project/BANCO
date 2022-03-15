@@ -57,11 +57,13 @@
 					<feature name="DelegatedTransaction"/>
 				</alt>
 			</and>
-			<alt abstract="true" mandatory="true" name="BlockchainNetwork">
-				<graphics key="collapsed" value="false"/>
-				<feature name="Mainnet"/>
-				<feature name="Testnet"/>
-			</alt>
+			<and name="DeploymentSuite">
+				<alt abstract="true" mandatory="true" name="BlockchainNetwork">
+					<graphics key="collapsed" value="false"/>
+					<feature name="Mainnet"/>
+					<feature name="Testnet"/>
+				</alt>
+			</and>
 		</and>
 	</struct>
 	<constraints>
