@@ -1,0 +1,14 @@
+{
+  "name": "render",
+  "version": "1.0.0",
+  "description": "Render Solidity templates",
+  "main": "render.js",
+  "scripts": {
+    "test": "node render.js"
+  },
+  "author": "Nicolas Six",
+  "license": "ISC",
+  "devDependencies": {
+    "mustache": "^4.2.0"
+  }
+}
