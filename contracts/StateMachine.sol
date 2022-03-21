@@ -28,6 +28,7 @@ contract StateMachine {
             existingStates[_states[i]] = true;
         }
 
+        // Add if participants are statically added
         for (uint i = 0; i < _participants.length; i++) {
             participants[_participants[i].name] = _participants[i].addr;
         }
