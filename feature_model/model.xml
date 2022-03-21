@@ -25,21 +25,14 @@
 						</or>
 						<feature mandatory="true" name="Human"/>
 					</and>
-					<feature name="RemoveIndividual"/>
+					<or abstract="true" name="RemoveIndividual">
+						<feature name="RemoveIndividualByIndividual"/>
+						<feature name="RemoveIndividualByRole"/>
+					</or>
 				</and>
 				<and abstract="true" name="Roles">
 					<feature mandatory="true" name="CreateRoleAtSetup"/>
-					<or abstract="true" name="RoleManagement">
-						<feature name="RMByGroup"/>
-						<feature name="RMByRole"/>
-					</or>
-				</and>
-				<and abstract="true" name="Groups">
-					<feature mandatory="true" name="CreateGroupAtSetup"/>
-					<and abstract="true" name="GroupManagement">
-						<feature name="GMByGroup"/>
-						<feature name="GMByRole"/>
-					</and>
+					<feature name="DynamicallyChangedRoles"/>
 				</and>
 			</and>
 			<and abstract="true" mandatory="true" name="Storage">

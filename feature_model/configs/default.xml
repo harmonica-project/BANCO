@@ -2,17 +2,26 @@
 <configuration>
 	<feature automatic="selected" name="TraceabilityBC"/>
 	<feature automatic="selected" name="Participants"/>
-	<feature automatic="selected" name="ParticipantType"/>
+	<feature automatic="selected" name="Individuals"/>
+	<feature automatic="selected" name="CreateIndividual"/>
+	<feature name="CreateIndividualAtSetup"/>
+	<feature name="CreateIndividualDynamically"/>
+	<feature name="IndividualType"/>
 	<feature name="Oracle"/>
 	<feature name="IOTSensor"/>
 	<feature name="Service"/>
-	<feature automatic="selected" name="Human"/>
-	<feature automatic="selected" name="ParticipantMg"/>
-	<feature automatic="selected" name="Add"/>
-	<feature manual="selected" name="AddAtSetup"/>
-	<feature name="AddDynamically"/>
-	<feature name="Remove"/>
-	<feature name="Modify"/>
+	<feature name="Human"/>
+	<feature name="RemoveIndividual"/>
+	<feature name="Roles"/>
+	<feature name="CreateRoleAtSetup"/>
+	<feature name="RoleManagement"/>
+	<feature name="RMByGroup"/>
+	<feature name="RMByRole"/>
+	<feature name="Groups"/>
+	<feature name="CreateGroupAtSetup"/>
+	<feature name="GroupManagement"/>
+	<feature name="GMByGroup"/>
+	<feature name="GMByRole"/>
 	<feature automatic="selected" name="Storage"/>
 	<feature automatic="selected" name="Database"/>
 	<feature name="MongoDB"/>
