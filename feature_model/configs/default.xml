@@ -9,17 +9,30 @@
 	<feature automatic="selected" name="Human"/>
 	<feature automatic="selected" name="ParticipantMg"/>
 	<feature automatic="selected" name="Add"/>
-	<feature name="AddAtSetup"/>
+	<feature manual="selected" name="AddAtSetup"/>
 	<feature name="AddDynamically"/>
 	<feature name="Remove"/>
 	<feature name="Modify"/>
 	<feature automatic="selected" name="Storage"/>
-	<feature name="Database"/>
+	<feature automatic="selected" name="Database"/>
 	<feature name="MongoDB"/>
 	<feature automatic="selected" name="StorageType"/>
-	<feature name="Hybrid"/>
-	<feature name="OffChain"/>
-	<feature name="OnChain"/>
-	<feature automatic="selected" name="Process"/>
+	<feature manual="selected" name="Hybrid"/>
+	<feature automatic="unselected" name="OffChain"/>
+	<feature automatic="unselected" name="OnChain"/>
+	<feature name="EventsEmission"/>
+	<feature automatic="selected" name="Method"/>
+	<feature automatic="unselected" name="StateMachine"/>
+	<feature automatic="unselected" name="AssetTracking"/>
+	<feature automatic="unselected" name="TokenizedAssets"/>
+	<feature automatic="unselected" name="DataAssets"/>
+	<feature manual="selected" name="RecordHistory"/>
 	<feature automatic="selected" name="Frontend"/>
+	<feature automatic="selected" name="TransactionSignature"/>
+	<feature manual="selected" name="SelfConfirmedTransaction"/>
+	<feature automatic="unselected" name="DelegatedTransaction"/>
+	<feature name="DeploymentSuite"/>
+	<feature name="BlockchainNetwork"/>
+	<feature name="Mainnet"/>
+	<feature name="Testnet"/>
 </configuration>

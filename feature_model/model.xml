@@ -12,20 +12,34 @@
 	<struct>
 		<and abstract="true" mandatory="true" name="TraceabilityBC">
 			<and abstract="true" mandatory="true" name="Participants">
-				<and abstract="true" mandatory="true" name="ParticipantType">
-					<or name="Oracle">
-						<feature name="IOTSensor"/>
-						<feature name="Service"/>
+				<and abstract="true" mandatory="true" name="Individuals">
+					<or abstract="true" mandatory="true" name="CreateIndividual">
+						<graphics key="collapsed" value="false"/>
+						<feature name="CreateIndividualAtSetup"/>
+						<feature name="CreateIndividualDynamically"/>
 					</or>
-					<feature mandatory="true" name="Human"/>
+					<and abstract="true" name="IndividualType">
+						<or abstract="true" name="Oracle">
+							<feature name="IOTSensor"/>
+							<feature name="Service"/>
+						</or>
+						<feature mandatory="true" name="Human"/>
+					</and>
+					<feature name="RemoveIndividual"/>
 				</and>
-				<and abstract="true" mandatory="true" name="ParticipantMg">
-					<or abstract="true" mandatory="true" name="Add">
-						<feature name="AddAtSetup"/>
-						<feature name="AddDynamically"/>
+				<and abstract="true" name="Roles">
+					<feature mandatory="true" name="CreateRoleAtSetup"/>
+					<or abstract="true" name="RoleManagement">
+						<feature name="RMByGroup"/>
+						<feature name="RMByRole"/>
 					</or>
-					<feature name="Remove"/>
-					<feature name="Modify"/>
+				</and>
+				<and abstract="true" name="Groups">
+					<feature mandatory="true" name="CreateGroupAtSetup"/>
+					<and abstract="true" name="GroupManagement">
+						<feature name="GMByGroup"/>
+						<feature name="GMByRole"/>
+					</and>
 				</and>
 			</and>
 			<and abstract="true" mandatory="true" name="Storage">

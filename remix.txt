@@ -1,4 +1,14 @@
+// StateMachine
 "Stored"
 ["Stored","Shipped","Received"]
 [["ship","Stored","Shipped",["shipper"],true],["receive","Shipped","Received",["receiver"],true]]
 [["shipper", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"],["receiver", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"]]
+
+// Participants
+[["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", ["Shipper"], ["Receiver"]], 
+["0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2", ["Receiver"], ["Shipper", "Receiver"]]]
+["Shipper", "Receiver"]
+
+// addParticipant
+["0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", ["Shipper"], ["Shipper", "Receiver"]],
+"0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
