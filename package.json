@@ -4,11 +4,16 @@
   "description": "Render Solidity templates",
   "main": "render.js",
   "scripts": {
-    "test": "node render.js"
+    "test": "node render.js -c little"
   },
   "author": "Nicolas Six",
   "license": "ISC",
   "devDependencies": {
     "mustache": "^4.2.0"
+  },
+  "dependencies": {
+    "minimist": "^1.2.6",
+    "prettier-plugin-solidity": "^1.0.0-beta.19",
+    "xml2js": "^0.4.23"
   }
 }

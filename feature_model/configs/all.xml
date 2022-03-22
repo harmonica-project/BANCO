@@ -5,17 +5,17 @@
 	<feature automatic="selected" name="Individuals"/>
 	<feature automatic="selected" name="CreateIndividual"/>
 	<feature manual="selected" name="CreateIndividualAtSetup"/>
-	<feature name="CreateIndividualDynamically"/>
+	<feature manual="selected" name="CreateIndividualDynamically"/>
 	<feature automatic="selected" name="IndividualType"/>
 	<feature automatic="selected" manual="selected" name="Oracle"/>
 	<feature manual="selected" name="IOTSensor"/>
-	<feature name="Service"/>
+	<feature manual="selected" name="Service"/>
 	<feature automatic="selected" name="Human"/>
 	<feature automatic="selected" name="RemoveIndividual"/>
 	<feature manual="selected" name="RemoveIndividualByIndividual"/>
-	<feature name="RemoveIndividualByRole"/>
-	<feature name="Roles"/>
-	<feature name="CreateRoleAtSetup"/>
+	<feature manual="selected" name="RemoveIndividualByRole"/>
+	<feature manual="selected" name="Roles"/>
+	<feature automatic="selected" name="CreateRoleAtSetup"/>
 	<feature name="DynamicallyChangedRoles"/>
 	<feature automatic="selected" name="Storage"/>
 	<feature automatic="selected" name="Database"/>
@@ -24,7 +24,7 @@
 	<feature manual="selected" name="Hybrid"/>
 	<feature automatic="unselected" name="OffChain"/>
 	<feature automatic="unselected" name="OnChain"/>
-	<feature name="EventsEmission"/>
+	<feature manual="selected" name="EventsEmission"/>
 	<feature automatic="selected" name="Method"/>
 	<feature automatic="unselected" name="StateMachine"/>
 	<feature automatic="unselected" name="AssetTracking"/>
@@ -35,8 +35,8 @@
 	<feature automatic="selected" name="TransactionSignature"/>
 	<feature manual="selected" name="SelfConfirmedTransaction"/>
 	<feature automatic="unselected" name="DelegatedTransaction"/>
-	<feature name="DeploymentSuite"/>
-	<feature name="BlockchainNetwork"/>
-	<feature name="Mainnet"/>
-	<feature name="Testnet"/>
+	<feature automatic="selected" name="DeploymentSuite"/>
+	<feature automatic="selected" manual="selected" name="BlockchainNetwork"/>
+	<feature manual="selected" name="Mainnet"/>
+	<feature automatic="unselected" name="Testnet"/>
 </configuration>

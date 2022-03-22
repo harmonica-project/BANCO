@@ -11,18 +11,18 @@
 	<feature manual="selected" name="IOTSensor"/>
 	<feature name="Service"/>
 	<feature automatic="selected" name="Human"/>
-	<feature automatic="selected" name="RemoveIndividual"/>
-	<feature manual="selected" name="RemoveIndividualByIndividual"/>
+	<feature name="RemoveIndividual"/>
+	<feature name="RemoveIndividualByIndividual"/>
 	<feature name="RemoveIndividualByRole"/>
 	<feature name="Roles"/>
 	<feature name="CreateRoleAtSetup"/>
 	<feature name="DynamicallyChangedRoles"/>
 	<feature automatic="selected" name="Storage"/>
 	<feature automatic="selected" name="Database"/>
-	<feature manual="selected" name="MongoDB"/>
+	<feature name="MongoDB"/>
 	<feature automatic="selected" name="StorageType"/>
-	<feature manual="selected" name="Hybrid"/>
-	<feature automatic="unselected" name="OffChain"/>
+	<feature automatic="unselected" name="Hybrid"/>
+	<feature manual="selected" name="OffChain"/>
 	<feature automatic="unselected" name="OnChain"/>
 	<feature name="EventsEmission"/>
 	<feature automatic="selected" name="Method"/>
