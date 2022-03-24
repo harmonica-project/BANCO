@@ -40,6 +40,7 @@ function finalizeProduct() {
   fs.copyFileSync('./contracts/Helpers.sol', './product/contracts/Helpers.sol');
   // Prettify the result to erase blank spaces left by the template engine
   exec("npx prettier --write './product/contracts/**/*.sol'");
+  console.log('Done.');
 }
 
 async function getConfiguration(filename) {
@@ -47,6 +48,7 @@ async function getConfiguration(filename) {
     let rawFile = fs.readFileSync(`./feature_model/configs/${filename}.xml`).toString();
     let rawConfig = await parseStringPromise(rawFile);
     
+    console.log('Loaded configuration: ', mustacheConfig);
     return parseConfigFile(rawConfig);
   } catch (e) {
     console.error('Failed to retrieve and parse config: ', e);
@@ -70,7 +72,6 @@ async function main() {
   }
 
   mustacheConfig = await getConfiguration(argv.c);
-  console.log('Loaded configuration: ', mustacheConfig);
 
   // Using the comment feature of Solidity to both allow templating and contract development
   Mustache.tags = ['/*', '*/'];
