@@ -16,7 +16,7 @@ function parseConfigFile(file) {
   return config;
 };
 
-function saveProduct(output) {
+function saveProduct(contract, output) {
   try {
     if (!fs.existsSync('./product')){
       fs.mkdirSync('./product');
@@ -26,15 +26,20 @@ function saveProduct(output) {
       fs.mkdirSync('./product/contracts');
     }
 
-    fs.writeFileSync('./product/contracts/Participants.sol', output);
-    fs.copyFileSync('./contracts/Helpers.sol', './product/contracts/Helpers.sol');
-    exec("npx prettier --write './product/contracts/**/*.sol'");
+    fs.writeFileSync(`./product/contracts/${contract}.sol`, output);
 
-    console.log('Results written in /product/contracts');
+    console.log(`Contract ${contract} written in /product/contracts`);
   } catch (e) {
-    console.error('Failed to save the product: ', e);
+    console.error(`Failed to save the contract ${contract}: `, e);
     exit();
   }
+}
+
+function finalizeProduct() {
+  // Move dependencies into product
+  fs.copyFileSync('./contracts/Helpers.sol', './product/contracts/Helpers.sol');
+  // Prettify the result to erase blank spaces left by the template engine
+  exec("npx prettier --write './product/contracts/**/*.sol'");
 }
 
 async function getConfiguration(filename) {
@@ -49,6 +54,15 @@ async function getConfiguration(filename) {
   }
 }
 
+function parseTemplate(contract, config) {
+  // Read template
+  var template = fs.readFileSync(`./contracts/${contract}.sol`).toString();
+
+  // Render template
+  var output = Mustache.render(template, config);
+  saveProduct(contract, output);
+}
+
 async function main() {
   if (!argv.c) {
     console.error('You need to provide a valid configuration filename.');
@@ -61,12 +75,10 @@ async function main() {
   // Using the comment feature of Solidity to both allow templating and contract development
   Mustache.tags = ['/*', '*/'];
 
-  // Read template
-  var template = fs.readFileSync('./contracts/Participants.sol').toString();
+  parseTemplate('Participants', mustacheConfig);
+  parseTemplate('Records', mustacheConfig);
 
-  // Render template
-  var output = Mustache.render(template, mustacheConfig);
-  saveProduct(output);
+  finalizeProduct();
 }
 
 main();
