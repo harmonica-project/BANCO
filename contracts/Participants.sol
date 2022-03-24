@@ -25,12 +25,12 @@ contract Participants {
 
   /* #IndividualType */
   enum ParticipantType {
-    Individual,
+    Individual
     /* #IoTSensor */
-    IoTSensor,
+    ,IoTSensor
     /* /IoTSensor */
     /* #Service */
-    Service
+    ,Service
     /* /Service */
   }
   /* /IndividualType */
