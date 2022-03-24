@@ -11,26 +11,30 @@
 	<feature manual="selected" name="IOTSensor"/>
 	<feature manual="selected" name="Service"/>
 	<feature automatic="selected" name="Human"/>
-	<feature automatic="selected" name="RemoveIndividual"/>
-	<feature manual="selected" name="RemoveIndividualByIndividual"/>
-	<feature manual="selected" name="RemoveIndividualByRole"/>
+	<feature name="DeleteIndividual"/>
+	<feature name="DeleteIndividualByIndividual"/>
+	<feature name="DeleteIndividualByRole"/>
 	<feature manual="selected" name="Roles"/>
 	<feature automatic="selected" name="CreateRoleAtSetup"/>
-	<feature name="DynamicallyChangedRoles"/>
+	<feature name="RemoveRole"/>
+	<feature name="AddRole"/>
+	<feature name="AddRoleAtSetup"/>
+	<feature name="AddRoleDynamically"/>
 	<feature automatic="selected" name="Storage"/>
-	<feature automatic="selected" name="Database"/>
-	<feature manual="selected" name="MongoDB"/>
 	<feature automatic="selected" name="StorageType"/>
-	<feature manual="selected" name="Hybrid"/>
-	<feature automatic="unselected" name="OffChain"/>
-	<feature automatic="unselected" name="OnChain"/>
+	<feature name="OffChain"/>
+	<feature name="Database"/>
+	<feature automatic="selected" name="OnChain"/>
 	<feature manual="selected" name="EventsEmission"/>
-	<feature automatic="selected" name="Method"/>
+	<feature automatic="selected" manual="selected" name="RecordHistory"/>
+	<feature manual="selected" name="StructuredRecords"/>
+	<feature automatic="unselected" name="HashRecords"/>
+	<feature automatic="selected" name="TrackingMethod"/>
 	<feature automatic="unselected" name="StateMachine"/>
-	<feature automatic="unselected" name="AssetTracking"/>
+	<feature automatic="selected" manual="selected" name="AssetTracking"/>
 	<feature automatic="unselected" name="TokenizedAssets"/>
-	<feature automatic="unselected" name="DataAssets"/>
-	<feature manual="selected" name="RecordHistory"/>
+	<feature manual="selected" name="DataStructAssets"/>
+	<feature automatic="unselected" name="RecordRegister"/>
 	<feature automatic="selected" name="Frontend"/>
 	<feature automatic="selected" name="TransactionSignature"/>
 	<feature manual="selected" name="SelfConfirmedTransaction"/>

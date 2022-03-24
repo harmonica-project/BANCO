@@ -11,32 +11,36 @@
 	<feature manual="selected" name="IOTSensor"/>
 	<feature name="Service"/>
 	<feature automatic="selected" name="Human"/>
-	<feature automatic="selected" name="RemoveIndividual"/>
-	<feature manual="selected" name="RemoveIndividualByIndividual"/>
-	<feature name="RemoveIndividualByRole"/>
+	<feature name="DeleteIndividual"/>
+	<feature name="DeleteIndividualByIndividual"/>
+	<feature name="DeleteIndividualByRole"/>
 	<feature name="Roles"/>
 	<feature name="CreateRoleAtSetup"/>
-	<feature name="DynamicallyChangedRoles"/>
+	<feature name="RemoveRole"/>
+	<feature name="AddRole"/>
+	<feature name="AddRoleAtSetup"/>
+	<feature name="AddRoleDynamically"/>
 	<feature automatic="selected" name="Storage"/>
-	<feature automatic="selected" name="Database"/>
-	<feature manual="selected" name="MongoDB"/>
 	<feature automatic="selected" name="StorageType"/>
-	<feature manual="selected" name="Hybrid"/>
-	<feature automatic="unselected" name="OffChain"/>
-	<feature automatic="unselected" name="OnChain"/>
+	<feature name="OffChain"/>
+	<feature name="Database"/>
+	<feature automatic="selected" name="OnChain"/>
 	<feature name="EventsEmission"/>
-	<feature automatic="selected" name="Method"/>
+	<feature automatic="selected" manual="selected" name="RecordHistory"/>
+	<feature automatic="unselected" name="StructuredRecords"/>
+	<feature manual="selected" name="HashRecords"/>
+	<feature automatic="selected" name="TrackingMethod"/>
 	<feature automatic="unselected" name="StateMachine"/>
 	<feature automatic="unselected" name="AssetTracking"/>
 	<feature automatic="unselected" name="TokenizedAssets"/>
-	<feature automatic="unselected" name="DataAssets"/>
-	<feature manual="selected" name="RecordHistory"/>
+	<feature automatic="unselected" name="DataStructAssets"/>
+	<feature manual="selected" name="RecordRegister"/>
 	<feature automatic="selected" name="Frontend"/>
 	<feature automatic="selected" name="TransactionSignature"/>
 	<feature manual="selected" name="SelfConfirmedTransaction"/>
 	<feature automatic="unselected" name="DelegatedTransaction"/>
-	<feature name="DeploymentSuite"/>
-	<feature name="BlockchainNetwork"/>
-	<feature name="Mainnet"/>
-	<feature name="Testnet"/>
+	<feature automatic="selected" name="DeploymentSuite"/>
+	<feature automatic="selected" name="BlockchainNetwork"/>
+	<feature manual="selected" name="Mainnet"/>
+	<feature automatic="unselected" name="Testnet"/>
 </configuration>

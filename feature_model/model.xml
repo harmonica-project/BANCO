@@ -47,31 +47,35 @@
 			</and>
 			<and abstract="true" mandatory="true" name="Storage">
 				<graphics key="collapsed" value="false"/>
-				<and abstract="true" name="Database">
+				<and abstract="true" mandatory="true" name="StorageType">
 					<graphics key="collapsed" value="false"/>
-					<feature mandatory="true" name="MongoDB"/>
+					<and abstract="true" name="OffChain">
+						<feature abstract="true" mandatory="true" name="Database">
+							<graphics key="collapsed" value="false"/>
+						</feature>
+					</and>
+					<or abstract="true" mandatory="true" name="OnChain">
+						<feature name="EventsEmission">
+							<graphics key="collapsed" value="false"/>
+						</feature>
+						<alt abstract="true" name="RecordHistory">
+							<feature name="StructuredRecords"/>
+							<feature name="HashRecords"/>
+						</alt>
+					</or>
 				</and>
-				<alt abstract="true" mandatory="true" name="StorageType">
-					<graphics key="collapsed" value="false"/>
-					<feature name="Hybrid"/>
-					<feature name="OffChain"/>
-					<feature name="OnChain"/>
-				</alt>
-				<feature name="EventsEmission">
-					<graphics key="collapsed" value="false"/>
-				</feature>
 			</and>
-			<alt abstract="true" mandatory="true" name="Method">
+			<alt abstract="true" mandatory="true" name="TrackingMethod">
 				<graphics key="collapsed" value="false"/>
 				<feature name="StateMachine"/>
 				<alt abstract="true" name="AssetTracking">
 					<graphics key="collapsed" value="false"/>
 					<feature name="TokenizedAssets"/>
-					<feature name="DataAssets"/>
+					<feature name="DataStructAssets"/>
 				</alt>
-				<feature name="RecordHistory"/>
+				<feature name="RecordRegister"/>
 			</alt>
-			<and abstract="true" mandatory="true" name="Frontend">
+			<and abstract="true" name="Frontend">
 				<graphics key="collapsed" value="false"/>
 				<alt abstract="true" mandatory="true" name="TransactionSignature">
 					<graphics key="collapsed" value="false"/>
@@ -79,7 +83,7 @@
 					<feature name="DelegatedTransaction"/>
 				</alt>
 			</and>
-			<and name="DeploymentSuite">
+			<and mandatory="true" name="DeploymentSuite">
 				<graphics key="collapsed" value="false"/>
 				<alt abstract="true" mandatory="true" name="BlockchainNetwork">
 					<graphics key="collapsed" value="false"/>
@@ -92,11 +96,8 @@
 	<constraints>
 		<rule>
 			<imp>
-				<disj>
-					<var>OffChain</var>
-					<var>Hybrid</var>
-				</disj>
-				<var>Database</var>
+				<var>RecordRegister</var>
+				<var>RecordHistory</var>
 			</imp>
 		</rule>
 	</constraints>
