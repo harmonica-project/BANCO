@@ -13,6 +13,7 @@ function parseConfigFile(file) {
     config[c.$.name] = (c.$.automatic == "selected" || c.$.manual == "selected");
   }
 
+  console.log('Loaded configuration: ', config);
   return config;
 };
 
@@ -48,7 +49,6 @@ async function getConfiguration(filename) {
     let rawFile = fs.readFileSync(`./feature_model/configs/${filename}.xml`).toString();
     let rawConfig = await parseStringPromise(rawFile);
     
-    console.log('Loaded configuration: ', mustacheConfig);
     return parseConfigFile(rawConfig);
   } catch (e) {
     console.error('Failed to retrieve and parse config: ', e);
