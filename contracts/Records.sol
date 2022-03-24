@@ -12,8 +12,10 @@ contract Records {
 
   struct RecordCollection {
     bool exists;
-    string[] authorizedRoles;
     string[] authorizedParticipants;
+    /* #Roles */
+    string[] authorizedRoles;
+    /* /Roles */
     /* #HashRecords */
     string[] hashRecords;
     /* /HashRecords */
@@ -24,13 +26,20 @@ contract Records {
 
   struct RecordCollectionMetadata {
     string name;
-    string[] authorizedRoles;
     string[] authorizedParticipants;
+    /* #Roles */
+    string[] authorizedRoles;
+    /* /Roles */
   }
 
   address manager;
 
   mapping (string => RecordCollection) recordCollectionsMapping;
+
+  modifier onlyManager() {
+    require(manager == msg.sender);
+    _;
+  }
 
   constructor (address _manager, RecordCollectionMetadata[] memory _metadata) {
     manager = _manager;
@@ -38,8 +47,10 @@ contract Records {
     for (uint i = 0; i < _metadata.length; i++) {
       recordCollectionsMapping[_metadata[i].name] = RecordCollection(
         true,
-        _metadata[i].authorizedRoles,
         _metadata[i].authorizedParticipants
+        /* #Roles */
+        ,_metadata[i].authorizedRoles
+        /* /Roles */
         /* #HashRecords */
         ,new string[](0)
         /* /HashRecords */
@@ -49,4 +60,32 @@ contract Records {
       );
     }
   }
+
+  /* #HashRecords */
+  // HASH RECORDS FUNCTIONS
+
+  /* #Roles */
+  function addHashRecordByRole(address _caller, string memory _hash) onlyManager public {
+
+  }
+  /* /Roles */
+
+  function addHashRecordByIndividual(address _caller, string memory _hash) onlyManager public {
+
+  }
+  /* /HashRecords */
+
+  /* #StructuredRecords */
+  // STRUCTURED RECORDS FUNCTIONS
+
+  /* #Roles */
+  function addStructuredRecordByRole(address _caller, Record memory _record) onlyManager public {
+
+  }
+  /* /Roles */
+
+  function addStructuredRecordByIndividual(address _caller, Record memory _record) onlyManager public {
+
+  }
+  /* /StructuredRecords */
 }
