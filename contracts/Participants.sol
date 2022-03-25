@@ -48,12 +48,12 @@ contract Participants {
   /* /Roles */
 
   constructor(
-    address _manager,
+    address _manager
     /* #CreateIndividualAtSetup */
-    Participant[] memory _participants,
+    ,Participant[] memory _participants
     /* /CreateIndividualAtSetup */
     /* #Roles */
-    Role[] memory _roles /* /Roles */
+    ,Role[] memory _roles /* /Roles */
   ) {
     manager = _manager;
 
