@@ -98,12 +98,12 @@ function displayHelp() {
 }
 
 function main() {
-  if (argv.c) {
-    generateProduct(argv.c);
-  }
-
   if (argv.p) {
     purgeProducts();
+  }
+  
+  if (argv.c) {
+    generateProduct(argv.c);
   }
 
   if (!argv.c && !argv.p) {
