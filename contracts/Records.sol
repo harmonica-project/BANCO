@@ -35,9 +35,15 @@ contract Records {
   address manager;
 
   mapping (string => RecordCollection) recordCollectionsMapping;
+  string[] collectionNames;
 
   modifier onlyManager() {
     require(manager == msg.sender);
+    _;
+  }
+
+  modifier collectionExists(string memory _collectionName) {
+    require(recordCollectionsMapping[_collectionName].exists, "Collection does not exist.");
     _;
   }
 
@@ -45,6 +51,7 @@ contract Records {
     manager = _manager;
 
     for (uint i = 0; i < _metadata.length; i++) {
+      collectionNames.push(_metadata[i].name);
       recordCollectionsMapping[_metadata[i].name] = RecordCollection(
         true,
         _metadata[i].authorizedParticipants
@@ -61,31 +68,42 @@ contract Records {
     }
   }
 
+  function getCollectionNames() public view returns (string[] memory) {
+    return collectionNames;
+  }
+
   /* #HashRecords */
   // HASH RECORDS FUNCTIONS
 
-  /* #Roles */
-  function addHashRecordByRole(address _caller, string memory _hash) onlyManager public {
-
+  function addHashRecord(string memory _collectionName, string memory _hash) onlyManager collectionExists(_collectionName) public {
+    recordCollectionsMapping[_collectionName].hashRecords.push(_hash);
   }
-  /* /Roles */
 
-  function addHashRecordByIndividual(address _caller, string memory _hash) onlyManager public {
-
+  function getHashRecord(string memory _collectionName, uint _id) public view collectionExists(_collectionName) returns (string memory) {
+    require(_id < recordCollectionsMapping[_collectionName].hashRecords.length, "Provided id out-of-bounds.");
+    return recordCollectionsMapping[_collectionName].hashRecords[_id];
   }
+
+  function getHashRecords(string memory _collectionName) public view collectionExists(_collectionName) returns (string[] memory) {
+    return recordCollectionsMapping[_collectionName].hashRecords;
+  }
+
   /* /HashRecords */
 
   /* #StructuredRecords */
   // STRUCTURED RECORDS FUNCTIONS
 
-  /* #Roles */
-  function addStructuredRecordByRole(address _caller, Record memory _record) onlyManager public {
-
+  function addStructuredRecord(string memory _collectionName, Record memory _record) onlyManager collectionExists(_collectionName) public {
+    recordCollectionsMapping[_collectionName].records.push(_record);
   }
-  /* /Roles */
 
-  function addStructuredRecordByIndividual(address _caller, Record memory _record) onlyManager public {
+  function getStructuredRecord(string memory _collectionName, uint _id) public view collectionExists(_collectionName) returns (Record memory) {
+    require(_id < recordCollectionsMapping[_collectionName].records.length, "Provided id out-of-bounds.");
+    return recordCollectionsMapping[_collectionName].records[_id];
+  }
 
+  function getStructuredRecords(string memory _collectionName) public view collectionExists(_collectionName) returns (Record[] memory) {
+    return recordCollectionsMapping[_collectionName].records;
   }
   /* /StructuredRecords */
 }
