@@ -17,30 +17,36 @@ function parseConfigFile(file) {
   return config;
 };
 
-function saveProduct(contract, output) {
+function saveProduct(contracts, folder) {
   try {
-    if (!fs.existsSync('./product')){
-      fs.mkdirSync('./product');
-    }
-  
-    if (!fs.existsSync('./product/contracts')){
-      fs.mkdirSync('./product/contracts');
+    if (!fs.existsSync('./products')){
+      fs.mkdirSync('./products');
     }
 
-    fs.writeFileSync(`./product/contracts/${contract}.sol`, output);
+    fs.mkdirSync(`./products/product-${folder}`);
+    fs.mkdirSync(`./products/product-${folder}/contracts`);
 
-    console.log(`Contract ${contract} written in /product/contracts`);
+    for (let contract of contracts) {
+      fs.writeFileSync(`./products/product-${folder}/contracts/${contract.name}.sol`, contract.output);
+      console.log(`Contract ${contract.name} written in /product/contracts`);
+    }
   } catch (e) {
-    console.error(`Failed to save the contract ${contract}: `, e);
+    console.error(`Failed to save contracts ${contracts}: `, e);
     exit();
   }
 }
 
-function finalizeProduct() {
+function purgeProducts() {
+  fs.rmSync('./products', { recursive: true, force: true });
+}
+
+function finalizeProduct(configName, folder) {
   // Move dependencies into product
-  fs.copyFileSync('./contracts/Helpers.sol', './product/contracts/Helpers.sol');
+  fs.copyFileSync('./contracts/Helpers.sol', `./products/product-${folder}/contracts/Helpers.sol`);
+  // Saving config used to generate the product
+  fs.copyFileSync(`./feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
   // Prettify the result to erase blank spaces left by the template engine
-  exec("npx prettier --write './product/contracts/**/*.sol'");
+  exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol'`);
   console.log('Done.');
 }
 
@@ -62,24 +68,48 @@ function parseTemplate(contract, config) {
 
   // Render template
   var output = Mustache.render(template, config);
-  saveProduct(contract, output);
+  
+  return {
+    name: contract,
+    output
+  }
 }
 
-async function main() {
-  if (!argv.c) {
-    console.error('You need to provide a valid configuration filename.');
-    exit();
-  }
-
-  mustacheConfig = await getConfiguration(argv.c);
+async function generateProduct(configName) {
+  mustacheConfig = await getConfiguration(configName);
 
   // Using the comment feature of Solidity to both allow templating and contract development
   Mustache.tags = ['/*', '*/'];
 
-  parseTemplate('Participants', mustacheConfig);
-  parseTemplate('Records', mustacheConfig);
+  const contracts = [
+    parseTemplate('Participants', mustacheConfig),
+    parseTemplate('Records', mustacheConfig)
+  ];
 
-  finalizeProduct();
+  const folder = new Date().toISOString();
+
+  saveProduct(contracts, folder);
+  finalizeProduct(configName, folder);
+}
+
+function displayHelp() {
+  console.log('-c <config_name> - generate a product based on provided configuration.');
+  console.log('-p - remove existing products from folder.');
+}
+
+function main() {
+  if (argv.c) {
+    generateProduct(argv.c);
+  }
+
+  if (argv.p) {
+    purgeProducts();
+  }
+
+  if (!argv.c && !argv.p) {
+    console.error('No argument provided.');
+    displayHelp();
+  }
 }
 
 main();
