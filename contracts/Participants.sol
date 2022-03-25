@@ -170,7 +170,6 @@ contract Participants {
   function getParticipant(address _participant)
     public
     view
-    onlyManager
     returns (Participant memory)
   {
     // mapping will return an ID of 0 for non-existing participants
@@ -230,7 +229,6 @@ contract Participants {
   function getRole(string memory _roleName)
     public
     view
-    onlyManager
     returns (Role memory)
   {
     // mapping will return an ID of 0 for non-existing roles
