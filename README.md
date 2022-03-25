@@ -32,9 +32,15 @@ This command uses the configuration file named little.xml in _feature_model/conf
 If you want to try it with your own configuration file, store it into this folder and then type the following (replace filename by your own file):
 
 ```
-node render.js -c <filename>
+node gen.js -c <filename>
 ```
 
+You can also use the purge command to remove old products, using the argument -p. 
+If included along the -c argument, it will delete all the products and generate a new one (convenient if you don't want to create too much products).
+
+```
+node gen.js -p
+```
 
 ## How to edit the feature model
 
