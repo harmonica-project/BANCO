@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="TraceabilityBC">
+			<and abstract="true" mandatory="true" name="Participants">
+				<graphics key="collapsed" value="false"/>
+				<and abstract="true" mandatory="true" name="Individuals">
+					<graphics key="collapsed" value="false"/>
+					<or abstract="true" mandatory="true" name="CreateIndividual">
+						<graphics key="collapsed" value="false"/>
+						<feature name="CreateIndividualAtSetup"/>
+						<feature name="CreateIndividualDynamically"/>
+					</or>
+					<and abstract="true" name="IndividualType">
+						<graphics key="collapsed" value="false"/>
+						<or abstract="true" name="Oracle">
+							<graphics key="collapsed" value="false"/>
+							<feature name="IOTSensor"/>
+							<feature name="Service"/>
+						</or>
+						<feature mandatory="true" name="Human"/>
+					</and>
+					<or abstract="true" name="DeleteIndividual">
+						<graphics key="collapsed" value="false"/>
+						<feature name="DeleteIndividualByIndividual"/>
+						<feature name="DeleteIndividualByRole"/>
+					</or>
+				</and>
+				<and abstract="true" name="Roles">
+					<graphics key="collapsed" value="false"/>
+					<feature mandatory="true" name="CreateRoleAtSetup"/>
+					<feature name="RemoveRole"/>
+					<or abstract="true" name="AddRole">
+						<feature name="AddRoleAtSetup"/>
+						<feature name="AddRoleDynamically"/>
+					</or>
+				</and>
+			</and>
+			<and abstract="true" mandatory="true" name="Storage">
+				<graphics key="collapsed" value="false"/>
+				<and abstract="true" mandatory="true" name="StorageType">
+					<graphics key="collapsed" value="false"/>
+					<and abstract="true" name="OffChain">
+						<feature abstract="true" mandatory="true" name="Database">
+							<graphics key="collapsed" value="false"/>
+						</feature>
+					</and>
+					<or abstract="true" mandatory="true" name="OnChain">
+						<feature name="EventsEmission">
+							<graphics key="collapsed" value="false"/>
+						</feature>
+						<alt abstract="true" name="RecordHistory">
+							<feature name="StructuredRecords"/>
+							<feature name="HashRecords"/>
+						</alt>
+					</or>
+				</and>
+			</and>
+			<alt abstract="true" mandatory="true" name="TrackingMethod">
+				<graphics key="collapsed" value="false"/>
+				<feature name="StateMachine"/>
+				<alt abstract="true" name="AssetTracking">
+					<graphics key="collapsed" value="false"/>
+					<feature name="TokenizedAssets"/>
+					<feature name="DataStructAssets"/>
+				</alt>
+				<feature name="RecordRegister"/>
+			</alt>
+			<and abstract="true" name="Frontend">
+				<graphics key="collapsed" value="false"/>
+				<alt abstract="true" mandatory="true" name="TransactionSignature">
+					<graphics key="collapsed" value="false"/>
+					<feature name="SelfConfirmedTransaction"/>
+					<feature name="DelegatedTransaction"/>
+				</alt>
+			</and>
+			<and mandatory="true" name="DeploymentSuite">
+				<graphics key="collapsed" value="false"/>
+				<alt abstract="true" mandatory="true" name="BlockchainNetwork">
+					<graphics key="collapsed" value="false"/>
+					<feature name="Mainnet"/>
+					<feature name="Testnet"/>
+				</alt>
+			</and>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>RecordRegister</var>
+				<var>RecordHistory</var>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

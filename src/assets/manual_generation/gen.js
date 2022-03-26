@@ -42,9 +42,9 @@ function purgeProducts() {
 
 function finalizeProduct(configName, folder) {
   // Move dependencies into product
-  fs.copyFileSync('./contracts/Helpers.sol', `./products/product-${folder}/contracts/Helpers.sol`);
+  fs.copyFileSync('../contracts/Helpers.sol', `./products/product-${folder}/contracts/Helpers.sol`);
   // Saving config used to generate the product
-  fs.copyFileSync(`./feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
+  fs.copyFileSync(`../feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
   // Prettify the result to erase blank spaces left by the template engine
   exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol'`);
   console.log('Done.');
@@ -52,7 +52,7 @@ function finalizeProduct(configName, folder) {
 
 async function getConfiguration(filename) {
   try {
-    let rawFile = fs.readFileSync(`./feature_model/configs/${filename}.xml`).toString();
+    let rawFile = fs.readFileSync(`../feature_model/configs/${filename}.xml`).toString();
     let rawConfig = await parseStringPromise(rawFile);
     
     return parseConfigFile(rawConfig);
@@ -64,7 +64,7 @@ async function getConfiguration(filename) {
 
 function parseTemplate(contract, config) {
   // Read template
-  var template = fs.readFileSync(`./contracts/${contract}.sol`).toString();
+  var template = fs.readFileSync(`../contracts/${contract}.sol`).toString();
 
   // Render template
   var output = Mustache.render(template, config);
@@ -76,7 +76,7 @@ function parseTemplate(contract, config) {
 }
 
 async function generateProduct(configName) {
-  mustacheConfig = await getConfiguration(configName);
+  let mustacheConfig = await getConfiguration(configName);
 
   // Using the comment feature of Solidity to both allow templating and contract development
   Mustache.tags = ['/*', '*/'];

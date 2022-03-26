@@ -1,0 +1,16 @@
+{
+    "name": "banco-script",
+    "version": "0.2.0",
+    "description": "Create your blockchain application effortless! Manual execution.",
+    "main": "gen.js",
+    "scripts": {},
+    "author": "Nicolas Six",
+    "license": "ISC",
+    "devDependencies": {
+      "mustache": "^4.2.0",
+      "minimist": "^1.2.6",
+      "prettier-plugin-solidity": "^1.0.0-beta.19",
+      "xml2js": "^0.4.23"
+    }
+  }
+  
