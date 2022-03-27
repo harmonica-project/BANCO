@@ -17,34 +17,27 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
         // ignore if the checkbox is supposed to be filled automatically
         if (!configuration.isActivated(name) && !configuration.isDeactivated(name)) {
             try {
-                const newModel = new Model(configuration.model.xmlModel);
-                newModel['nameToId'] = configuration.model.nameToId;
-                newModel.features = structuredClone(configuration.model.features);
-                let newSelectedFeatures = structuredClone(configuration.selectedFeatures);
-                let newDeselectedFeatures = structuredClone(configuration.deselectedFeatures);
+                var newConfiguration = new Configuration(configuration.model, configuration.selectedFeatures, configuration.deselectedFeatures)
+                const fId = newConfiguration.model.nameToId[name];
 
-                const fId = newModel.nameToId[name];
-                
-                if (newModel.features[fId].checked) {
-                    newModel.features[fId].unchecked = true;
-                    newModel.features[fId].checked = false;
-                    newDeselectedFeatures.push(newModel.features[fId]);
-                    newSelectedFeatures = newSelectedFeatures.filter(f => f.name !== newModel.features[fId].name);
-                } else if (newModel.features[fId].unchecked) {
-                    newModel.features[fId].unchecked = false;
-                    newDeselectedFeatures = newDeselectedFeatures.filter(f => f.name !== newModel.features[fId].name);
+                if (newConfiguration.model.features[fId].checked) {
+                    newConfiguration.model.features[fId].unchecked = true;
+                    newConfiguration.model.features[fId].checked = false;
+                    newConfiguration.deselectedFeatures.push(newConfiguration.model.features[fId]);
+                    newConfiguration.selectedFeatures = newConfiguration.selectedFeatures.filter(f => f.name !== newConfiguration.model.features[fId].name);
+                } else if (newConfiguration.model.features[fId].unchecked) {
+                    newConfiguration.model.features[fId].unchecked = false;
+                    newConfiguration.deselectedFeatures = newConfiguration.deselectedFeatures.filter(f => f.name !== newConfiguration.model.features[fId].name);
                 }
                 else {
-                    newModel.features[fId].checked = true;
-                    newSelectedFeatures.push(newModel.features[fId]);
+                    newConfiguration.model.features[fId].checked = true;
+                    newConfiguration.selectedFeatures.push(newConfiguration.model.features[fId]);
                 }
 
-                const newConfiguration = renderFeaturesSelection(
-                    new Configuration(newModel, newSelectedFeatures, newDeselectedFeatures)
-                );
+                newConfiguration = renderFeaturesSelection(newConfiguration);
                 setConfiguration(newConfiguration);    
             } catch (e) {
-                console.log(e);
+                console.error(e);
             }
         }
         
@@ -52,7 +45,6 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
 
     // display/hide the subfeatures of a feature if clicked
     const toggleFeaturePanel = (name) => {
-        console.log(configuration);
         const id = configuration.model.nameToId[name];
         const newFeatures = JSON.parse(JSON.stringify(configuration.model.features));
         newFeatures[id].open = !newFeatures[id].open;

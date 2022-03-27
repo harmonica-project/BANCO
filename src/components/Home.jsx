@@ -4,7 +4,8 @@ import {
     Typography,
     Stack,
     Button,
-    IconButton
+    IconButton,
+    CircularProgress
 } from '@mui/material/';
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
@@ -115,65 +116,87 @@ const Home = () => {
         }
     }
 
+    const renderLoading = () => {
+        return (
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '100vh' }}
+                >
+
+                <Grid item xs={3}>
+                    <CircularProgress size="5rem" />
+                </Grid>   
+                
+            </Grid> 
+        )
+    };
+
     return (
-        <Grid container spacing={2} style={{ paddingTop: '40px', paddingLeft: '20px', paddingRight: '20px' }}>
-            <Grid item xs={12}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Blockchain feature selection
-                </Typography>
-                <Typography variant="body1" component="h2">
-                    Welcome! Please select your desired features and when your selection is complete, click on Generate to get your blockchain application.
-                </Typography>
-            </Grid>
-            <Grid item xs={4}>
-                <Configurator 
-                    setConfiguration={setConfiguration}
-                    configuration={configuration}
-                    actions={actions}
-                    setActions={setActions} 
-                    draggableMode={draggableMode}
-                />
-            </Grid>
-            <Grid item xs={draggableMode ? 12 : 8}>
-            <Stack spacing={2} direction="row">
-                <IconButton 
-                    color="primary"
-                    aria-label="Expand feature model"
-                    style={{ border: '1px solid #1976d2'}}
-                    onClick={() => setDraggableMode(!draggableMode)}
-                >
-                    {draggableMode ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
-                </IconButton>
-                <Button variant="outlined" onClick={() => setActions({ ...actions, unfoldAll: true })}>Unfold all</Button>
-                <Button variant="outlined" onClick={() => setActions({ ...actions, foldAll: true })}>Fold all</Button>
-                <Button variant="outlined" onClick={exportConfiguration} startIcon={<FileDownloadIcon />}>Export</Button>
-                <Button
-                    variant="outlined"
-                    component="label"
-                    startIcon={<FileUploadIcon />}
-                >
-                    Import
-                    <input
-                        type="file"
-                        accept='.xml'
-                        onChange={importConfiguration}
-                        hidden
+        <>
+            <Grid display={'model' in configuration ? '' : 'none'} container spacing={2} style={{ paddingTop: '40px', paddingLeft: '20px', paddingRight: '20px' }}>
+                <Grid item xs={12}>
+                    <Typography variant="h4" component="h1" gutterBottom>
+                        Blockchain feature selection
+                    </Typography>
+                    <Typography variant="body1" component="h2">
+                        Welcome! Please select your desired features and when your selection is complete, click on Generate to get your blockchain application.
+                    </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                    <Configurator 
+                        setConfiguration={setConfiguration}
+                        configuration={configuration}
+                        actions={actions}
+                        setActions={setActions} 
+                        draggableMode={draggableMode}
                     />
-                </Button>
-            </Stack>
-            <FeatureModel configuration={configuration} />
+                </Grid>
+                <Grid item xs={draggableMode ? 12 : 8}>
+                <Stack spacing={2} direction="row">
+                    <IconButton 
+                        color="primary"
+                        aria-label="Expand feature model"
+                        style={{ border: '1px solid #1976d2'}}
+                        onClick={() => setDraggableMode(!draggableMode)}
+                    >
+                        {draggableMode ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
+                    </IconButton>
+                    <Button variant="outlined" onClick={() => setActions({ ...actions, unfoldAll: true })}>Unfold all</Button>
+                    <Button variant="outlined" onClick={() => setActions({ ...actions, foldAll: true })}>Fold all</Button>
+                    <Button variant="outlined" onClick={exportConfiguration} startIcon={<FileDownloadIcon />}>Export</Button>
+                    <Button
+                        variant="outlined"
+                        component="label"
+                        startIcon={<FileUploadIcon />}
+                    >
+                        Import
+                        <input
+                            type="file"
+                            accept='.xml'
+                            onChange={importConfiguration}
+                            hidden
+                        />
+                    </Button>
+                </Stack>
+                <FeatureModel configuration={configuration} />
+                </Grid>
+                <Snackbar
+                    anchorOrigin={{ vertical: snackbar.vertical, horizontal: snackbar.horizontal }}
+                    open={snackbar.open}
+                    autoHideDuration={snackbar.timeout}
+                    onClose={handleClose}
+                >
+                    <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+                        { snackbar.message }
+                    </Alert>
+                </Snackbar>
             </Grid>
-            <Snackbar
-                anchorOrigin={{ vertical: snackbar.vertical, horizontal: snackbar.horizontal }}
-                open={snackbar.open}
-                autoHideDuration={snackbar.timeout}
-                onClose={handleClose}
-            >
-                <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
-                    { snackbar.message }
-                </Alert>
-            </Snackbar>
-        </Grid>
+            {(!('model' in configuration) && renderLoading())}
+        </>
     )
 }
 

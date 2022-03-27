@@ -62,7 +62,6 @@ export function Model(xmlModel) {
     function buildFeatureList(xmlModel) {
         var features = [];
         xmlModel.traverse(function(node, parent) {
-            console.log(node.children())
             features.push(new Feature(node, parent, node.children()));
         });
         return features;

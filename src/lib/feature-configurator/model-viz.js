@@ -113,7 +113,6 @@ export default function ModelViz(model) {
         });
         dot += "}}";
         
-        console.log(dot)
         return dot;
     };
 }
