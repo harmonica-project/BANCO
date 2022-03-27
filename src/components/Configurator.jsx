@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Box,
+    Paper,
     List,
-    ListSubheader,
     Chip,
     Stack
 } from '@mui/material/';
+import Draggable from 'react-draggable';
 import $ from 'jquery';
 import FeatureBlock from './FeatureBlock';
 import { XmlModel, Model } from '../lib/feature-configurator/model';
 import { Configuration } from '../lib/feature-configurator/configuration';
 
-const Configurator = ({ setExtConfiguration, actions, setActions }) => {
+const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode }) => {
     const [configuration, setConfiguration] = useState({});
 
     // fired when the user clicks on a checkbox
@@ -200,21 +200,45 @@ const Configurator = ({ setExtConfiguration, actions, setActions }) => {
         }
     }, [actions.foldAll]);
 
-    return (
-        <Box>
-            <Stack direction="row" spacing={1}>
-                <Chip
-                    color={!!configuration.isValid && configuration.isValid() ? 'success' : 'error'}
-                    label={!!configuration.isValid && configuration.isValid() ? 'Valid' : 'Invalid'}
-                />
-                <Chip
-                    color={!!configuration.isComplete && configuration.isComplete() ? 'success' : 'error'}
-                    label={!!configuration.isComplete && configuration.isComplete() ? 'Complete' : 'Incomplete'}
-                />
-            </Stack>
-            {renderFeatures()}
-        </Box>
-    )
+    const renderConfigurator = () => {
+        const featureList = (
+            <Paper style={{ padding: '20px' }}>
+                <Stack direction="row" spacing={1} style={{ paddingBottom: '10px' }}>
+                    <Chip
+                        color={!!configuration.isValid && configuration.isValid() ? 'success' : 'error'}
+                        label={!!configuration.isValid && configuration.isValid() ? 'Valid' : 'Invalid'}
+                    />
+                    <Chip
+                        color={!!configuration.isComplete && configuration.isComplete() ? 'success' : 'error'}
+                        label={!!configuration.isComplete && configuration.isComplete() ? 'Complete' : 'Incomplete'}
+                    />
+                </Stack>
+                {renderFeatures()}
+            </Paper>
+        )
+
+        if (draggableMode) {
+            return (
+                <Draggable>
+                    <Paper 
+                        style={{ 
+                            cursor: (draggableMode ? 'move' : 'auto'),
+                            position: 'absolute',
+                            backgroundColor: 'white',
+                            zIndex: '999',
+                            top: '20px'
+                        }}
+                    >
+                        {featureList}
+                    </Paper>
+                </Draggable>
+            )
+        } else {
+            return featureList;
+        }
+    }
+
+    return renderConfigurator();
 }
 
 export default Configurator;

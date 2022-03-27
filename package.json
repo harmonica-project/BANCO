@@ -23,6 +23,7 @@
     "logic-solver": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.4",
     "react-scripts": "5.0.0",
     "viz.js": "^2.1.2",
     "web-vitals": "^2.1.4"
