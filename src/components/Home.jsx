@@ -12,10 +12,12 @@ import Snackbar from '@mui/material/Snackbar';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import Configurator from './Configurator';
 import FeatureModel from './FeatureModel';
 import { Configuration } from '../lib/feature-configurator/configuration';
+import generateProduct from '../lib/generator/lib';
 
 const Alert = React.forwardRef(function Alert(
     props,
@@ -135,6 +137,26 @@ const Home = () => {
         )
     };
 
+    const checkThenGenerateProduct = async () => {
+        if (configuration.isComplete()) {
+            const xmlConfiguration = configuration.serialize();
+            const bundle = await generateProduct(xmlConfiguration);
+            var a = document.createElement('a');
+            a.download = `product-${new Date().toISOString()}.zip`;
+            a.href = window.URL.createObjectURL(bundle);
+            a.click();
+        } else {
+            setSnackbar({
+                open: true,
+                vertical: 'bottom',
+                horizontal: 'left',
+                severity: 'error',
+                message: 'The selection is not complete: you cannot generate your product yet.',
+                timeout: 6000
+            })
+        }
+    }
+
     return (
         <>
             <Grid display={'model' in configuration ? '' : 'none'} container spacing={2} style={{ paddingTop: '40px', paddingLeft: '20px', paddingRight: '20px' }}>
@@ -181,6 +203,7 @@ const Home = () => {
                             hidden
                         />
                     </Button>
+                    <Button variant="outlined" onClick={checkThenGenerateProduct} startIcon={<SettingsSuggestIcon />}>Generate product</Button>
                 </Stack>
                 <FeatureModel configuration={configuration} />
                 </Grid>

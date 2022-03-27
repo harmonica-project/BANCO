@@ -18,15 +18,19 @@
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "buffer": "^6.0.3",
     "graphviz-react": "^1.2.0",
     "jquery": "^3.6.0",
+    "jszip": "^3.7.1",
     "logic-solver": "^2.0.1",
+    "mustache": "^4.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.4",
     "react-scripts": "5.0.0",
     "viz.js": "^2.1.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xml-js": "^1.6.11"
   },
   "eslintConfig": {
     "extends": [
