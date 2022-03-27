@@ -4,21 +4,57 @@ export default function ModelViz(model) {
 
     this.model = model;
 
-    this.toDot = function(configuration) {
+    this.toDot = function() {
+        const legend = `Legend [shape=none, margin=0, label=<
+            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
+             <TR>
+              <TD COLSPAN="2"><B>Legend</B></TD>
+             </TR>
+             <TR>
+              <TD>Foo</TD>
+              <TD><FONT COLOR="red">Foo</FONT></TD>
+             </TR>
+             <TR>
+              <TD>Bar</TD>
+              <TD BGCOLOR="RED"></TD>
+             </TR>
+             <TR>
+              <TD>Baz</TD>
+              <TD BGCOLOR="BLUE"></TD>
+             </TR>
+             <TR>
+              <TD>Test</TD>
+              <TD><IMG src="so.png" SCALE="False" /></TD>
+             </TR>
+             <TR>
+              <TD>Test</TD>
+              <TD CELLPADDING="4">
+               <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
+                <TR>
+                 <TD BGCOLOR="Yellow"></TD>
+                </TR>
+               </TABLE>
+              </TD>
+             </TR>
+            </TABLE>
+           >];
+          }
+        `;
+
         function quote(str) {
             return "\"" + str.replace(/"/g, '\\"') + '"';
         }
     
         function nodeColor(feature) {
             if (feature.activated)
-                return feature.abstract ? "#C1E1C1" : "#b3e6b4"; // base #ccffcd
+                return "#C1E1C1"; 
             if (feature.deactivated)
-                return feature.abstract ? "#ff6961" : "#b3e6b4"; // base #ccffcd
+                return "#ffa19c"; 
             if (feature.checked)
-                return feature.abstract ? "#e6ffe7" : "#b3e6b4"; // base #ccffcd
+                return "#e6ffe7"; 
             if (feature.unchecked)
-                return feature.abstract ? "#ffe6e6" : "#e6b3b3"; // base #ffcccc
-            return feature.abstract ? "#f2f2ff" : "#ccccff";
+                return "#ff6961"; 
+            return "grey";
         }
     
         function node(feature) {
@@ -40,15 +76,44 @@ export default function ModelViz(model) {
                 ' [arrowhead=' + arrowHead + ', arrowtail=' + arrowTail + ', dir=both];\n';
         }
         
-        var dot = "digraph {\n";
-        dot += 'node [style=filled fontname="Arial Unicode MS, Arial"];\n';
+        var dot = `
+            digraph {\n
+                subgraph clusterMain {
+                    peripheries=0
+                    graph [labelloc="b" labeljust="r" label=<
+                        <table BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                            <tr>
+                                <td>Checked (auto)</td>
+                                <td width ='30px' bgcolor="#C1E1C1"></td>
+                            </tr>
+                            <tr>
+                                <td>Unchecked (auto)</td>
+                                <td bgcolor="#ffa19c"></td>
+                            </tr>
+                            <tr>
+                                <td>Checked</td>
+                                <td bgcolor="#e6ffe7"></td>
+                            </tr>
+                            <tr>
+                                <td>Unchecked</td>
+                                <td bgcolor="#ff6961"></td>
+                            </tr>
+                            <tr>
+                                <td>Indetermined</td>
+                                <td bgcolor="grey"></td>
+                            </tr>
+                        </table>>
+                    ];
+            `;
+        dot += 'node [style="filled" fontname="Arial Unicode MS, Arial"];\n';
         this.model.features.forEach(function(feature) {
             dot += node(feature);
             if (feature.parent)
                 dot += edge(feature);
         });
-        dot += "}";
+        dot += "}}";
         
+        console.log(dot)
         return dot;
     };
 }

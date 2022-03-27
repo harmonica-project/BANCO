@@ -11,9 +11,7 @@ import FeatureBlock from './FeatureBlock';
 import { XmlModel, Model } from '../lib/feature-configurator/model';
 import { Configuration } from '../lib/feature-configurator/configuration';
 
-const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode }) => {
-    const [configuration, setConfiguration] = useState({});
-
+const Configurator = ({ configuration, setConfiguration, actions, setActions, draggableMode }) => {
     // fired when the user clicks on a checkbox
     const checkFeature = (name) => {
         // ignore if the checkbox is supposed to be filled automatically
@@ -109,12 +107,7 @@ const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode 
             }
         })
 
-        try {
-            newConfiguration = renderFeaturesSelection(newConfiguration);
-        } catch (e) { 
-            // catch rendering issues
-            console.log(e)
-        }
+        newConfiguration = renderFeaturesSelection(newConfiguration);
         
         return newConfiguration;
     };
@@ -144,26 +137,36 @@ const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode 
     };
 
     const renderFeatures = () => {
-        if ('model' in configuration) {
-            return (
-                <List
-                    sx={{ width: '100%', bgcolor: 'background.paper' }}
-                    component="nav"
-                >
-                    <FeatureBlock 
-                        features={configuration.model.features}
-                        blockFeatures={[configuration.model.features[0].name]}
-                        nameToId={configuration.model.nameToId}
-                        checkFeature={checkFeature}
-                        toggleFeaturePanel={toggleFeaturePanel}
-                        depth={0}
-                    />
-                </List>
-            );
-        }
-
-        return <span>Loading ...</span>
+        return (
+            <List
+                sx={{ width: '100%', bgcolor: 'background.paper' }}
+                component="nav"
+            >
+                <FeatureBlock 
+                    features={configuration.model.features}
+                    blockFeatures={[configuration.model.features[0].name]}
+                    nameToId={configuration.model.nameToId}
+                    checkFeature={checkFeature}
+                    toggleFeaturePanel={toggleFeaturePanel}
+                    depth={0}
+                />
+            </List>
+        );
     }
+
+    const selectFeaturesAfterImport = (newConfiguration) => {
+        newConfiguration.selectedFeatures.forEach(sf => {
+            const id = newConfiguration.model.features.findIndex(f => f.name === sf.name);
+            newConfiguration.model.features[id].checked = true;
+        });
+
+        newConfiguration.deselectedFeatures.forEach(sf => {
+            const id = newConfiguration.model.features.findIndex(f => f.name === sf.name);
+            newConfiguration.model.features[id].unchecked = true;
+        });
+
+        return newConfiguration;
+    };
 
     useEffect(() => {
         fetch("model.xml")
@@ -183,10 +186,6 @@ const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode 
     }, []);
 
     useEffect(() => {
-        setExtConfiguration(configuration);
-    }, [configuration]);
-
-    useEffect(() => {
         if (actions.unfoldAll) {
             unfoldFeatures();
             setActions({ ...actions, unfoldAll: false });
@@ -199,6 +198,16 @@ const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode 
             setActions({ ...actions, foldAll: false });
         }
     }, [actions.foldAll]);
+
+    useEffect(() => {
+        if (actions.updateFeatureRender) {
+            let newConfiguration = new Configuration(configuration.model, configuration.selectedFeatures, configuration.deselectedFeatures);
+            newConfiguration = selectFeaturesAfterImport(newConfiguration);
+            newConfiguration = renderFeaturesSelection(newConfiguration);
+            setConfiguration(newConfiguration);
+            setActions({ ...actions, updateFeatureRender: false });
+        }
+    }, [actions.updateFeatureRender]);
 
     const renderConfigurator = () => {
         const featureList = (
@@ -238,7 +247,7 @@ const Configurator = ({ setExtConfiguration, actions, setActions, draggableMode 
         }
     }
 
-    return renderConfigurator();
+    return ('model' in configuration ? renderConfigurator() : <span>Loading ...</span>);
 }
 
 export default Configurator;
