@@ -9,10 +9,10 @@ export function XmlModel(xml) {
     function getRoot(xml) {
         var struct = $(xml).find("featureModel struct").get();
         if (struct.length !== 1)
-            throw "model does not have exactly one struct";
+            throw new Error("Model does not have exactly one struct");
         var children = $(struct[0]).children().get();
         if (children.length !== 1)
-            throw "model does not have exactly one root";
+            throw new Error("Model does not have exactly one root");
         return $(children[0]);
     }
 
@@ -20,7 +20,7 @@ export function XmlModel(xml) {
         return $(xml).find("constraints rule").map(function() {
             var children = $(this).children(":not(description)").get();
             if (children.length !== 1)
-                throw "rule does not have exactly one child";
+                throw new Error("Rule does not have exactly one child");
             return children[0];
         });
     }

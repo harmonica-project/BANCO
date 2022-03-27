@@ -31,7 +31,7 @@ export function Feature(node, parent, children) {
     this.hasValue = typeof this.value !== typeof undefined && this.value !== false;
     this.setValue = function(value) {
         if (!self.hasValue)
-            throw "not a value feature";
+            throw new Error("Not a value feature");
         self.value = value;
     };
 }

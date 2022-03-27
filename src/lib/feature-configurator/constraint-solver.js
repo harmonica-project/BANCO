@@ -82,7 +82,7 @@ ConstraintSolver.prototype.crossTreeConstraint = function(rule) {
     if (op === "var" && num === 0)
         return $(rule).text();
     
-    throw "unknown operation " + op + " with " + num + " arguments encountered";
+    throw new Error("Unknown operation " + op + " with " + num + " arguments encountered");
 };
 
 ConstraintSolver.prototype.configurationConstraint = function(configuration, excludeFeature) {

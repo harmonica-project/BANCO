@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
     Paper,
     List,
@@ -175,21 +175,21 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                 console.error(e)
             }
         });
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (actions.unfoldAll) {
             unfoldFeatures();
             setActions({ ...actions, unfoldAll: false });
         }
-    }, [actions.unfoldAll]);
-
+    }, [actions.unfoldAll]); // eslint-disable-line react-hooks/exhaustive-deps
+ 
     useEffect(() => {
         if (actions.foldAll) {
             foldFeatures();
             setActions({ ...actions, foldAll: false });
         }
-    }, [actions.foldAll]);
+    }, [actions.foldAll]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (actions.updateFeatureRender) {
@@ -199,7 +199,7 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
             setConfiguration(newConfiguration);
             setActions({ ...actions, updateFeatureRender: false });
         }
-    }, [actions.updateFeatureRender]);
+    }, [actions.updateFeatureRender]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const renderConfigurator = () => {
         const featureList = (

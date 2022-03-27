@@ -36,8 +36,8 @@ export function Configuration(model, selectedFeatures, deselectedFeatures) {
     };
 
     this.isComplete = function() {
-        var doneFeatures = this.selectedFeatures.concat(this.deselectedFeatures).
-            concat(this.getDeactivatedFeatures()).concat(this.getActivatedFeatures());
+        var doneFeatures = this.selectedFeatures.concat(this.deselectedFeatures)
+            .concat(this.getDeactivatedFeatures()).concat(this.getActivatedFeatures());
         var everyFeatureDone = this.model.features.reduce(function(acc, feature) {
             return acc && !!doneFeatures.find(featureFinder(feature.name));
         }, true);
@@ -76,7 +76,7 @@ export function Configuration(model, selectedFeatures, deselectedFeatures) {
     this.serialize = function() {
         var self = this;
         if (!self.isComplete())
-            throw "configuration is not complete";
+            throw new Error("Configuration is not complete");
         var xml = document.implementation.createDocument(null, "configuration");
     
         function setAttribute(node, key, value) {

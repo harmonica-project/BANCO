@@ -28,7 +28,7 @@ const FeatureBlock = ({
                     if (feature.childrenForTree.length === 0) {
                         return (
                             <ListItem
-                                key={nameToId[featureName]}
+                                key={`item-${nameToId[featureName]}`}
                                 disablePadding
                                 sx={{ pl: 2 * depth }}
                             >
@@ -47,7 +47,7 @@ const FeatureBlock = ({
                         return (
                             <>
                                 <ListItem
-                                    key={nameToId[featureName]}
+                                    key={`item-${nameToId[featureName]}`}
                                     disablePadding
                                     sx={{ pl: 2 * depth }}
                                 >
@@ -74,7 +74,7 @@ const FeatureBlock = ({
                                             </IconButton>
                                     }
                                 </ListItem>
-                                <Collapse in={feature.open} timeout="auto" unmountOnExit>
+                                <Collapse key={`collapse-${nameToId[featureName]}`} in={feature.open} timeout="auto" unmountOnExit>
                                     <FeatureBlock
                                         features={features}
                                         blockFeatures={feature.childrenForTree} 

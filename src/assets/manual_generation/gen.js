@@ -10,7 +10,7 @@ function parseConfigFile(file) {
   let config = {};
 
   for (let c of rawConfig) {
-    config[c.$.name] = (c.$.automatic == "selected" || c.$.manual == "selected");
+    config[c.$.name] = (c.$.automatic === "selected" || c.$.manual === "selected");
   }
 
   console.log('Loaded configuration: ', config);

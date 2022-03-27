@@ -5,42 +5,6 @@ export default function ModelViz(model) {
     this.model = model;
 
     this.toDot = function() {
-        const legend = `Legend [shape=none, margin=0, label=<
-            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="4">
-             <TR>
-              <TD COLSPAN="2"><B>Legend</B></TD>
-             </TR>
-             <TR>
-              <TD>Foo</TD>
-              <TD><FONT COLOR="red">Foo</FONT></TD>
-             </TR>
-             <TR>
-              <TD>Bar</TD>
-              <TD BGCOLOR="RED"></TD>
-             </TR>
-             <TR>
-              <TD>Baz</TD>
-              <TD BGCOLOR="BLUE"></TD>
-             </TR>
-             <TR>
-              <TD>Test</TD>
-              <TD><IMG src="so.png" SCALE="False" /></TD>
-             </TR>
-             <TR>
-              <TD>Test</TD>
-              <TD CELLPADDING="4">
-               <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="0">
-                <TR>
-                 <TD BGCOLOR="Yellow"></TD>
-                </TR>
-               </TABLE>
-              </TD>
-             </TR>
-            </TABLE>
-           >];
-          }
-        `;
-
         function quote(str) {
             return "\"" + str.replace(/"/g, '\\"') + '"';
         }
