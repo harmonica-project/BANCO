@@ -73,7 +73,7 @@
 					<feature name="TokenizedAssets"/>
 					<feature name="DataStructAssets"/>
 				</alt>
-				<feature name="RecordRegister"/>
+				<feature name="RecordRegistration"/>
 			</alt>
 			<and abstract="true" name="Frontend">
 				<graphics key="collapsed" value="false"/>
@@ -96,7 +96,7 @@
 	<constraints>
 		<rule>
 			<imp>
-				<var>RecordRegister</var>
+				<var>RecordRegistration</var>
 				<var>RecordHistory</var>
 			</imp>
 		</rule>

@@ -25,6 +25,9 @@ function saveProduct(contracts, folder) {
 
     fs.mkdirSync(`./products/product-${folder}`);
     fs.mkdirSync(`./products/product-${folder}/contracts`);
+    fs.mkdirSync(`./products/product-${folder}/contracts/controller`);
+    fs.mkdirSync(`./products/product-${folder}/contracts/data`);
+    fs.mkdirSync(`./products/product-${folder}/contracts/traceability`);
 
     for (let contract of contracts) {
       fs.writeFileSync(`./products/product-${folder}/contracts/${contract.name}.sol`, contract.output);
@@ -41,12 +44,13 @@ function purgeProducts() {
 }
 
 function finalizeProduct(configName, folder) {
+  fs.mkdirSync(`./products/product-${folder}/contracts/lib`);
   // Move dependencies into product
-  fs.copyFileSync('../contracts/Helpers.sol', `./products/product-${folder}/contracts/Helpers.sol`);
+  fs.copyFileSync('../contracts/lib/Helpers.sol', `./products/product-${folder}/contracts/lib/Helpers.sol`);
   // Saving config used to generate the product
   fs.copyFileSync(`../feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
   // Prettify the result to erase blank spaces left by the template engine
-  exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol'`);
+  exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol' --tab-width 4`);
   console.log('Done.');
 }
 
@@ -82,8 +86,11 @@ async function generateProduct(configName) {
   Mustache.tags = ['/*', '*/'];
 
   const contracts = [
-    parseTemplate('Participants', mustacheConfig),
-    parseTemplate('Records', mustacheConfig)
+    parseTemplate('controller/ParticipantsController', mustacheConfig),
+    parseTemplate('controller/RecordsController', mustacheConfig),
+    parseTemplate('data/Records', mustacheConfig),
+    parseTemplate('data/Participants', mustacheConfig),
+    parseTemplate('traceability/RecordsRegistration', mustacheConfig),
   ];
 
   const folder = new Date().toISOString();

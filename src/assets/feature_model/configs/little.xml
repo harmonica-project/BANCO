@@ -34,7 +34,7 @@
 	<feature automatic="unselected" name="AssetTracking"/>
 	<feature automatic="unselected" name="TokenizedAssets"/>
 	<feature automatic="unselected" name="DataStructAssets"/>
-	<feature automatic="unselected" name="RecordRegister"/>
+	<feature automatic="unselected" name="RecordRegistration"/>
 	<feature automatic="selected" name="Frontend"/>
 	<feature automatic="selected" name="TransactionSignature"/>
 	<feature manual="selected" name="SelfConfirmedTransaction"/>
