@@ -12,21 +12,18 @@ contract Records {
 
     struct RecordCollection {
         bool exists;
-        string[] authorizedParticipants;
+        address[] authorizedParticipants;
         /* #Roles */
         string[] authorizedRoles;
         /* /Roles */
         /* #HashRecords */
         string[] hashRecords;
         /* /HashRecords */
-        /* #StructuredRecords */
-        Record[] records;
-        /* /StructuredRecords */
     }
 
     struct RecordCollectionMetadata {
         string name;
-        string[] authorizedParticipants;
+        address[] authorizedParticipants;
         /* #Roles */
         string[] authorizedRoles;
         /* /Roles */
@@ -35,6 +32,11 @@ contract Records {
     address manager;
 
     mapping(string => RecordCollection) recordCollectionsMapping;
+    /* #StructuredRecords */
+    // forced to separate this from the struct RecordCollection 
+    // as struct storage arrays in another storage are not well supported
+    mapping(string => Record[]) recordCollectionToRecords; 
+    /* /StructuredRecords */
     string[] collectionNames;
 
     modifier onlyManager() {
@@ -47,12 +49,12 @@ contract Records {
             recordCollectionsMapping[_collectionName].exists,
             "Collection does not exist."
         );
-        _;
+        _; 
     }
 
     constructor(address _manager, RecordCollectionMetadata[] memory _metadata) {
         manager = _manager;
-
+        
         for (uint256 i = 0; i < _metadata.length; i++) {
             collectionNames.push(_metadata[i].name);
             recordCollectionsMapping[_metadata[i].name] = RecordCollection(
@@ -64,15 +66,21 @@ contract Records {
                 /* #HashRecords */
                 ,new string[](0)
                 /* /HashRecords */
-                /* #StructuredRecords */
-                ,new Record[](0)
-                /* /StructuredRecords */
             );
         }
     }
 
     function getCollectionNames() public view returns (string[] memory) {
         return collectionNames;
+    }
+
+    function getCollectionMetadata(string memory _collectionName) 
+        public 
+        view
+        collectionExists(_collectionName)
+        returns(RecordCollection memory) 
+    {
+        return recordCollectionsMapping[_collectionName];
     }
 
     /* #HashRecords */
@@ -117,7 +125,7 @@ contract Records {
         string memory _collectionName,
         Record memory _record
     ) public onlyManager collectionExists(_collectionName) {
-        recordCollectionsMapping[_collectionName].records.push(_record);
+        recordCollectionToRecords[_collectionName].push(_record);
     }
 
     function getStructuredRecord(string memory _collectionName, uint256 _id)
@@ -127,10 +135,10 @@ contract Records {
         returns (Record memory)
     {
         require(
-            _id < recordCollectionsMapping[_collectionName].records.length,
+            _id < recordCollectionToRecords[_collectionName].length,
             "Provided id out-of-bounds."
         );
-        return recordCollectionsMapping[_collectionName].records[_id];
+        return recordCollectionToRecords[_collectionName][_id];
     }
 
     function getStructuredRecords(string memory _collectionName)
@@ -139,7 +147,7 @@ contract Records {
         collectionExists(_collectionName)
         returns (Record[] memory)
     {
-        return recordCollectionsMapping[_collectionName].records;
+        return recordCollectionToRecords[_collectionName];
     }
     /* /StructuredRecords */
 }

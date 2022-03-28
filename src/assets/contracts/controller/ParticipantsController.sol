@@ -5,7 +5,7 @@ import "../lib/Helpers.sol";
 import "../data/Participants.sol";
 
 contract ParticipantsController {
-    // STATES
+    // ---- STATES ---- //
     address manager;
     Participants participantsContract;
 
@@ -43,6 +43,10 @@ contract ParticipantsController {
 
     function getParticipantsContractAddress() public view returns (address) {
         return address(participantsContract);
+    }
+
+    function doesParticipantExists(address _participant) public view returns(bool) {
+        return participantsContract.doesParticipantExist(_participant);
     }
 
     // PARTICIPANT MANAGEMENT
@@ -114,29 +118,8 @@ contract ParticipantsController {
     /* #Roles */
     // ROLE MANAGEMENT
 
-    modifier verifyRolePermission(address _caller, string memory _roleName) {
-        bool found = false;
-
-        string[] memory callerRoles = participantsContract
-            .getParticipant(_caller)
-            .roles;
-
-        for (uint256 i = 0; i < callerRoles.length; i++) {
-            string[] memory managedRoles = participantsContract
-                .getRole(callerRoles[i])
-                .managedRoles;
-
-            for (uint256 j = 0; j < managedRoles.length; j++) {
-                if (Helpers.strCmp(managedRoles[j], _roleName)) {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) break;
-        }
-
-        require(found, "User do not have this right through its roles.");
+    modifier verifyRolePermission(address _participant, string memory _roleName) {
+        require(participantHasRole(_participant, _roleName), "User do not have this right through its roles.");
         _;
     }
 

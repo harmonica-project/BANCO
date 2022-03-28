@@ -21,4 +21,16 @@ library Helpers {
 
         return -1;
     }
+
+    function searchAddressInArray(address _addr, address[] memory _addrs)
+        public
+        pure
+        returns (int256)
+    {
+        for (uint256 i = 0; i < _addrs.length; i++) {
+            if (_addr == _addrs[i]) return int256(i);
+        }
+
+        return -1;
+    }
 }

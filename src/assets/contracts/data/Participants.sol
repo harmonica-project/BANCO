@@ -85,11 +85,14 @@ contract Participants {
 
     modifier participantExists(address _participant) {
         require(
-            participants[addressToParticipantId[_participant]].addr ==
-                _participant,
-            "Participant does not exist."
+            doesParticipantExist(_participant), "Participant does not exist."
         );
         _;
+    }
+
+    function doesParticipantExist(address _participant) public view returns (bool) {
+        return (participants[addressToParticipantId[_participant]].addr ==
+                _participant);
     }
 
     function getParticipant(address _participant)
