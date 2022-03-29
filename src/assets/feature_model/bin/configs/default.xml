@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<feature automatic="selected" name="TraceabilityBC"/>
+	<feature automatic="selected" name="Participants"/>
+	<feature automatic="selected" name="Individuals"/>
+	<feature automatic="selected" name="CreateIndividual"/>
+	<feature manual="selected" name="CreateIndividualAtSetup"/>
+	<feature name="CreateIndividualDynamically"/>
+	<feature automatic="selected" name="IndividualType"/>
+	<feature automatic="selected" manual="selected" name="Oracle"/>
+	<feature manual="selected" name="IOTSensor"/>
+	<feature name="Service"/>
+	<feature automatic="selected" name="Human"/>
+	<feature name="DeleteIndividual"/>
+	<feature name="DeleteIndividualByIndividual"/>
+	<feature name="DeleteIndividualByRole"/>
+	<feature name="Roles"/>
+	<feature name="CreateRoleAtSetup"/>
+	<feature name="RemoveRole"/>
+	<feature name="AddRole"/>
+	<feature name="AddRoleAtSetup"/>
+	<feature name="AddRoleDynamically"/>
+	<feature automatic="selected" name="Storage"/>
+	<feature automatic="selected" name="StorageType"/>
+	<feature name="OffChain"/>
+	<feature name="Database"/>
+	<feature automatic="selected" name="OnChain"/>
+	<feature name="EventsEmission"/>
+	<feature automatic="selected" manual="selected" name="RecordHistory"/>
+	<feature automatic="unselected" name="StructuredRecords"/>
+	<feature manual="selected" name="HashRecords"/>
+	<feature automatic="selected" name="TrackingMethod"/>
+	<feature automatic="unselected" name="StateMachine"/>
+	<feature automatic="selected" manual="selected" name="AssetTracking"/>
+	<feature automatic="unselected" name="TokenizedAssets"/>
+	<feature manual="selected" name="DataStructAssets"/>
+	<feature automatic="unselected" name="RecordRegistration"/>
+	<feature automatic="selected" name="Frontend"/>
+	<feature automatic="selected" name="TransactionSignature"/>
+	<feature manual="selected" name="SelfConfirmedTransaction"/>
+	<feature automatic="unselected" name="DelegatedTransaction"/>
+	<feature automatic="selected" name="DeploymentSuite"/>
+	<feature automatic="selected" name="BlockchainNetwork"/>
+	<feature manual="selected" name="Mainnet"/>
+	<feature automatic="unselected" name="Testnet"/>
+</configuration>
