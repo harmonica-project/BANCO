@@ -1,6 +1,7 @@
 import Mustache from 'mustache';
 import convert from 'xml-js';
 import jszip from 'jszip';
+import templates from './templates';
 
 function parseConfig(rawFile) {
     try {
@@ -20,14 +21,15 @@ function parseConfig(rawFile) {
     }
 }
 
-async function parseTemplate(contract, config) {
-    const template = await (await fetch(`contracts/${contract}.sol`)).text()
+async function parseTemplate(path, contract, config) {
+    const template = await (await fetch(`./${path}/${contract.name}.sol`)).text()
 
     // Render template
     var output = Mustache.render(template, config);
     
     return {
-        name: contract,
+        name: contract.name,
+        path,
         output
     }
 }
@@ -37,8 +39,10 @@ const bundleArtifacts = async (artifacts, xmlConfig) => {
     zip.file('config.xml', xmlConfig);
 
     const contracts = zip.folder("contracts");
-    artifacts.forEach(a => contracts.file(a.name + '.sol', a.output));
-    contracts.file('Helpers.sol', await (await fetch(`contracts/Helpers.sol`)).text())
+    artifacts.forEach(a => {
+        let folder = contracts.folder(a.path);
+        folder.file(`${a.name}.sol`, a.output);
+    });
 
     return await zip.generateAsync({type: "blob"});
 }
@@ -50,8 +54,14 @@ const generateProduct = async (xmlConfig) => {
     Mustache.tags = ['/*', '*/'];
 
     const artifacts = [];
-    artifacts.push(await parseTemplate('Participants.', mustacheConfig));
-    artifacts.push(await parseTemplate('Records', mustacheConfig));
+    
+    for (let template of templates) {
+        for (let contract of template.contracts) {
+            if (contract.feature === undefined || mustacheConfig[contract.feature]) {
+                artifacts.push(await parseTemplate(template.path, contract, mustacheConfig));
+            }
+        }
+    }
 
     const bundle = await bundleArtifacts(artifacts, xmlConfig);
 

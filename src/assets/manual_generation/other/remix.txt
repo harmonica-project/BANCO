@@ -7,10 +7,12 @@ A random file where I write some inputs to use in Remix for testing purposes
 [["shipper", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"],["receiver", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"]]
 
 // Participants
-[["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", true, ["Shipper", "Receiver"]]]
-[["Shipper",[]], ["Receiver", []]]
+[["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", true, ["Shipper", "Receiver"], 0]]
+[["Shipper", false, []], ["Receiver", true, []]]
+
+"0x5B38Da6a701c568545dCfcB03FcB875f56beddC4",[["0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", true, ["Shipper", "Receiver"], 0]],[["Shipper", false, ["Receiver"]], ["Receiver", true, []]]
 
 // addParticipant
-["0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", ["Shipper"], ["Shipper", "Receiver"]],
-"0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
-
+"0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", 1
+"0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", "Shipper"
+"0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db", "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4", "Receiver"

@@ -1,0 +1,74 @@
+1) ParticipantsController
+
+Send
+- addParticipant
+- addRoleToParticipant
+- removeParticipantI
+- removeParticipantR
+- removeRoleToParticipant
+
+Call
+- doesParticipantExists
+- getManager
+- getParticipantsContractAddress
+- participantHasRole
+
+2) RecordsController
+
+Send
+- addHashRecord
+- addStructuredRecord
+
+Call
+- getRecordsContractAddress
+
+3) Participants
+
+Send
+- addParticipant
+- addRoleToParticipant
+- removeParticipant 
+- removeRoleToParticipant
+
+Call
+- doesParticipantExist
+- getManager
+- getParticipant
+- getRole
+
+4) Records
+
+Send
+- addHashRecord
+- addStructuredHashRecord
+
+Call
+- getCollectionMetadata
+- getCollectionNames
+- getHashRecord
+- getHashRecords
+- getStructuredRecord
+- getStructuredRecords
+
+Manager => 
+
+Send
+- addParticipant
+- addRoleToParticipant
+- removeParticipantI
+- removeParticipantR
+- removeRoleToParticipant
+- addHashRecord
+- addStructuredRecord
+
+Call
+- doesParticipantExist
+- getManager
+- getParticipant
+- getRole
+- getCollectionMetadata
+- getCollectionNames
+- getHashRecord
+- getHashRecords
+- getStructuredRecord
+- getStructuredRecords
