@@ -90,7 +90,7 @@ async function generateProduct(configName) {
     parseTemplate('controller/RecordsController', mustacheConfig),
     parseTemplate('data/Records', mustacheConfig),
     parseTemplate('data/Participants', mustacheConfig),
-    parseTemplate('traceability/RecordsRegistration', mustacheConfig),
+    parseTemplate('RecordsRegistration', mustacheConfig),
   ];
 
   const folder = new Date().toISOString();
