@@ -11,13 +11,13 @@ export default function ModelViz(model) {
     
         function nodeColor(feature) {
             if (feature.activated)
-                return "#C1E1C1"; 
+                return "#75bd75"; 
             if (feature.deactivated)
                 return "#ffa19c"; 
             if (feature.checked)
                 return "#e6ffe7"; 
             if (feature.unchecked)
-                return "#ff6961"; 
+                return "#ff3d33"; 
             return "grey";
         }
     
@@ -47,20 +47,20 @@ export default function ModelViz(model) {
                     graph [labelloc="b" labeljust="r" label=<
                         <table BORDER="0" CELLBORDER="1" CELLSPACING="0">
                             <tr>
+                                <td>Checked</td>
+                                <td bgcolor="#75bd75"></td>
+                            </tr>
+                            <tr>
                                 <td>Checked (auto)</td>
-                                <td width ='30px' bgcolor="#C1E1C1"></td>
+                                <td width ='30px' bgcolor="#e6ffe7"></td>
+                            </tr>
+                            <tr>
+                                <td>Unchecked</td>
+                                <td bgcolor="#ff3d33"></td>
                             </tr>
                             <tr>
                                 <td>Unchecked (auto)</td>
                                 <td bgcolor="#ffa19c"></td>
-                            </tr>
-                            <tr>
-                                <td>Checked</td>
-                                <td bgcolor="#e6ffe7"></td>
-                            </tr>
-                            <tr>
-                                <td>Unchecked</td>
-                                <td bgcolor="#ff6961"></td>
                             </tr>
                             <tr>
                                 <td>Indetermined</td>

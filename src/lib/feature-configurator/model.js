@@ -7,7 +7,8 @@ export function XmlModel(xml) {
         return new XmlModel(xml);
 
     function getRoot(xml) {
-        var struct = $(xml).find("featureModel struct").get();
+        console.log(xml)
+        var struct = $(xml).find("extendedFeatureModel struct").get();
         if (struct.length !== 1)
             throw new Error("Model does not have exactly one struct");
         var children = $(struct[0]).children().get();

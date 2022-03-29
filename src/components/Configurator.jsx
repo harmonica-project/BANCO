@@ -171,6 +171,8 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         new Configuration(new Model(new XmlModel(parsedXml)))
                     )
                 );
+
+                console.log(new Configuration(new Model(new XmlModel(parsedXml))))
             } catch (e) {
                 console.error(e)
             }
