@@ -174,7 +174,7 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
     };
 
     useEffect(() => {
-        fetch("model.xml")
+        fetch("./assets/model.xml")
         .then((response) => response.text())
         .then(xml => {
             let parsedXml = $.parseXML(xml);

@@ -10,7 +10,7 @@ export default function FeaturePopover({ anchorEl, handlePopoverClose, configura
     if (anchorEl) {
       setDesc(configuration.model.getFeature(anchorEl.textContent).description);
     }
-  }, [anchorEl]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [anchorEl])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Popover

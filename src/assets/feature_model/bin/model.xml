@@ -13,84 +13,148 @@
 		<and abstract="true" mandatory="true" name="TraceabilityBC">
 			<description>The root node of the feature model.</description>
 			<and abstract="true" mandatory="true" name="Participants">
-				<description>This feature allows the product to have participants in the traceability process (e.g. individuals, organizations, services, ...).</description>
+				<description>This feature allows to create and manage participants on the blockchain to serve the traceability process.</description>
 				<graphics key="collapsed" value="false"/>
 				<and abstract="true" mandatory="true" name="Individuals">
+				<description>This feature allows to create and manage individuals in the traceability process, notably represented by an address in a smart contract.</description>
 					<graphics key="collapsed" value="false"/>
 					<or abstract="true" mandatory="true" name="CreateIndividual">
+					<description>This feature allows the creation of new individuals to serve the traceability process.</description>
 						<graphics key="collapsed" value="true"/>
-						<feature name="CreateIndividualAtSetup"/>
-						<feature name="CreateIndividualDynamically"/>
+						<feature name="CreateIndividualAtSetup">
+							<description>This feature allows the creation of new individuals when instantiating smart contracts.</description>
+						</feature>
+						<feature name="CreateIndividualDynamically">
+							<description>This feature allows the creation of new individuals at any time after the smart contracts have been instantiated.</description>
+						</feature>
 					</or>
 					<and abstract="true" name="IndividualType">
+						<description>This feature allows to declare types on individuals. They are notably used to distinguish humans from services, and the different existing services (e.g. oracles).</description>
 						<graphics key="collapsed" value="true"/>
 						<or abstract="true" name="Oracle">
+							<description>This feature allows to assign the type oracle to an individual. Using an oracle allow to request data from a smart contract to an external service, as this is not natively possible for a smart contract to query off-chain services.</description>
 							<graphics key="collapsed" value="true"/>
-							<feature name="IOTSensor"/>
-							<feature name="Service"/>
+							<feature name="IOTSensor">
+								<description>This feature further refines the type oracle by defining the type IoT sensor, that periodically push new data to blockchain smart contracts.</description>
+							</feature>
+							<feature name="Service">
+								<description>This feature further refines the type oracle by defining the type service, that push new data to blockchain smart contracts when requested.</description>
+							</feature>
 						</or>
-						<feature mandatory="true" name="Human"/>
+						<feature mandatory="true" name="Human" >
+							<description>This feature defines the human type, that represents human individuals in participants.</description>
+						</feature>
 					</and>
 					<or abstract="true" name="DeleteIndividual">
+						<description>This feature allow the deletion of existing individuals from the participants.</description>
 						<graphics key="collapsed" value="true"/>
-						<feature name="DeleteIndividualByIndividual"/>
-						<feature name="DeleteIndividualByRole"/>
+						<feature name="DeleteIndividualByIndividual">
+							<description>This feature allow the deletion of existing individuals from the participants by individuals that are administrators of the traceability process.</description>
+						</feature>
+						<feature name="DeleteIndividualByRole">
+							<description>This feature allow the deletion of existing individuals from the participants by individuals that have a specific role which grants this right.</description>
+						</feature>
 					</or>
 				</and>
 				<and abstract="true" name="Roles">
+					<description>This feature allow the definition of roles in the traceability process. Multiple roles can be assigned to individuals to further distinguish them (for instance, distinguish suppliers from retailers). They can notably be used for access control when storing traceability data.</description>
 					<graphics key="collapsed" value="false"/>
-					<feature mandatory="true" name="CreateRoleAtSetup"/>
-					<feature name="RemoveRole"/>
+					<feature mandatory="true" name="CreateRoleAtSetup">
+						<description>This feature allow the creation of roles in the traceability process when instantiating smart contracts.</description>
+					</feature>
+					<feature name="RemoveRole">
+						<description>This feature allows to remove roles to individuals.</description>
+					</feature>
 					<or abstract="true" name="AddRole">
+						<description>This feature allow the assignation of roles in the traceability process to individuals.</description>
 						<graphics key="collapsed" value="true"/>
-						<feature name="AddRoleAtSetup"/>
-						<feature name="AddRoleDynamically"/>
+						<feature name="AddRoleAtSetup">
+							<description>This feature allow the assignation of roles in the traceability process when instantiating smart contracts.</description>
+						</feature>
+						<feature name="AddRoleDynamically">
+							<description>This feature allow the assignation of roles in the traceability process at any time after the smart contracts have been instantiated.</description>
+						</feature>
 					</or>
 				</and>
 			</and>
 			<and abstract="true" mandatory="true" name="Storage">
+				<description>This feature concerns the storage of data, either on the blockchain or off-chain (in a database).</description>
 				<graphics key="collapsed" value="false"/>
 				<and abstract="true" mandatory="true" name="StorageType">
+					<description>This feature concerns the format and emplacement of stored data.</description>
 					<graphics key="collapsed" value="false"/>
 					<and abstract="true" name="OffChain">
+						<description>This feature allow the storage of data off the blockchain.</description>
 						<graphics key="collapsed" value="true"/>
-						<feature abstract="true" mandatory="true" name="Database"/>
+						<feature abstract="true" mandatory="true" name="Database">
+							<description>This feature allow the storage of data in databases.</description>
+						</feature>
 					</and>
 					<or abstract="true" mandatory="true" name="OnChain">
+						<description>This feature allow the storage of data on the blockchain, in smart contracts.</description>
 						<graphics key="collapsed" value="true"/>
-						<feature name="EventsEmission"/>
+						<feature name="EventsEmission">
+							<description>This feature allow the storage of data on the blockchain throughout the emission of events in smart contracts. Emitted events can then be retraced to form a traceability flow of actions or stored data.</description>
+						</feature>
 						<alt abstract="true" name="RecordHistory">
+							<description>This feature allow the storage of data on the blockchain, in arrays of records. Functions are also defined to access these arrays at any time.</description>
 							<graphics key="collapsed" value="true"/>
-							<feature name="StructuredRecords"/>
-							<feature name="HashRecords"/>
+							<feature name="StructuredRecords">
+								<description>This feature allow the storage of data on the blockchain, in arrays of stuctured records. Thus, these records can hold various type of data.</description>
+							</feature>
+							<feature name="HashRecords">
+								<description>This feature allow the storage of data on the blockchain, in arrays of hashes records. A hash record is simply a timestamped hash of a record stored off-chain in a database.</description>
+							</feature>
 						</alt>
 					</or>
 				</and>
 			</and>
 			<alt abstract="true" mandatory="true" name="TrackingMethod">
+				<description>This feature represents the tracking method employed in the traceability process.</description>
 				<graphics key="collapsed" value="false"/>
-				<feature name="StateMachine"/>
+				<feature name="StateMachine">
+					<description>This feature allow the usage of state machine as the main mechanism for on-chain traceability.</description>
+				</feature>
 				<alt abstract="true" name="AssetTracking">
+					<description>This feature allow to track assets as the main mechanism for on-chain traceability.</description>
 					<graphics key="collapsed" value="false"/>
-					<feature name="TokenizedAssets"/>
-					<feature name="DataStructAssets"/>
+					<feature name="TokenizedAssets">
+						<description>This feature allow to track tokenized assets as the main mechanism for on-chain traceability. Tokenized assets are stored as ERC721 tokens that can be exchanged between individuals.</description>
+					</feature>
+					<feature name="DataStructAssets">
+						<description>This feature allow to track assets as data structures as the main mechanism for on-chain traceability. Compared to tokenized assets, they cannot be exchanged between individuals.</description>
+					</feature>
 				</alt>
-				<feature name="RecordRegistration"/>
+				<feature name="RecordRegistration">
+					<description>This feature allow the usage of record history as the main mechanism for on-chain traceability.</description>
+				</feature>
 			</alt>
 			<and abstract="true" name="Frontend">
+				<description>This feature represents the frontend part of the application.</description>
 				<graphics key="collapsed" value="false"/>
 				<alt abstract="true" mandatory="true" name="TransactionSignature">
+					<description>This feature represents the mechanism used to let individuals sign their transactions to interact with smart contracts.</description>
 					<graphics key="collapsed" value="true"/>
-					<feature name="SelfConfirmedTransaction"/>
-					<feature name="DelegatedTransaction"/>
+					<feature name="SelfConfirmedTransaction">
+						<description>This feature allows the user to sign by himself the transaction to interact with smart contracts. It requires to use a browser wallet (e.g. Metamask).</description>
+					</feature>
+					<feature name="DelegatedTransaction">
+						<description>This feature allows to delegate the signature of transactions to a backend server. Compared to self-confirmed transactions, users don't have to sign any transaction, but they have to trust the backend server.</description>
+					</feature>
 				</alt>
 			</and>
 			<and mandatory="true" name="DeploymentSuite">
+				<description>This feature represents the deployment part of the application.</description>
 				<graphics key="collapsed" value="false"/>
 				<alt abstract="true" mandatory="true" name="BlockchainNetwork">
+					<description>This feature allows the selection of a blockchain network for smart contracts deployment.</description>
 					<graphics key="collapsed" value="false"/>
-					<feature name="Mainnet"/>
-					<feature name="Testnet"/>
+					<feature name="EthereumMainnet">
+						<description>This feature design the Ethereum mainnet as the blockchain network used for smart contracts deployment. On the mainnet, any transaction costs Ether (by extension, real money). More suitable for production application.</description>
+					</feature>
+					<feature name="EthereumTestnet">
+						<description>This feature design the Ethereum testnet as the blockchain network used for smart contracts deployment. On the testnet, transactions are free. More suitable for testing purposes.</description>
+					</feature>
 				</alt>
 			</and>
 		</and>
@@ -100,6 +164,12 @@
 			<imp>
 				<var>RecordRegistration</var>
 				<var>RecordHistory</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>DeleteIndividualByRole</var>
+				<var>Roles</var>
 			</imp>
 		</rule>
 	</constraints>
