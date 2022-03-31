@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Paper,
     List,
@@ -10,8 +10,20 @@ import $ from 'jquery';
 import FeatureBlock from './FeatureBlock';
 import { XmlModel, Model } from '../lib/feature-configurator/model';
 import { Configuration } from '../lib/feature-configurator/configuration';
+import FeaturePopover from './FeaturePopover';
 
 const Configurator = ({ configuration, setConfiguration, actions, setActions, draggableMode }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        console.log(event.target)
+        setAnchorEl('yolo');
+        console.log(anchorEl)
+      };
+    
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    
     // fired when the user clicks on a checkbox
     const checkFeature = (name) => {
         // ignore if the checkbox is supposed to be filled automatically
@@ -140,6 +152,7 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                     nameToId={configuration.model.nameToId}
                     checkFeature={checkFeature}
                     toggleFeaturePanel={toggleFeaturePanel}
+                    displayPopoverFromElt={handleClick}
                     depth={0}
                 />
             </List>
@@ -234,6 +247,10 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                     >
                         {featureList}
                     </Paper>
+                    <FeaturePopover
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                    />
                 </Draggable>
             )
         } else {
