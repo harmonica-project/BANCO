@@ -20,7 +20,7 @@ function parseConfig(rawFile) {
 }
 
 async function parseTemplate(path, contract, config) {
-    const template = await (await fetch(`./${path}/${contract.name}.sol`)).text()
+    const template = await (await fetch(`./assets/contracts/${path}/${contract.name}.sol`)).text()
 
     // Render template
     var output = Mustache.render(template, config);
