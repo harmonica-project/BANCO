@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Paper,
     List,
@@ -10,8 +10,19 @@ import $ from 'jquery';
 import FeatureBlock from './FeatureBlock';
 import { XmlModel, Model } from '../lib/feature-configurator/model';
 import { Configuration } from '../lib/feature-configurator/configuration';
+import FeaturePopover from './FeaturePopover';
 
 const Configurator = ({ configuration, setConfiguration, actions, setActions, draggableMode }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+    
     // fired when the user clicks on a checkbox
     const checkFeature = (name) => {
         // ignore if the checkbox is supposed to be filled automatically
@@ -140,6 +151,8 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                     nameToId={configuration.model.nameToId}
                     checkFeature={checkFeature}
                     toggleFeaturePanel={toggleFeaturePanel}
+                    displayPopover={handlePopoverOpen}
+                    closePopover={handlePopoverClose}
                     depth={0}
                 />
             </List>
@@ -171,8 +184,6 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         new Configuration(new Model(new XmlModel(parsedXml)))
                     )
                 );
-
-                console.log(new Configuration(new Model(new XmlModel(parsedXml))))
             } catch (e) {
                 console.error(e)
             }
@@ -216,6 +227,11 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         label={!!configuration.isComplete && configuration.isComplete() ? 'Complete' : 'Incomplete'}
                     />
                 </Stack>
+                <FeaturePopover 
+                    anchorEl={anchorEl} 
+                    closePopover={handlePopoverClose} 
+                    configuration={configuration}
+                />
                 {renderFeatures()}
             </Paper>
         )
@@ -233,6 +249,11 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         }}
                     >
                         {featureList}
+                        <FeaturePopover 
+                            anchorEl={anchorEl} 
+                            closePopover={handlePopoverClose}
+                            configuration={configuration} 
+                        />
                     </Paper>
                 </Draggable>
             )

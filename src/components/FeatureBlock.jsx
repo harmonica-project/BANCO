@@ -16,7 +16,9 @@ const FeatureBlock = ({
     nameToId, 
     checkFeature, 
     toggleFeaturePanel,
-    depth
+    depth,
+    displayPopover,
+    closePopover
 }) => {
     // recursively display features by depth
     return (
@@ -40,7 +42,17 @@ const FeatureBlock = ({
                                         onChange={checkFeature.bind(this, feature.name)}
                                     />
                                 </ListItemIcon>
-                                <ListItemText primary={feature.name} />
+                                <ListItemText 
+                                    primary={
+                                        <span 
+                                            style={{ cursor: 'help' }} 
+                                            onMouseEnter={displayPopover}
+                                            onMouseLeave={closePopover}
+                                        >
+                                                {feature.name}
+                                        </span>
+                                    } 
+                                />
                             </ListItem>
                         )
                     } else {
@@ -59,7 +71,17 @@ const FeatureBlock = ({
                                             onChange={checkFeature.bind(this, feature.name)}
                                         />
                                     </ListItemIcon>
-                                    <ListItemText primary={feature.name} />
+                                    <ListItemText 
+                                        primary={
+                                            <span 
+                                                style={{ cursor: 'help' }} 
+                                                onMouseEnter={displayPopover}
+                                                onMouseLeave={closePopover}
+                                            >
+                                                    {feature.name}
+                                            </span>
+                                        } 
+                                    />
                                     {
                                         feature.open ? 
                                             <IconButton
@@ -68,7 +90,7 @@ const FeatureBlock = ({
                                                 <ExpandLess />
                                             </IconButton> : 
                                             <IconButton
-                                            onClick={toggleFeaturePanel.bind(this, feature.name)}
+                                                onClick={toggleFeaturePanel.bind(this, feature.name)}
                                             >
                                                 <ExpandMore />
                                             </IconButton>
@@ -82,6 +104,8 @@ const FeatureBlock = ({
                                         checkFeature={checkFeature}
                                         toggleFeaturePanel={toggleFeaturePanel}
                                         depth={depth + 1}
+                                        displayPopover={displayPopover}
+                                        closePopover={closePopover}
                                     />
                                 </Collapse>
                             </>

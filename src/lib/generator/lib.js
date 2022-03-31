@@ -12,8 +12,6 @@ function parseConfig(rawFile) {
         for (let c of features) {
             config[c.attributes.name] = (c.attributes.automatic === "selected" || c.attributes.manual === "selected");
         }
-    
-        console.log('Loaded configuration: ', config);
 
         return config;
     } catch (e) {
