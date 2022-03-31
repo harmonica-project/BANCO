@@ -17,7 +17,8 @@ const FeatureBlock = ({
     checkFeature, 
     toggleFeaturePanel,
     depth,
-    displayPopoverFromElt
+    displayPopover,
+    closePopover
 }) => {
     // recursively display features by depth
     return (
@@ -44,8 +45,9 @@ const FeatureBlock = ({
                                 <ListItemText 
                                     primary={
                                         <span 
-                                            style={{ cursor: 'pointer' }} 
-                                            onClick={displayPopoverFromElt}
+                                            style={{ cursor: 'help' }} 
+                                            onMouseEnter={displayPopover}
+                                            onMouseLeave={closePopover}
                                         >
                                                 {feature.name}
                                         </span>
@@ -72,8 +74,9 @@ const FeatureBlock = ({
                                     <ListItemText 
                                         primary={
                                             <span 
-                                                style={{ cursor: 'pointer' }} 
-                                                onClick={displayPopoverFromElt}
+                                                style={{ cursor: 'help' }} 
+                                                onMouseEnter={displayPopover}
+                                                onMouseLeave={closePopover}
                                             >
                                                     {feature.name}
                                             </span>
@@ -101,7 +104,8 @@ const FeatureBlock = ({
                                         checkFeature={checkFeature}
                                         toggleFeaturePanel={toggleFeaturePanel}
                                         depth={depth + 1}
-                                        displayPopoverFromElt={displayPopoverFromElt}
+                                        displayPopover={displayPopover}
+                                        closePopover={closePopover}
                                     />
                                 </Collapse>
                             </>

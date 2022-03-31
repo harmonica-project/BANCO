@@ -14,13 +14,12 @@ import FeaturePopover from './FeaturePopover';
 
 const Configurator = ({ configuration, setConfiguration, actions, setActions, draggableMode }) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-        console.log(event.target)
-        setAnchorEl('yolo');
-        console.log(anchorEl)
-      };
-    
-    const handleClose = () => {
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
         setAnchorEl(null);
     };
     
@@ -152,7 +151,8 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                     nameToId={configuration.model.nameToId}
                     checkFeature={checkFeature}
                     toggleFeaturePanel={toggleFeaturePanel}
-                    displayPopoverFromElt={handleClick}
+                    displayPopover={handlePopoverOpen}
+                    closePopover={handlePopoverClose}
                     depth={0}
                 />
             </List>
@@ -184,8 +184,6 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         new Configuration(new Model(new XmlModel(parsedXml)))
                     )
                 );
-
-                console.log(new Configuration(new Model(new XmlModel(parsedXml))))
             } catch (e) {
                 console.error(e)
             }
@@ -229,6 +227,11 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         label={!!configuration.isComplete && configuration.isComplete() ? 'Complete' : 'Incomplete'}
                     />
                 </Stack>
+                <FeaturePopover 
+                    anchorEl={anchorEl} 
+                    closePopover={handlePopoverClose} 
+                    configuration={configuration}
+                />
                 {renderFeatures()}
             </Paper>
         )
@@ -246,11 +249,12 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                         }}
                     >
                         {featureList}
+                        <FeaturePopover 
+                            anchorEl={anchorEl} 
+                            closePopover={handlePopoverClose}
+                            configuration={configuration} 
+                        />
                     </Paper>
-                    <FeaturePopover
-                        anchorEl={anchorEl}
-                        handleClose={handleClose}
-                    />
                 </Draggable>
             )
         } else {

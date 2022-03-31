@@ -1,27 +1,37 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
-export default function FeaturePopover({ anchorEl, handleClose }) {
-  console.log('rerendered')
-  console.log(anchorEl)
+export default function FeaturePopover({ anchorEl, handlePopoverClose, configuration }) {
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const [desc, setDesc] = useState('');
+
+  useEffect(() => {
+    if (anchorEl) {
+      setDesc(configuration.model.getFeature(anchorEl.textContent).description);
+    }
+  }, [anchorEl])
 
   return (
-    <div>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-      </Popover>
-    </div>
+    <Popover
+      id="mouse-over-popover"
+      sx={{
+        pointerEvents: 'none',
+      }}
+      open={open}
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      onClose={handlePopoverClose}
+      disableRestoreFocus
+    >
+      <Typography sx={{ p: 1 }}>{desc}</Typography>
+    </Popover>
   );
 }
