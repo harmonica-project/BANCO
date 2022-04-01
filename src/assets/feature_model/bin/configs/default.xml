@@ -41,6 +41,6 @@
 	<feature automatic="unselected" name="DelegatedTransaction"/>
 	<feature automatic="selected" name="DeploymentSuite"/>
 	<feature automatic="selected" name="BlockchainNetwork"/>
-	<feature manual="selected" name="Mainnet"/>
-	<feature automatic="unselected" name="Testnet"/>
+	<feature manual="selected" name="EthereumMainnet"/>
+	<feature automatic="unselected" name="EthereumTestnet"/>
 </configuration>
