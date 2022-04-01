@@ -12,6 +12,7 @@ contract Records {
 
     struct RecordCollection {
         bool exists;
+        string name;
         address[] authorizedParticipants;
         /* #Roles */
         string[] authorizedRoles;
@@ -19,14 +20,6 @@ contract Records {
         /* #HashRecords */
         string[] hashRecords;
         /* /HashRecords */
-    }
-
-    struct RecordCollectionMetadata {
-        string name;
-        address[] authorizedParticipants;
-        /* #Roles */
-        string[] authorizedRoles;
-        /* /Roles */
     }
 
     address manager;
@@ -52,21 +45,12 @@ contract Records {
         _; 
     }
 
-    constructor(address _manager, RecordCollectionMetadata[] memory _metadata) {
+    constructor(address _manager, RecordCollection[] memory _metadata) {
         manager = _manager;
         
         for (uint256 i = 0; i < _metadata.length; i++) {
             collectionNames.push(_metadata[i].name);
-            recordCollectionsMapping[_metadata[i].name] = RecordCollection(
-                true,
-                _metadata[i].authorizedParticipants
-                /* #Roles */
-                ,_metadata[i].authorizedRoles
-                /* /Roles */
-                /* #HashRecords */
-                ,new string[](0)
-                /* /HashRecords */
-            );
+            recordCollectionsMapping[_metadata[i].name] = _metadata[i];
         }
     }
 
