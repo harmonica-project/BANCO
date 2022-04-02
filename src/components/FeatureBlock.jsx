@@ -18,7 +18,8 @@ const FeatureBlock = ({
     toggleFeaturePanel,
     depth,
     displayPopover,
-    closePopover
+    closePopover,
+    forceOpen
 }) => {
     // recursively display features by depth
     return (
@@ -85,18 +86,20 @@ const FeatureBlock = ({
                                     {
                                         feature.open ? 
                                             <IconButton
-                                                onClick={toggleFeaturePanel.bind(this, feature.name)}
+                                                onClick={toggleFeaturePanel.bind(this, feature.name, depth)}
+                                                disabled={forceOpen}
                                             >
                                                 <ExpandLess />
                                             </IconButton> : 
                                             <IconButton
-                                                onClick={toggleFeaturePanel.bind(this, feature.name)}
+                                                onClick={toggleFeaturePanel.bind(this, feature.name, depth)}
+                                                disabled={forceOpen}
                                             >
                                                 <ExpandMore />
                                             </IconButton>
                                     }
                                 </ListItem>
-                                <Collapse key={`collapse-${nameToId[featureName]}`} in={feature.open} timeout="auto" unmountOnExit>
+                                <Collapse key={`collapse-${nameToId[featureName]}`} in={feature.open || forceOpen} timeout="auto" unmountOnExit>
                                     <FeatureBlock
                                         features={features}
                                         blockFeatures={feature.childrenForTree} 

@@ -38,7 +38,6 @@ const defaultSnackbar = {
 const Home = () => {
     const [configuration, setConfiguration] = useState({});
     const [actions, setActions] = useState({
-        unfoldAll: false,
         foldAll: false,
         updateFeatureRender: false
     });
@@ -187,7 +186,6 @@ const Home = () => {
                     >
                         {draggableMode ? <CloseFullscreenIcon /> : <OpenInFullIcon />}
                     </IconButton>
-                    <Button variant="outlined" onClick={() => setActions({ ...actions, unfoldAll: true })}>Unfold all</Button>
                     <Button variant="outlined" onClick={() => setActions({ ...actions, foldAll: true })}>Fold all</Button>
                     <Button variant="outlined" onClick={exportConfiguration} startIcon={<FileDownloadIcon />}>Export</Button>
                     <Button
