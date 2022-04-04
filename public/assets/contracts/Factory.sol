@@ -6,7 +6,7 @@ import "./controller/RecordsController.sol";
 import "./data/Participants.sol";
 import "./data/Records.sol";
 
-contract RecordsProxy {
+contract Factory {
     struct Contracts {
         ParticipantsController participantsControllerContract;
         RecordsController recordsControllerContract;
