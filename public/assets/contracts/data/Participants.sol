@@ -36,8 +36,8 @@ contract Participants {
     /* /IndividualType */
 
     // ---- STATES ---- //
-    address manager;
-
+    address factory;
+    address controller;
     Participant[] participants;
     mapping(address => uint256) addressToParticipantId;
 
@@ -48,14 +48,14 @@ contract Participants {
     /* /Roles */
 
     constructor(
-        address _manager
+        address _factory
         /* #CreateIndividualAtSetup */
         ,Participant[] memory _participants
         /* /CreateIndividualAtSetup */
         /* #Roles */
         ,Role[] memory _roles /* /Roles */
     ) {
-        manager = _manager;
+        factory = _factory;
 
         /* #Roles */
         for (uint256 i = 0; i < _roles.length; i++) {
@@ -72,13 +72,26 @@ contract Participants {
         /* /CreateIndividualAtSetup */
     }
 
-    modifier onlyManager() {
-        require(manager == msg.sender, "Function caller is not the manager.");
+    modifier onlyFactory() {
+        require(factory == msg.sender, "Function caller is not the manager.");
         _;
     }
 
-    function getManager() public view returns (address) {
-        return manager;
+    modifier onlyController() {
+        require(controller == msg.sender, "Function caller is not the manager.");
+        _;
+    }
+
+    function getFactory() public view returns (address) {
+        return factory;
+    }
+
+    function getController() public view returns (address) {
+        return controller;
+    }
+
+    function assignController(address _controller) public onlyFactory {
+        controller = _controller;
     }
 
     // ---- PARTICIPANT MANAGEMENT ---- //
@@ -116,7 +129,7 @@ contract Participants {
 
     function addParticipant(address _participant, ParticipantType _pType)
         public
-        onlyManager
+        onlyController
         participantNotExists(_participant)
     {
         participants.push(
@@ -130,7 +143,7 @@ contract Participants {
     /* #DeleteIndividual */
     function removeParticipant(address _participant)
         public
-        onlyManager
+        onlyController
         participantExists(_participant)
     {
         // inverting last participant with the participant to delete to avoid any gap
@@ -149,6 +162,24 @@ contract Participants {
 
     /* #Roles */
     // ROLE MANAGEMENT
+
+    function participantHasRole(address _participant, string memory _roleName)
+        public
+        view
+        returns (bool)
+    {
+        string[] memory participantRoles = getParticipant(_participant).roles;
+
+        for (uint256 i = 0; i < participantRoles.length; i++) {
+            Participants.Role memory role = getRole(participantRoles[i]);
+
+            if (Helpers.strCmp(role.name, _roleName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     function doesRoleExist(string memory _role) public view returns (bool) {
         return (Helpers.strCmp(roles[roleNameToRoleId[_role]].name, _role));
@@ -171,7 +202,7 @@ contract Participants {
     /* #AddRoleDynamically */
     function addRoleToParticipant(address _participant, string memory _roleName)
         public
-        onlyManager
+        onlyController
         participantExists(_participant)
     {
         participants[addressToParticipantId[_participant]].roles.push(
@@ -185,7 +216,7 @@ contract Participants {
     function removeRoleToParticipant(
         address _participant,
         string memory _roleName
-    ) public onlyManager participantExists(_participant) {
+    ) public onlyController participantExists(_participant) {
         string[] storage participantRoles = participants[
             addressToParticipantId[_participant]
         ].roles;

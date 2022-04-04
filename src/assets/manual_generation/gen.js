@@ -63,6 +63,8 @@ async function getConfiguration(filename) {
 }
 
 function parseTemplate(path, contract, config) {
+  console.log(`Parsing ${contract.name} ...`);
+  
   // Read template
   var template = fs.readFileSync(`../contracts/${path}${path ? '/' : ''}${contract.name}.sol`).toString();
 

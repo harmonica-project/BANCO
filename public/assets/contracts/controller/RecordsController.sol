@@ -2,32 +2,27 @@
 pragma solidity >0.8.0;
 
 import "../data/Records.sol";
-import "../controller/ParticipantsController.sol";
+import "../data/Participants.sol";
 
 contract RecordsController {
     // ---- STATES ---- //
-    address manager;
+    address factory;
     Records recordsContract;
-    ParticipantsController participantsControllerContract;
+    Participants participantsContract;
 
     constructor(
-        address _manager,
-        address _participantsControllerAddr,
-        Records.RecordCollection[] memory _metadata
+        address _factory,
+        address _participantsAddr,
+        address _recordsContractAddr
     )
     {
-        manager = _manager;
-        participantsControllerContract = ParticipantsController(_participantsControllerAddr);
-
-        recordsContract = new Records(
-            address(this),
-            _metadata
-        );
+        factory = _factory;
+        participantsContract = Participants(_participantsAddr);
+        recordsContract = Records(_recordsContractAddr);
     }
 
-    modifier onlyManager() {
-        require(manager == msg.sender);
-        _;
+    function getFactory() public view returns (address) {
+        return factory;
     }
 
     function getRecordsContractAddress() public view returns (address) {
@@ -35,7 +30,7 @@ contract RecordsController {
     }
 
     modifier canModifyRecordCollection(address _caller, string memory _collectionName) {
-        require(participantsControllerContract.doesParticipantExists(_caller), "Participant does not exist.");
+        require(participantsContract.doesParticipantExist(_caller), "Participant does not exist.");
 
         Records.RecordCollection memory col = recordsContract.getCollectionMetadata(_collectionName);
         bool authorized;
@@ -44,7 +39,7 @@ contract RecordsController {
 
         /* #Roles */
         for (uint i = 0; i < col.authorizedRoles.length; i++) {
-            if (participantsControllerContract.participantHasRole(_caller, col.authorizedRoles[i])) {
+            if (participantsContract.participantHasRole(_caller, col.authorizedRoles[i])) {
                 authorized = true;
                 break;
             }
@@ -64,7 +59,6 @@ contract RecordsController {
         Records.Record memory _record
     ) 
         public 
-        onlyManager
         canModifyRecordCollection(_caller, _collectionName)
     {
         recordsContract.addStructuredRecord(_collectionName, _record);
@@ -80,7 +74,6 @@ contract RecordsController {
         string memory _record
     ) 
         public 
-        onlyManager
         canModifyRecordCollection(_caller, _collectionName)
     {
         recordsContract.addHashRecord(_collectionName, _record);

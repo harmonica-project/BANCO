@@ -22,19 +22,44 @@ contract Records {
         /* /HashRecords */
     }
 
-    address manager;
-
+    address factory;
+    address controller;
+    
     mapping(string => RecordCollection) recordCollectionsMapping;
     /* #StructuredRecords */
-    // forced to separate this from the struct RecordCollection 
-    // as struct storage arrays in another storage are not well supported
     mapping(string => Record[]) recordCollectionToRecords; 
     /* /StructuredRecords */
     string[] collectionNames;
 
-    modifier onlyManager() {
-        require(manager == msg.sender);
+    constructor(address _factory, RecordCollection[] memory _metadata) {
+        factory = _factory;
+        
+        for (uint256 i = 0; i < _metadata.length; i++) {
+            collectionNames.push(_metadata[i].name);
+            recordCollectionsMapping[_metadata[i].name] = _metadata[i];
+        }
+    }
+
+    modifier onlyFactory() {
+        require(factory == msg.sender, "Function caller is not the factory.");
         _;
+    }
+
+    modifier onlyController() {
+        require(controller == msg.sender, "Function caller is not the controller.");
+        _;
+    }
+
+    function getFactory() public view returns (address) {
+        return factory;
+    }
+
+    function getController() public view returns (address) {
+        return controller;
+    }
+
+    function assignController(address _controller) public onlyFactory {
+        controller = _controller;
     }
 
     modifier collectionExists(string memory _collectionName) {
@@ -43,15 +68,6 @@ contract Records {
             "Collection does not exist."
         );
         _; 
-    }
-
-    constructor(address _manager, RecordCollection[] memory _metadata) {
-        manager = _manager;
-        
-        for (uint256 i = 0; i < _metadata.length; i++) {
-            collectionNames.push(_metadata[i].name);
-            recordCollectionsMapping[_metadata[i].name] = _metadata[i];
-        }
     }
 
     function getCollectionNames() public view returns (string[] memory) {
@@ -72,7 +88,7 @@ contract Records {
 
     function addHashRecord(string memory _collectionName, string memory _hash)
         public
-        onlyManager
+        onlyController
         collectionExists(_collectionName)
     {
         recordCollectionsMapping[_collectionName].hashRecords.push(_hash);
@@ -108,7 +124,7 @@ contract Records {
     function addStructuredRecord(
         string memory _collectionName,
         Record memory _record
-    ) public onlyManager collectionExists(_collectionName) {
+    ) public onlyController collectionExists(_collectionName) {
         recordCollectionToRecords[_collectionName].push(_record);
     }
 

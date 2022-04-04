@@ -6,39 +6,20 @@ import "../data/Participants.sol";
 
 contract ParticipantsController {
     // ---- STATES ---- //
-    address manager;
+    address factory;
     Participants participantsContract;
 
     constructor(
-        address _manager
-        /* #CreateIndividualAtSetup */
-        ,Participants.Participant[] memory _participants
-        /* /CreateIndividualAtSetup */
-        /* #Roles */
-        ,Participants.Role[] memory _roles
-        /* /Roles */
+        address _factory,
+        address _participantsContract
     )
     {
-        manager = _manager;
-
-        participantsContract = new Participants(
-            address(this)
-            /* #CreateIndividualAtSetup */
-            ,_participants
-            /* /CreateIndividualAtSetup */
-            /* #Roles */
-            ,_roles
-            /* /Roles */
-        );
+        factory = _factory;
+        participantsContract = Participants(_participantsContract);
     }
 
-    modifier onlyManager() {
-        require(manager == msg.sender, "Function caller is not the manager.");
-        _;
-    }
-
-    function getManager() public view returns (address) {
-        return manager;
+    function getFactory() public view returns (address) {
+        return factory;
     }
 
     function getParticipantsContractAddress() public view returns (address) {
@@ -56,7 +37,7 @@ contract ParticipantsController {
         address _participant,
         address _caller,
         Participants.ParticipantType _pType
-    ) public onlyManager verifyIsAdmin(_caller) {
+    ) public verifyIsAdmin(_caller) {
         participantsContract.addParticipant(_participant, _pType);
     }
 
@@ -66,7 +47,6 @@ contract ParticipantsController {
     function removeParticipantI(address _participant, address _caller)
         public
         verifyIsAdmin(_caller)
-        onlyManager
     {
         participantsContract.removeParticipant(_participant);
     }
@@ -76,7 +56,6 @@ contract ParticipantsController {
     /* #DeleteIndividualByRole */
     function removeParticipantR(address _participant, address _caller)
         public
-        onlyManager
     {
         // caller must be in a group able to remove a participant
         string[] memory callerRoles = participantsContract
@@ -119,44 +98,18 @@ contract ParticipantsController {
     // ROLE MANAGEMENT
 
     modifier verifyRolePermission(address _participant, string memory _roleName) {
-        require(participantHasRole(_participant, _roleName), "User do not have this right through its roles.");
+        require(participantsContract.participantHasRole(_participant, _roleName), "User do not have this right through its roles.");
         _;
     }
 
-    function participantHasRole(address _participant, string memory _roleName)
-        public
-        view
-        returns (bool)
-    {
-        string[] memory participantRoles = participantsContract
-            .getParticipant(_participant)
-            .roles;
-
-        for (uint256 i = 0; i < participantRoles.length; i++) {
-            Participants.Role memory role = participantsContract.getRole(
-                participantRoles[i]
-            );
-
-            if (Helpers.strCmp(role.name, _roleName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /* /Roles */
-
-    function doesRoleExists(string memory _role) public view returns(bool) {
-        return participantsContract.doesRoleExist(_role);
-    }
 
     /* #AddRoleDynamically */
     function addRoleToParticipant(
         address _participant,
         address _caller,
         string memory _roleName
-    ) public onlyManager verifyRolePermission(_caller, _roleName) {
+    ) public verifyRolePermission(_caller, _roleName) {
         participantsContract.addRoleToParticipant(_participant, _roleName);
     }
 
@@ -167,7 +120,7 @@ contract ParticipantsController {
         address _participant,
         address _caller,
         string memory _roleName
-    ) public onlyManager verifyRolePermission(_caller, _roleName) {
+    ) public verifyRolePermission(_caller, _roleName) {
         participantsContract.removeRoleToParticipant(_participant, _roleName);
     }
     /* /RemoveRole */
