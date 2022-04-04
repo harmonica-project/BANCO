@@ -19,7 +19,7 @@ contract RecordsProxy {
 
     constructor (
         address[] memory _owners,
-        Records.RecordCollectionMetadata[] memory _metadata
+        Records.RecordCollection[] memory _metadata
         /* #CreateIndividualAtSetup */
         ,Participants.Participant[] memory _participants
         /* /CreateIndividualAtSetup */

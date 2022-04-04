@@ -33,4 +33,18 @@ library Helpers {
 
         return -1;
     }
+
+    function doArrayHasDuplicates(string[] memory _array) 
+        public
+        pure 
+        returns (bool) 
+    {
+        for (uint i = 0; i < _array.length; i++) {
+            for (uint j = 0; j < _array.length; j++) {
+                if (strCmp(_array[i], _array[j]) && i != j) return false;
+            }
+        }
+
+        return true;
+    }
 }

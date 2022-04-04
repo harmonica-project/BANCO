@@ -13,7 +13,7 @@ contract RecordsController {
     constructor(
         address _manager,
         address _participantsControllerAddr,
-        Records.RecordCollectionMetadata[] memory _metadata
+        Records.RecordCollection[] memory _metadata
     )
     {
         manager = _manager;

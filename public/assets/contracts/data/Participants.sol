@@ -150,6 +150,10 @@ contract Participants {
     /* #Roles */
     // ROLE MANAGEMENT
 
+    function doesRoleExist(string memory _role) public view returns (bool) {
+        return (Helpers.strCmp(roles[roleNameToRoleId[_role]].name, _role));
+    }
+
     function getRole(string memory _roleName)
         public
         view

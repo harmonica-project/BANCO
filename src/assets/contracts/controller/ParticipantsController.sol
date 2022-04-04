@@ -147,6 +147,10 @@ contract ParticipantsController {
 
     /* /Roles */
 
+    function doesRoleExists(string memory _role) public view returns(bool) {
+        return participantsContract.doesRoleExist(_role);
+    }
+
     /* #AddRoleDynamically */
     function addRoleToParticipant(
         address _participant,
