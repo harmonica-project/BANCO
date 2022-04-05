@@ -26,11 +26,44 @@ contract StateMachineController {
         return factory;
     }
 
-    function fireTransitionI(string memory _stateMachineName) public {
-        require(participantsContract.doesParticipantExist(msg.sender), "Caller is not a participant");
-        address[] memory authorizedIndividuals = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedParticipants;
-        require(Helpers.searchAddressInArray(msg.sender, authorizedIndividuals) != -1, "Caller cannot fire this transition");
+    function fireTransition(string memory _stateMachineName) public {
+        bool fired;
 
-        stateMachineContract.fireTransition(_stateMachineName);
+        fired = fireTransitionI(_stateMachineName);
+
+        /* #Roles */
+        if (!fired) fired = fireTransitionR(_stateMachineName);
+        /* /Roles */
+
+        require(fired, "Caller cannot fire transition.");
     }
+
+    function fireTransitionI(string memory _stateMachineName) private returns (bool) {
+        if (!participantsContract.doesParticipantExist(msg.sender)) return false;
+
+        address[] memory authorizedIndividuals = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedParticipants;
+
+        bool found = Helpers.searchAddressInArray(msg.sender, authorizedIndividuals) != -1;
+        if (found) stateMachineContract.fireTransition(_stateMachineName);
+        return found;
+    }
+
+    /* #Roles */
+    function fireTransitionR(string memory _stateMachineName) private returns (bool) {
+        if (!participantsContract.doesParticipantExist(msg.sender)) return false;
+
+        string[] memory authorizedRoles = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedRoles;
+        bool found;
+
+        for (uint i = 0; i < authorizedRoles.length; i++) {
+            if (participantsContract.participantHasRole(msg.sender, authorizedRoles[i])) {
+                found = true;
+                break;
+            }
+        }
+
+        if (found) stateMachineContract.fireTransition(_stateMachineName);
+        return found;
+    }
+    /* /Roles */
 }
