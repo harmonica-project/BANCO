@@ -38,26 +38,44 @@ contract ParticipantsController {
         Participants.ParticipantType _pType
     ) 
         public 
-        verifyIsAdmin 
     {
-        participantsContract.addParticipant(_participant, _pType);
+        if (verifyIsAdmin()) participantsContract.addParticipant(_participant, _pType);
     }
 
     /* /CreateIndividualDynamically */
+
+    /* #DeleteIndividual */
+    function removeParticipant(address _participant) public {
+        bool deleted;
+
+        /* #DeleteIndividualByIndividual */
+        deleted = removeParticipantI(_participant);
+        /* /DeleteIndividualByIndividual */
+
+        /* #DeleteIndividualByRole */
+        // Might revert if removeParticipantR is still evaluated even if deleted = true
+        deleted = deleted || removeParticipantR(_participant);
+        /* /DeleteIndividualByRole */
+
+        require(deleted, "Caller cannot remove participant.");
+    }
+    /* /DeleteIndividual */
 
     /* #DeleteIndividualByIndividual */
     function removeParticipantI(
         address _participant
     ) 
-        public 
-        verifyIsAdmin 
+        private 
+        returns (bool)
     {
-        participantsContract.removeParticipant(_participant);
+        bool isAdmin = verifyIsAdmin();
+        if (isAdmin) participantsContract.removeParticipant(_participant);
+        return isAdmin;
     }
     /* /DeleteIndividualByIndividual */
 
     /* #DeleteIndividualByRole */
-    function removeParticipantR(address _participant) public {
+    function removeParticipantR(address _participant) private returns (bool) {
         // caller must be in a group able to remove a participant
         string[] memory callerRoles = participantsContract
             .getParticipant(msg.sender)
@@ -71,27 +89,18 @@ contract ParticipantsController {
             }
         }
 
-        require(found, "User do not have any admin role.");
-
-        participantsContract.removeParticipant(_participant);
+        if (found) participantsContract.removeParticipant(_participant);
+        return found;
     }
 
     /* /DeleteIndividualByRole */
 
     /*  #Individuals */
-    modifier verifyIsAdmin() {
-        require(
-            participantsContract.getParticipant(msg.sender).addr == msg.sender,
-            "Participant does not exist."
-        );
+    function verifyIsAdmin() private view returns (bool) {
+        if (!(participantsContract.getParticipant(msg.sender).addr == msg.sender)) return false;
 
         // caller must be able to add a participant
-        require(
-            participantsContract.getParticipant(msg.sender).isAdmin,
-            "Caller cannot add participant."
-        );
-
-        _;
+        return participantsContract.getParticipant(msg.sender).isAdmin;
     }
     /*  /Individuals */
 
