@@ -44,7 +44,10 @@ contract StateMachine {
                 checkStateCollectionValidity(_statesCollections[i]),
                 "Invalid state machine."
             );
-            nameToStates[_collectionNames[i]] = _statesCollections[i];
+            
+            for (uint j = 0; j < _statesCollections[i].length; j++) {
+                nameToStates[_collectionNames[i]].push(_statesCollections[i][j]);
+            }
             nameToCurrentState[_collectionNames[i]] = 0;
         }
     }

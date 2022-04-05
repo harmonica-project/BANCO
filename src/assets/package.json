@@ -1,0 +1,11 @@
+{
+  "name": "template-traceability-app",
+  "version": "0.1.0",
+  "description": "A template deployment suite for the traceability app",
+  "main": "truffle-config.js",
+  "scripts": {
+    "test": "truffle compile"
+  },
+  "author": "Nicolas Six",
+  "license": "ISC"
+}
