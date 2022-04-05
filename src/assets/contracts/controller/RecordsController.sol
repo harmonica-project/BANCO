@@ -29,17 +29,17 @@ contract RecordsController {
         return address(recordsContract);
     }
 
-    modifier canModifyRecordCollection(address _caller, string memory _collectionName) {
-        require(participantsContract.doesParticipantExist(_caller), "Participant does not exist.");
+    modifier canModifyRecordCollection(string memory _collectionName) {
+        require(participantsContract.doesParticipantExist(msg.sender), "Participant does not exist.");
 
         Records.RecordCollection memory col = recordsContract.getCollectionMetadata(_collectionName);
         bool authorized;
 
-        if (Helpers.searchAddressInArray(_caller, col.authorizedParticipants) != -1) authorized = true;
+        if (Helpers.searchAddressInArray(msg.sender, col.authorizedParticipants) != -1) authorized = true;
 
         /* #Roles */
         for (uint i = 0; i < col.authorizedRoles.length; i++) {
-            if (participantsContract.participantHasRole(_caller, col.authorizedRoles[i])) {
+            if (participantsContract.participantHasRole(msg.sender, col.authorizedRoles[i])) {
                 authorized = true;
                 break;
             }
@@ -54,12 +54,11 @@ contract RecordsController {
     // ---- STRUCTURED RECORDS FUNCTIONS ---- //
 
     function addStructuredRecord(
-        address _caller,
         string memory _collectionName,
         Records.Record memory _record
     ) 
         public 
-        canModifyRecordCollection(_caller, _collectionName)
+        canModifyRecordCollection(_collectionName)
     {
         recordsContract.addStructuredRecord(_collectionName, _record);
     }
@@ -69,12 +68,11 @@ contract RecordsController {
     // ---- HASH RECORDS FUNCTIONS ---- //
 
     function addHashRecord(
-        address _caller,
         string memory _collectionName,
         string memory _record
     ) 
         public 
-        canModifyRecordCollection(_caller, _collectionName)
+        canModifyRecordCollection(_collectionName)
     {
         recordsContract.addHashRecord(_collectionName, _record);
     }

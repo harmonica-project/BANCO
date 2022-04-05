@@ -35,31 +35,32 @@ contract ParticipantsController {
     /* #CreateIndividualDynamically */
     function addParticipant(
         address _participant,
-        address _caller,
         Participants.ParticipantType _pType
-    ) public verifyIsAdmin(_caller) {
+    ) 
+        public 
+        verifyIsAdmin 
+    {
         participantsContract.addParticipant(_participant, _pType);
     }
 
     /* /CreateIndividualDynamically */
 
     /* #DeleteIndividualByIndividual */
-    function removeParticipantI(address _participant, address _caller)
-        public
-        verifyIsAdmin(_caller)
+    function removeParticipantI(
+        address _participant
+    ) 
+        public 
+        verifyIsAdmin 
     {
         participantsContract.removeParticipant(_participant);
     }
-
     /* /DeleteIndividualByIndividual */
 
     /* #DeleteIndividualByRole */
-    function removeParticipantR(address _participant, address _caller)
-        public
-    {
+    function removeParticipantR(address _participant) public {
         // caller must be in a group able to remove a participant
         string[] memory callerRoles = participantsContract
-            .getParticipant(_caller)
+            .getParticipant(msg.sender)
             .roles;
         bool found = false;
 
@@ -78,15 +79,15 @@ contract ParticipantsController {
     /* /DeleteIndividualByRole */
 
     /*  #Individuals */
-    modifier verifyIsAdmin(address _caller) {
+    modifier verifyIsAdmin() {
         require(
-            participantsContract.getParticipant(_caller).addr == _caller,
+            participantsContract.getParticipant(msg.sender).addr == msg.sender,
             "Participant does not exist."
         );
 
         // caller must be able to add a participant
         require(
-            participantsContract.getParticipant(_caller).isAdmin,
+            participantsContract.getParticipant(msg.sender).isAdmin,
             "Caller cannot add participant."
         );
 
@@ -97,8 +98,8 @@ contract ParticipantsController {
     /* #Roles */
     // ROLE MANAGEMENT
 
-    modifier verifyRolePermission(address _participant, string memory _roleName) {
-        require(participantsContract.participantHasRole(_participant, _roleName), "User do not have this right through its roles.");
+    modifier verifyRolePermission(string memory _roleName) {
+        require(participantsContract.participantHasRole(msg.sender, _roleName), "User do not have this right through its roles.");
         _;
     }
 
@@ -107,9 +108,11 @@ contract ParticipantsController {
     /* #AddRoleDynamically */
     function addRoleToParticipant(
         address _participant,
-        address _caller,
         string memory _roleName
-    ) public verifyRolePermission(_caller, _roleName) {
+    ) 
+        public 
+        verifyRolePermission(_roleName) 
+    {
         participantsContract.addRoleToParticipant(_participant, _roleName);
     }
 
@@ -118,9 +121,11 @@ contract ParticipantsController {
     /* #RemoveRole */
     function removeRoleToParticipant(
         address _participant,
-        address _caller,
         string memory _roleName
-    ) public verifyRolePermission(_caller, _roleName) {
+    ) 
+        public 
+        verifyRolePermission(_roleName) 
+    {
         participantsContract.removeRoleToParticipant(_participant, _roleName);
     }
     /* /RemoveRole */
