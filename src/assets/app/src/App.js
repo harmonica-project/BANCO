@@ -13,8 +13,16 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import Setup from './components/Setup';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  containerMargin: {
+    marginTop: '30px'
+  }
+}));
 
 function App() {
+  let classes = useStyles();
   let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
 
@@ -114,11 +122,13 @@ function App() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Routes>
-        <Route path="/setup" element={<Setup />} />
-        <Route path="/app" element={<span>App</span>} />
-        <Route path="/" element={<span>Home</span>} />
-      </Routes>
+      <Container className={classes.containerMargin}>
+        <Routes>
+          <Route path="/setup" element={<Setup />} />
+          <Route path="/app" element={<h1>Work in progress!</h1>} />
+          <Route path="/" element={<h1>Work in progress!</h1>} />
+        </Routes>
+      </Container>
     </div>
   );
 }

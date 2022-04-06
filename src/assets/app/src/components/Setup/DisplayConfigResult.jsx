@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const DisplayConfig = () => {
+const DisplayConfigResult = () => {
   return <span>Finished !</span>
 }
 
-export default DisplayConfig;
+export default DisplayConfigResult;
