@@ -31,6 +31,8 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const deepCopy = (item) => JSON.parse(JSON.stringify(item));
+
 const blankRole = {
   name: '',
   isAdmin: false
@@ -40,9 +42,31 @@ const RoleSetupForm = ({ nextPage }) => {
   const classes = useStyles();
   const [roles, setRoles] = useState([blankRole]);
 
+  const rolesValid = () => {
+    const foundRoles = {};
+  
+    for (let r of roles) {
+      if (foundRoles[r.name] || !r.name.length) return false;
+      foundRoles[r.name] = true;
+    }
+  
+    return true;
+  }
+  
+  const submitRoles = () => {
+    if (rolesValid()) nextPage('roles', roles);
+    console.log('Submitted roles: ', roles);
+  }
+
   const changeRoleName = (roleId, e) => {
-    const newRoles = JSON.parse(JSON.stringify(roles));
+    const newRoles = deepCopy(roles);
     newRoles[roleId].name = e.target.value;
+    setRoles(newRoles);
+  };
+
+  const changeIsAdmin = (roleId, e) => {
+    const newRoles = deepCopy(roles);
+    newRoles[roleId].isAdmin = e.target.checked;
     setRoles(newRoles);
   };
 
@@ -95,7 +119,45 @@ const RoleSetupForm = ({ nextPage }) => {
                               className: classes.itemMargin
                             }}
                           />
-                          <FormControlLabel control={<Checkbox />} label="Admin" />
+                          <FormControlLabel
+                            control={
+                              <Checkbox 
+                                checked={r.isAdmin}
+                                onChange={changeIsAdmin.bind(this, i)} 
+                                inputProps={{ 'aria-label': 'controlled' }}
+                              />
+                            } 
+                            label="Admin"
+                          />
+                          <FormControl sx={{ m: 1, width: 300 }}>
+                            <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+                            <Select
+                              labelId="demo-multiple-chip-label"
+                              id="demo-multiple-chip"
+                              multiple
+                              value={personName}
+                              onChange={handleChange}
+                              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                              renderValue={(selected) => (
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                  {selected.map((value) => (
+                                    <Chip key={value} label={value} />
+                                  ))}
+                                </Box>
+                              )}
+                              MenuProps={MenuProps}
+                            >
+                              {names.map((name) => (
+                                <MenuItem
+                                  key={name}
+                                  value={name}
+                                  style={getStyles(name, personName, theme)}
+                                >
+                                  {name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
                         </FormGroup>
                       </CardContent>
                     </Card>
@@ -109,7 +171,7 @@ const RoleSetupForm = ({ nextPage }) => {
           )
         }
       <Box>
-        <Button variant="contained" onClick={nextPage}>Submit</Button>
+        <Button variant="contained" onClick={submitRoles}>Submit</Button>
       </Box>
     </Box>
   )
