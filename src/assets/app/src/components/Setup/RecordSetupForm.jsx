@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const RecordSetupForm = () => {
-  return <span>Records setup !</span>
+const RecordSetupForm = ({ previousPage }) => {
+  return <button onClick={previousPage}>Previous</button>
 }
 
 export default RecordSetupForm;

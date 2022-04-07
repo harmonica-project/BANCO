@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const StateMachineSetupForm = () => {
-  return <span>StateMachine setup !</span>
+const StateMachineSetupForm = ({ previousPage }) => {
+  return <button onClick={previousPage}>Previous</button>
 }
 
 export default StateMachineSetupForm;

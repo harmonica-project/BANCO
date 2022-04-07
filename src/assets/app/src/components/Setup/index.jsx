@@ -24,7 +24,7 @@ const Setup = () => {
     });
   }
 
-  const handleClose = (event, reason) => {
+  const handleClose = (_, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -45,6 +45,7 @@ const Setup = () => {
     'nextPage': handleNextPage,
     'previousPage': handlePreviousPage,
     config,
+    setConfig,
     displayError
   }
 

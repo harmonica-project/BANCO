@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -57,7 +57,7 @@ const MenuProps = {
   },
 };
 
-const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
+const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError }) => {
   const classes = useStyles();
   const [roles, setRoles] = useState(config.roles || [blankRole]);
 
@@ -79,13 +79,24 @@ const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
 
   const changeRoleName = (roleId, e) => {
     const newRoles = deepCopy(roles);
+    const newName = e.target.value;
 
     for (let i in newRoles) {
       let mId = newRoles[i].managedRoles.findIndex(mr => mr === newRoles[roleId].name);
-      newRoles[i].managedRoles[mId] = e.target.value;
+      newRoles[i].managedRoles[mId] = newName;
     }
 
-    newRoles[roleId].name = e.target.value;
+    if (config.participants) {
+      const newParticipants = deepCopy(config.participants);
+      for (let i in newParticipants) {
+        let rId = newParticipants[i].roles.findIndex(r => r === newRoles[roleId].name);
+        newParticipants[i].roles[rId] = newName;
+      }
+
+      setConfig({ ...config, participants: newParticipants });
+    }
+
+    newRoles[roleId].name = newName;
 
     setRoles(newRoles);
   };
@@ -107,6 +118,15 @@ const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
 
     for (let i in newRoles) {
       newRoles[i].managedRoles = newRoles[i].managedRoles.filter(mr => mr !== roles[roleId].name);
+    }
+
+    if (config.participants) {
+      let newParticipants = deepCopy(config.participants);
+      for (let i in newParticipants) {
+        newParticipants[i].roles = newParticipants[i].roles.filter(r => r !== roles[roleId].name);
+      }
+
+      setConfig({ ...config, participants: newParticipants });
     }
 
     newRoles = newRoles.filter((_, i) => i !== roleId);
@@ -174,7 +194,7 @@ const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
                               MenuProps={MenuProps}
                             >
                               {
-                                roles.map((r, i) => {
+                                roles.flatMap((r, i) => {
                                   if (r.name.length) {
                                     return (
                                       <MenuItem
@@ -184,7 +204,7 @@ const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
                                         Role n°{i + 1}: {r.name}
                                       </MenuItem>
                                     )
-                                  }
+                                  } else return [];
                                 })
                               }
                             </Select>
