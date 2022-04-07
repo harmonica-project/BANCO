@@ -57,9 +57,9 @@ const MenuProps = {
   },
 };
 
-const RoleSetupForm = ({ nextPage, previousPage, configRoles = [blankRole]}) => {
+const RoleSetupForm = ({ nextPage, previousPage, config, displayError }) => {
   const classes = useStyles();
-  const [roles, setRoles] = useState(configRoles);
+  const [roles, setRoles] = useState(config.roles || [blankRole]);
 
   const rolesValid = () => {
     const foundRoles = {};
@@ -74,7 +74,7 @@ const RoleSetupForm = ({ nextPage, previousPage, configRoles = [blankRole]}) => 
   
   const submitRoles = () => {
     if (rolesValid()) nextPage('roles', roles);
-    console.log('Submitted roles: ', roles);
+    else displayError('Cannot submit: there is at least one role that do not have a unique non-null name.');
   }
 
   const changeRoleName = (roleId, e) => {
