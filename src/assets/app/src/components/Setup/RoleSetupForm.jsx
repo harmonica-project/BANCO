@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
@@ -56,9 +57,9 @@ const MenuProps = {
   },
 };
 
-const RoleSetupForm = ({ nextPage }) => {
+const RoleSetupForm = ({ nextPage, previousPage, configRoles = [blankRole]}) => {
   const classes = useStyles();
-  const [roles, setRoles] = useState([blankRole]);
+  const [roles, setRoles] = useState(configRoles);
 
   const rolesValid = () => {
     const foundRoles = {};
@@ -117,7 +118,6 @@ const RoleSetupForm = ({ nextPage }) => {
     setRoles([...roles, blankRole])
   };
 
-  console.log(roles);
   return (
     <Box className={classes.boxPadding}>
       <Typography component="h1" variant="h4">
@@ -168,10 +168,7 @@ const RoleSetupForm = ({ nextPage }) => {
                               input={<Input id="managed-roles-list-chip" label="Managed roles" />}
                               renderValue={(managedRoles) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                  {managedRoles.map((value) => {
-                                    console.log(value)
-                                    return <Chip key={value} label={value} />
-                                  })}
+                                  {managedRoles.map((value) => <Chip key={value} label={value} />)}
                                 </Box>
                               )}
                               MenuProps={MenuProps}
@@ -215,6 +212,10 @@ const RoleSetupForm = ({ nextPage }) => {
           )
         }
       <Box>
+        <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={previousPage}>
+          Previous
+        </Button>
+        &nbsp;
         <Button variant="contained" onClick={submitRoles}>Submit</Button>
       </Box>
     </Box>

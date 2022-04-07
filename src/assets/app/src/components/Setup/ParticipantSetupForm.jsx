@@ -5,6 +5,7 @@ import {
   Button
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const useStyles = makeStyles(() => ({
   boxPadding: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const ParticipantSetupForm = ({ nextPage }) => {
+const ParticipantSetupForm = ({ nextPage, previousPage }) => {
   const classes = useStyles();
 
   return (
@@ -23,7 +24,11 @@ const ParticipantSetupForm = ({ nextPage }) => {
         Participant setup
       </Typography>
       <Box>
-        <Button variant="contained" onClick={nextPage}>Submit</Button>
+        <Button variant="contained" startIcon={<ArrowBackIcon />} onClick={previousPage}>
+          Previous
+        </Button>
+        &nbsp;
+        <Button variant="contained" onClick={() => console.log('submit')}>Submit</Button>
       </Box>
     </Box>
   )

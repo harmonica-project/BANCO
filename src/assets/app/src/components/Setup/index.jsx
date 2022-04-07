@@ -15,13 +15,17 @@ const Setup = () => {
     if (source) setConfig({ ...config, [source]: content });
   };
 
+  const handlePreviousPage = () => {
+    setCurrent(current - 1);
+  };
+
   const pages = [
-    <StartConfig nextPage={handleNextPage} />,
-    <RoleSetupForm nextPage={handleNextPage} />,
-    <ParticipantSetupForm nextPage={handleNextPage} />,
-    <RecordSetupForm nextPage={handleNextPage} />,
-    <StateMachineSetupForm nextPage={handleNextPage} />,
-    <DisplayConfigResult nextPage={handleNextPage} />
+    <StartConfig nextPage={handleNextPage} previousPage={handlePreviousPage} />,
+    <RoleSetupForm nextPage={handleNextPage} previousPage={handlePreviousPage} configRoles={config.roles} />,
+    <ParticipantSetupForm nextPage={handleNextPage} previousPage={handlePreviousPage} />,
+    <RecordSetupForm nextPage={handleNextPage} previousPage={handlePreviousPage} />,
+    <StateMachineSetupForm nextPage={handleNextPage} previousPage={handlePreviousPage} />,
+    <DisplayConfigResult nextPage={handleNextPage} previousPage={handlePreviousPage} />
   ]
 
   return pages[current];
