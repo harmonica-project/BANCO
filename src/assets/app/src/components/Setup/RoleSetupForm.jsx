@@ -15,11 +15,10 @@ import {
   FormControl,
   InputLabel,
   Select,
-  OutlinedInput,
+  Input,
   Chip,
   MenuItem
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import { makeStyles } from '@mui/styles';
@@ -57,20 +56,9 @@ const MenuProps = {
   },
 };
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 const RoleSetupForm = ({ nextPage }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [roles, setRoles] = useState([blankRole]);
-  const [personName, setPersonName] = React.useState([]);
 
   const rolesValid = () => {
     const foundRoles = {};
@@ -90,7 +78,14 @@ const RoleSetupForm = ({ nextPage }) => {
 
   const changeRoleName = (roleId, e) => {
     const newRoles = deepCopy(roles);
+
+    for (let i in newRoles) {
+      let mId = newRoles[i].managedRoles.findIndex(mr => mr === newRoles[roleId].name);
+      newRoles[i].managedRoles[mId] = e.target.value;
+    }
+
     newRoles[roleId].name = e.target.value;
+
     setRoles(newRoles);
   };
 
@@ -106,9 +101,15 @@ const RoleSetupForm = ({ nextPage }) => {
     setRoles(newRoles);
   };
 
-  const deleteRole = (roleId, e) => {
-    let newRoles = JSON.parse(JSON.stringify(roles));
+  const deleteRole = (roleId) => {
+    let newRoles = deepCopy(roles);
+
+    for (let i in newRoles) {
+      newRoles[i].managedRoles = newRoles[i].managedRoles.filter(mr => mr !== roles[roleId].name);
+    }
+
     newRoles = newRoles.filter((_, i) => i !== roleId);
+
     setRoles(newRoles);
   };
 
@@ -116,6 +117,7 @@ const RoleSetupForm = ({ nextPage }) => {
     setRoles([...roles, blankRole])
   };
 
+  console.log(roles);
   return (
     <Box className={classes.boxPadding}>
       <Typography component="h1" variant="h4">
@@ -144,7 +146,7 @@ const RoleSetupForm = ({ nextPage }) => {
                         }
                       />
                       <CardContent>
-                        <FormGroup className={classes.boxMargin}>
+                        <FormGroup>
                           <TextField 
                             fullWidth
                             variant="standard"
@@ -155,25 +157,15 @@ const RoleSetupForm = ({ nextPage }) => {
                               className: classes.itemMargin
                             }}
                           />
-                          <FormControlLabel
-                            control={
-                              <Checkbox 
-                                checked={r.isAdmin}
-                                onChange={changeIsAdmin.bind(this, i)} 
-                                inputProps={{ 'aria-label': 'controlled' }}
-                              />
-                            } 
-                            label="Admin"
-                          />
-                          <FormControl sx={{ m: 1, width: 300 }}>
-                            <InputLabel id="demo-multiple-chip-label">Managed Roles</InputLabel>
+                          <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
+                            <InputLabel id="managed-roles-list-label">Managed Roles</InputLabel>
                             <Select
-                              labelId="demo-multiple-chip-label"
-                              id="demo-multiple-chip"
+                              labelId="managed-roles-list-label"
+                              id="managed-roles-list"
                               multiple
                               value={roles[i].managedRoles}
                               onChange={changeManagedRoles.bind(this, i)}
-                              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                              input={<Input id="managed-roles-list-chip" label="Managed roles" />}
                               renderValue={(managedRoles) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                                   {managedRoles.map((value) => {
@@ -184,17 +176,32 @@ const RoleSetupForm = ({ nextPage }) => {
                               )}
                               MenuProps={MenuProps}
                             >
-                              {roles.map((r) => (
-                                <MenuItem
-                                  key={r.name}
-                                  value={r.name}
-                                  style={getStyles(r.name, personName, theme)}
-                                >
-                                  {r.name}
-                                </MenuItem>
-                              ))}
+                              {
+                                roles.map((r, i) => {
+                                  if (r.name.length) {
+                                    return (
+                                      <MenuItem
+                                        key={`role-${r.name}`}
+                                        value={r.name}
+                                      >
+                                        Role n°{i + 1}: {r.name}
+                                      </MenuItem>
+                                    )
+                                  }
+                                })
+                              }
                             </Select>
                           </FormControl>
+                          <FormControlLabel
+                            control={
+                              <Checkbox 
+                                checked={r.isAdmin}
+                                onChange={changeIsAdmin.bind(this, i)} 
+                                inputProps={{ 'aria-label': 'controlled' }}
+                              />
+                            } 
+                            label="Admin"
+                          />
                         </FormGroup>
                       </CardContent>
                     </Card>
