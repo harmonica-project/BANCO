@@ -20,7 +20,6 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
@@ -34,10 +33,6 @@ const useStyles = makeStyles(() => ({
   },
   recordColCard: {
     padding: '10px'
-  },
-  stateIcon: {
-    textAlign: 'center',
-    paddingTop: '20px'
   }
 }));
 
@@ -60,82 +55,82 @@ const MenuProps = {
   },
 };
 
-const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError }) => {
+const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) => {
   const classes = useStyles();
-  const [stateMachine, setStateMachine] = useState(config.stateMachine || [blankRecordCol]);
+  const [recordsCols, setRecordCols] = useState(config.recordsCols || [blankRecordCol]);
 
-  const stateMachineValid = () => {
-    const foundStateMachine = {};
+  const recordsColsValid = () => {
+    const foundRecordCols = {};
   
-    for (let r of stateMachine) {
-      if (foundStateMachine[r.name] || !r.name.length) return false;
-      foundStateMachine[r.name] = true;
+    for (let r of recordsCols) {
+      if (foundRecordCols[r.name] || !r.name.length) return false;
+      foundRecordCols[r.name] = true;
     }
   
     return true;
   }
   
-  const submitStateMachine = () => {
-    if (stateMachineValid()) nextPage('stateMachine', stateMachine);
+  const submitRecordCols = () => {
+    if (recordsColsValid()) nextPage('recordsCols', recordsCols);
     else displayError('Cannot submit: there is at least one recordCol that do not have a unique, non-null, and valid name.');
   }
 
   const changeRecordColAddr = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
+    const newRecordsCols = deepCopy(recordsCols);
 
-    newStateMachine[recordsColId].name = e.target.value;
+    newRecordsCols[recordsColId].name = e.target.value;
 
-    setStateMachine(newStateMachine);
+    setRecordCols(newRecordsCols);
   };
 
   const changeRoles = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
-    newStateMachine[recordsColId].roles = e.target.value;
-    setStateMachine(newStateMachine);
+    const newRecordsCols = deepCopy(recordsCols);
+    newRecordsCols[recordsColId].roles = e.target.value;
+    setRecordCols(newRecordsCols);
   };
 
   const changeParticipants = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
-    newStateMachine[recordsColId].participants = e.target.value;
-    setStateMachine(newStateMachine);
+    const newRecordsCols = deepCopy(recordsCols);
+    newRecordsCols[recordsColId].participants = e.target.value;
+    setRecordCols(newRecordsCols);
   };
 
-  const deleteState = (stateId) => {
-    let newStateMachine = deepCopy(stateMachine);
+  const deleteRecordsCol = (recordsColId) => {
+    let newRecordsCols = deepCopy(recordsCols);
 
-    newStateMachine = newStateMachine.filter((_, i) => i !== stateId);
+    newRecordsCols = newRecordsCols.filter((_, i) => i !== recordsColId);
 
-    setStateMachine(newStateMachine);
+    setRecordCols(newRecordsCols);
   };
 
-  const newState = () => {
-    setStateMachine([...stateMachine, blankRecordCol])
+  const newRecordsCol = () => {
+    setRecordCols([...recordsCols, blankRecordCol])
   };
 
   return (
     <Box className={classes.boxPadding}>
       <Typography component="h1" variant="h4">
-        State machine setup
+        Record collection setup
       </Typography>
       <Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={newState}>
+        <Button variant="contained" startIcon={<AddIcon />} onClick={newRecordsCol}>
           Add
         </Button>
       </Box>
       
         {
-          stateMachine.length
+          recordsCols.length
           ? (
             <Grid container spacing={2}>
               {
-                stateMachine.map((r, i) => (
-                  <Grid item xs={12} key={i}>
+                recordsCols.map((r, i) => (
+                  <Grid item xs={12} sm={4} key={i}>
                     <Card className={classes.recordColCard}>
                       <CardHeader 
-                        title={`New state n°${i + 1}`} 
+                        title={`New record collection n°${i + 1}`} 
                         action={
                           <IconButton aria-label="delete">
-                            <ClearIcon onClick={deleteState.bind(this, i)} />
+                            <ClearIcon onClick={deleteRecordsCol.bind(this, i)} />
                           </IconButton>
                         }
                       />
@@ -157,7 +152,7 @@ const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError })
                               labelId="roles-list-label"
                               id="roles-list"
                               multiple
-                              value={stateMachine[i].roles}
+                              value={recordsCols[i].roles}
                               onChange={changeRoles.bind(this, i)}
                               input={<Input id="roles-list-chip" label="Roles" />}
                               renderValue={(roles) => (
@@ -189,7 +184,7 @@ const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError })
                               labelId="participants-list-label"
                               id="participants-list"
                               multiple
-                              value={stateMachine[i].participants}
+                              value={recordsCols[i].participants}
                               onChange={changeParticipants.bind(this, i)}
                               input={<Input id="participants-list-chip" label="Roles" />}
                               renderValue={(participants) => (
@@ -218,14 +213,6 @@ const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError })
                         </FormGroup>
                       </CardContent>
                     </Card>
-                    {
-                      stateMachine.length && i < stateMachine.length - 1 
-                      ? (
-                        <Grid className={classes.stateIcon} item xs={12}>
-                          <ArrowDownwardIcon sx={{ fontSize: 40 }} />
-                        </Grid>
-                      ) : <></>
-                    }
                   </Grid>
                 ))
               }
@@ -240,10 +227,10 @@ const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError })
           Previous
         </Button>
         &nbsp;
-        <Button variant="contained" onClick={submitStateMachine}>Submit</Button>
+        <Button variant="contained" onClick={submitRecordCols}>Submit</Button>
       </Box>
     </Box>
   )
 }
 
-export default StateMachineSetupForm;
+export default RecordColSetupForm;

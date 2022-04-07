@@ -86,14 +86,16 @@ const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError
       newRoles[i].managedRoles[mId] = newName;
     }
 
-    if (config.participants) {
-      const newParticipants = deepCopy(config.participants);
-      for (let i in newParticipants) {
-        let rId = newParticipants[i].roles.findIndex(r => r === newRoles[roleId].name);
-        newParticipants[i].roles[rId] = newName;
-      }
+    for (let key of ['participants', 'recordsCols', 'stateMachine']) {
+      if (config[key]) {
+        const newSubconfig = deepCopy(config[key]);
+        for (let i in newSubconfig) {
+          let rId = newSubconfig[i].roles.findIndex(r => r === newRoles[roleId].name);
+          newSubconfig[i].roles[rId] = newName;
+        }
 
-      setConfig({ ...config, participants: newParticipants });
+        setConfig({ ...config, [key]: newSubconfig });
+      }
     }
 
     newRoles[roleId].name = newName;
@@ -120,13 +122,15 @@ const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError
       newRoles[i].managedRoles = newRoles[i].managedRoles.filter(mr => mr !== roles[roleId].name);
     }
 
-    if (config.participants) {
-      let newParticipants = deepCopy(config.participants);
-      for (let i in newParticipants) {
-        newParticipants[i].roles = newParticipants[i].roles.filter(r => r !== roles[roleId].name);
-      }
+    for (let key of ['participants', 'recordsCols']) {
+      if (config[key]) {
+        let newSubconfig = deepCopy(config[key]);
+        for (let i in newSubconfig) {
+          newSubconfig[i].roles = newSubconfig[i].roles.filter(r => r !== roles[roleId].name);
+        }
 
-      setConfig({ ...config, participants: newParticipants });
+        setConfig({ ...config, [key]: newSubconfig });
+      }
     }
 
     newRoles = newRoles.filter((_, i) => i !== roleId);

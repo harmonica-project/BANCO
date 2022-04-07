@@ -83,7 +83,7 @@ function App() {
                 <MenuItem key="setup" onClick={handleMenuClick.bind(this, 'setup')}>
                   <Typography textAlign="center">Setup</Typography>
                 </MenuItem>
-                <MenuItem key="app" onClick={handleMenuClick.bind(this, 'app')}>
+                <MenuItem key="app" disabled onClick={handleMenuClick.bind(this, 'app')}>
                   <Typography textAlign="center">App</Typography>
                 </MenuItem>
               </Menu>
@@ -115,6 +115,7 @@ function App() {
                 key="app"
                 onClick={handleMenuClick.bind(this, 'app')}
                 sx={{ my: 2, color: 'white', display: 'block' }}
+                disabled
               >
                 App
               </Button>

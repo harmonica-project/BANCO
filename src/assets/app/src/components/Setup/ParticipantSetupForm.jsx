@@ -61,7 +61,7 @@ const MenuProps = {
   },
 };
 
-const ParticipantSetupForm = ({ nextPage, previousPage, config, displayError }) => {
+const ParticipantSetupForm = ({ nextPage, previousPage, config, setConfig, displayError }) => {
   const classes = useStyles();
   const [participants, setParticipants] = useState(config.participants || [blankParticipant]);
 
@@ -83,9 +83,21 @@ const ParticipantSetupForm = ({ nextPage, previousPage, config, displayError }) 
 
   const changeParticipantAddr = (participantId, e) => {
     const newParticipants = deepCopy(participants);
+    const newAddress = e.target.value;
 
-    newParticipants[participantId].address = e.target.value;
+    for (let key of ['recordsCols', 'stateMachine']) {
+      if (config[key]) {
+        const newSubconfig = deepCopy(config[key]);
+        for (let i in newSubconfig) {
+          let rId = newSubconfig[i].participants.findIndex(p => p === participants[participantId].address);
+          newSubconfig[i].roles[rId] = newAddress;
+        }
 
+        setConfig({ ...config, [key]: newSubconfig });
+      }
+    }
+    
+    newParticipants[participantId].address = newAddress;
     setParticipants(newParticipants);
   };
 
@@ -104,8 +116,15 @@ const ParticipantSetupForm = ({ nextPage, previousPage, config, displayError }) 
   const deleteParticipant = (participantId) => {
     let newParticipants = deepCopy(participants);
 
-    for (let i in newParticipants) {
-      newParticipants[i].managedParticipants = newParticipants[i].managedParticipants.filter(mr => mr !== participants[participantId].name);
+    for (let key of ['recordsCols']) {
+      if (config[key]) {
+        let newSubconfig = deepCopy(config[key]);
+        for (let i in newSubconfig) {
+          newSubconfig[i].roles = newSubconfig[i].participants.filter(p => p !== participants[participantId].address);
+        }
+
+        setConfig({ ...config, [key]: newSubconfig });
+      }
     }
 
     newParticipants = newParticipants.filter((_, i) => i !== participantId);

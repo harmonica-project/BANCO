@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DisplayConfigResult from './DisplayConfigResult';
 import ParticipantSetupForm from './ParticipantSetupForm';
-import RecordSetupForm from './RecordSetupForm';
+import RecordsColSetupForm from './RecordsColSetupForm';
 import RoleSetupForm from './RoleSetupForm';
 import StateMachineSetupForm from './StateMachineSetupForm';
 import StartConfig from './StartConfig';
@@ -34,7 +34,11 @@ const Setup = () => {
 
   const handleNextPage = (source, content = {}) => {
     setCurrent(current + 1);
-    if (source) setConfig({ ...config, [source]: content });
+    if (source.length) setConfig({ ...config, [source]: content });
+  };
+
+  const handleSimpleNextPage = () => {
+    setCurrent(current + 1);
   };
 
   const handlePreviousPage = () => {
@@ -50,10 +54,10 @@ const Setup = () => {
   }
 
   const pages = [
-    <StartConfig {...props} />,
+    <StartConfig {...props} nextPage={handleSimpleNextPage} />,
     <RoleSetupForm {...props} />,
     <ParticipantSetupForm {...props} />,
-    <RecordSetupForm {...props} />,
+    <RecordsColSetupForm {...props} />,
     <StateMachineSetupForm {...props} />,
     <DisplayConfigResult {...props} />
   ]
