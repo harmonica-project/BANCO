@@ -11,6 +11,12 @@ contract StateMachineController {
     StateMachine stateMachineContract;
     Participants participantsContract;
 
+    /* #EventsEmission */
+    // ---- EVENTS ---- //
+
+    event TransitionFired(address indexed _caller, string indexed _stateMachine, StateMachine.State indexed _newState);
+    /* /EventsEmission */
+
     constructor(
         address _factory, 
         address _stateMachineAddr,
@@ -36,6 +42,10 @@ contract StateMachineController {
         /* /Roles */
 
         require(fired, "Caller cannot fire transition.");
+
+        /* #EventsEmission */
+        emit TransitionFired(msg.sender, _stateMachineName, stateMachineContract.getStateMachineCurrentState(_stateMachineName));
+        /* /EventsEmission */
     }
 
     function fireTransitionI(string memory _stateMachineName) private returns (bool) {
