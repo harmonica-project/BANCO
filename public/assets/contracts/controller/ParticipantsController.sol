@@ -9,6 +9,15 @@ contract ParticipantsController {
     address factory;
     Participants participantsContract;
 
+    /* #EventsEmission */
+    // ---- EVENTS ---- //
+
+    event ParticipantAdded(address indexed _caller, address indexed _newParticipant);
+    event ParticipantRemoved(address indexed _caller, address indexed _deletedParticipant);
+    event RoleAdded(address indexed _caller, address indexed _participant, string indexed _role);
+    event RoleRemoved(address indexed _caller, address indexed _participant, string indexed _role);
+    /* /EventsEmission */
+
     constructor(
         address _factory,
         address _participantsContract
@@ -39,7 +48,13 @@ contract ParticipantsController {
     ) 
         public 
     {
-        if (verifyIsAdmin()) participantsContract.addParticipant(_participant, _pType);
+        if (verifyIsAdmin()) {
+            participantsContract.addParticipant(_participant, _pType);
+
+            /* #EventsEmission */
+            emit ParticipantAdded(msg.sender, _participant);
+            /* /EventsEmission */
+        }
     }
 
     /* /CreateIndividualDynamically */
@@ -58,6 +73,10 @@ contract ParticipantsController {
         /* /DeleteIndividualByRole */
 
         require(deleted, "Caller cannot remove participant.");
+
+        /* #EventsEmission */
+        emit ParticipantRemoved(msg.sender, _participant);
+        /* /EventsEmission */
     }
     /* /DeleteIndividual */
 
@@ -123,8 +142,11 @@ contract ParticipantsController {
         verifyRolePermission(_roleName) 
     {
         participantsContract.addRoleToParticipant(_participant, _roleName);
-    }
 
+        /* #EventsEmission */
+        emit RoleAdded(msg.sender, _participant, _roleName);
+        /* /EventsEmission */
+    }
     /* /AddRoleDynamically */
 
     /* #RemoveRole */
@@ -136,6 +158,10 @@ contract ParticipantsController {
         verifyRolePermission(_roleName) 
     {
         participantsContract.removeRoleToParticipant(_participant, _roleName);
+
+        /* #EventsEmission */
+        emit RoleRemoved(msg.sender, _participant, _roleName);
+        /* /EventsEmission */
     }
     /* /RemoveRole */
 }

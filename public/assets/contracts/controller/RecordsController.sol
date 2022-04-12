@@ -10,6 +10,17 @@ contract RecordsController {
     Records recordsContract;
     Participants participantsContract;
 
+    /* #EventsEmission */
+    // ---- EVENTS ---- //
+
+    /* #HashRecords */
+    event HashRecordAdded(address indexed _caller, string indexed _record);
+    /* /HashRecords */
+    /* #StructuredRecords */
+    event StructuredRecordAdded(address indexed _caller, Records.Record indexed _record);
+    /* /StructuredRecords */
+    /* /EventsEmission */
+
     constructor(
         address _factory,
         address _participantsAddr,
@@ -61,6 +72,10 @@ contract RecordsController {
         canModifyRecordCollection(_collectionName)
     {
         recordsContract.addStructuredRecord(_collectionName, _record);
+
+        /* #EventsEmission */
+        emit StructuredRecordAdded(msg.sender, _record);
+        /* /EventsEmission */
     }
     /* /StructuredRecords */
 
@@ -75,6 +90,10 @@ contract RecordsController {
         canModifyRecordCollection(_collectionName)
     {
         recordsContract.addHashRecord(_collectionName, _record);
+
+        /* #EventsEmission */
+        emit HashRecordAdded(msg.sender, _record);
+        /* /EventsEmission */
     }
     /* /HashRecords */
 }

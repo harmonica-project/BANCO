@@ -4,7 +4,7 @@ pragma solidity >0.8.0;
 contract Records {
     /* #StructuredRecords */
     struct Record {
-        string timestamp;
+        uint256 timestamp;
         address publisher;
         bytes32 content;
     }
@@ -125,6 +125,7 @@ contract Records {
         string memory _collectionName,
         Record memory _record
     ) public onlyController collectionExists(_collectionName) {
+        _record.timestamp = block.timestamp;
         recordCollectionToRecords[_collectionName].push(_record);
     }
 

@@ -16,7 +16,8 @@
 			<graphics key="collapsed" value="false"/>
 			<and abstract="true" mandatory="true" name="SmartContracts">
 				<description>This feature represents on-chain smart contracts, used in the traceability application.</description>
-				<alt abstract="true" mandatory="true" name="TrackingMethod">
+				<graphics key="collapsed" value="false"/>
+				<or abstract="true" mandatory="true" name="TrackingMethod">
 					<description>This feature represents the tracking method employed in the traceability process.</description>
 					<graphics key="collapsed" value="false"/>
 					<feature name="StateMachine">
@@ -35,7 +36,7 @@
 					<feature name="RecordRegistration">
 						<description>This feature allow the usage of record history as the main mechanism for on-chain traceability.</description>
 					</feature>
-				</alt>
+				</or>
 				<and abstract="true" mandatory="true" name="Participants">
 					<description>This feature allows to create and manage participants on the blockchain to serve the traceability process.</description>
 					<graphics key="collapsed" value="false"/>
@@ -52,26 +53,23 @@
 								<description>This feature allows the creation of new individuals at any time after the smart contracts have been instantiated.</description>
 							</feature>
 						</or>
-						<and name="IndividualType">
+						<or name="IndividualType">
 							<description>This feature allows to declare types on individuals. They are notably used to distinguish humans from services, and the different existing services (e.g. oracles).</description>
 							<graphics key="collapsed" value="false"/>
-							<or name="Oracle">
+							<feature name="Oracle">
 								<description>This feature allows to assign the type oracle to an individual. Using an oracle allow to request data from a smart contract to an external service, as this is not natively possible for a smart contract to query off-chain services.</description>
 								<graphics key="collapsed" value="false"/>
-								<feature name="IOTSensor">
-									<description>This feature further refines the type oracle by defining the type IoT sensor, that periodically push new data to blockchain smart contracts.</description>
-								</feature>
-								<feature name="Service">
-									<description>This feature further refines the type oracle by defining the type service, that push new data to blockchain smart contracts when requested.</description>
-								</feature>
-							</or>
-							<feature mandatory="true" name="Human">
+							</feature>
+							<feature name="Human">
 								<description>This feature defines the human type, that represents human individuals in participants.</description>
 							</feature>
-						</and>
+							<feature name="Service">
+								<description>This feature further refines the type oracle by defining the type service, that push new data to blockchain smart contracts when requested.</description>
+							</feature>
+						</or>
 						<or name="DeleteIndividual">
 							<description>This feature allow the deletion of existing individuals from the participants.</description>
-							<graphics key="collapsed" value="true"/>
+							<graphics key="collapsed" value="false"/>
 							<feature name="DeleteIndividualByIndividual">
 								<description>This feature allow the deletion of existing individuals from the participants by individuals that are administrators of the traceability process.</description>
 							</feature>
@@ -91,7 +89,7 @@
 						</feature>
 						<or name="AddRole">
 							<description>This feature allow the assignation of roles in the traceability process to individuals.</description>
-							<graphics key="collapsed" value="true"/>
+							<graphics key="collapsed" value="false"/>
 							<feature name="AddRoleAtSetup">
 								<description>This feature allow the assignation of roles in the traceability process when instantiating smart contracts.</description>
 							</feature>
@@ -108,16 +106,16 @@
 				<and abstract="true" mandatory="true" name="StorageType">
 					<description>This feature concerns the format and emplacement of stored data.</description>
 					<graphics key="collapsed" value="false"/>
-					<alt name="RecordHistory">
+					<and name="RecordHistory">
 						<description>This feature allow the storage of data on the blockchain, in arrays of records. Functions are also defined to access these arrays at any time.</description>
 						<graphics key="collapsed" value="false"/>
-						<feature name="StructuredRecords">
+						<feature mandatory="true" name="StructuredRecords">
 							<description>This feature allow the storage of data on the blockchain, in arrays of stuctured records. Thus, these records can hold various type of data.</description>
 						</feature>
 						<feature name="HashRecords">
 							<description>This feature allow the storage of data on the blockchain, in arrays of hashes records. A hash record is simply a timestamped hash of a record stored off-chain in a database.</description>
 						</feature>
-					</alt>
+					</and>
 					<feature mandatory="true" name="ContractsMetadata">
 						<description>Contracts metadata are stored data about instantiated smart contracts (addresses, owner).</description>
 					</feature>

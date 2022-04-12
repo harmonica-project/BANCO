@@ -14,6 +14,11 @@ import "./data/StateMachine.sol";
 import "./controller/StateMachineController.sol";
 /* /StateMachine */
 
+/* #AssetTracking */
+import "./data/Assets.sol";
+import "./controller/AssetsController.sol";
+/* /AssetTracking */
+
 contract Factory {
     struct Contracts {
         ParticipantsController participantsControllerContract;
@@ -26,6 +31,10 @@ contract Factory {
         StateMachine stateMachineContract;
         StateMachineController stateMachineControllerContract;
         /* /StateMachine */
+        /* #AssetTracking */
+        Assets assetsContract;
+        AssetsController assetsControllerContract;
+        /* /AssetTracking */
     }
 
     // Reduces the number of template-used comments
@@ -44,7 +53,9 @@ contract Factory {
         StateMachine.State[][] statesCollections;
         string[] collectionNames;
         /* /StateMachine */
-
+        /* #AssetTracking */
+        Assets.Asset[] assets;
+        /* /AssetTracking */
     }
 
     address[] owners;
@@ -59,8 +70,12 @@ contract Factory {
         recordsFactory(factoryParameters);
         /* /RecordCollection */
 
-         /* #StateMachine */
+        /* #StateMachine */
         stateMachineFactory(factoryParameters);
+        /* /StateMachine */
+
+        /* #StateMachine */
+        assetsFactory(factoryParameters);
         /* /StateMachine */
     }
 
@@ -118,6 +133,23 @@ contract Factory {
         contracts.stateMachineContract.assignController(address(contracts.stateMachineControllerContract));
     }
     /* /StateMachine */
+
+    /* #AssetTracking */
+    function assetsFactory(FactoryParameters memory factoryParameters) private {
+        contracts.assetsContract = new Assets(
+            address(this),
+            factoryParameters.assets
+        );
+
+        contracts.assetsControllerContract = new AssetsController(
+            address(this),
+            address(contracts.participantsContract),
+            address(contracts.assetsContract)
+        );
+
+        contracts.assetsContract.assignController(address(contracts.assetsControllerContract));
+    }
+    /* /AssetTracking */
 
     function getContractsAddresses() public view returns (Contracts memory) {
         return contracts;
