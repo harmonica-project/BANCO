@@ -47,6 +47,7 @@ function finalizeProduct(configName, folder) {
   fs.copyFileSync(`../assets/feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
   // Prettify the result to erase blank spaces left by the template engine
   exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol' --tab-width 4`);
+  exec(`npx prettier --write './products/product-${folder}/Factory.sol' --tab-width 4`);
   console.log('Done.');
 }
 

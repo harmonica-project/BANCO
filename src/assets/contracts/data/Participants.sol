@@ -32,16 +32,16 @@ contract Participants {
         /* #Human */
         /* #Oracle */
         ,
-        /* /Human */
         /* /Oracle */
+        /* /Human */
         /* #Oracle */
         Oracle
         /* /Oracle */
         /* #Service */
         /* #Oracle */
         ,
-        /* /Service */
         /* /Oracle */
+        /* /Service */
         /* #Service */
         Service
         /* /Service */

@@ -21,6 +21,10 @@ const templates = [
                 name: 'StateMachine',
                 feature: 'StateMachine'
             },
+            {
+                name: 'Assets',
+                feature: 'AssetTracking'
+            },
         ]
     },
     {
@@ -36,6 +40,10 @@ const templates = [
             {
                 name: 'StateMachineController',
                 feature: 'StateMachine'
+            },
+            {
+                name: 'AssetsController',
+                feature: 'AssetTracking'
             },
         ]
     },
