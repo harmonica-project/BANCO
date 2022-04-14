@@ -32,13 +32,13 @@ contract StateMachineController {
         return factory;
     }
 
-    function fireTransition(string memory _stateMachineName) public {
+    function fireTransition(string memory _stateMachineName, bytes32 _attachedData) public {
         bool fired;
 
-        fired = fireTransitionI(_stateMachineName);
+        fired = fireTransitionI(_stateMachineName, _attachedData);
 
         /* #Roles */
-        if (!fired) fired = fireTransitionR(_stateMachineName);
+        if (!fired) fired = fireTransitionR(_stateMachineName, _attachedData);
         /* /Roles */
 
         require(fired, "Caller cannot fire transition.");
@@ -48,18 +48,18 @@ contract StateMachineController {
         /* /EventsEmission */
     }
 
-    function fireTransitionI(string memory _stateMachineName) private returns (bool) {
+    function fireTransitionI(string memory _stateMachineName, bytes32 _attachedData) private returns (bool) {
         if (!participantsContract.doesParticipantExist(msg.sender)) return false;
 
         address[] memory authorizedIndividuals = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedParticipants;
 
         bool found = Helpers.searchAddressInArray(msg.sender, authorizedIndividuals) != -1;
-        if (found) stateMachineContract.fireTransition(_stateMachineName);
+        if (found) stateMachineContract.fireTransition(_stateMachineName, _attachedData);
         return found;
     }
 
     /* #Roles */
-    function fireTransitionR(string memory _stateMachineName) private returns (bool) {
+    function fireTransitionR(string memory _stateMachineName, bytes32 _attachedData) private returns (bool) {
         if (!participantsContract.doesParticipantExist(msg.sender)) return false;
 
         string[] memory authorizedRoles = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedRoles;
@@ -72,7 +72,7 @@ contract StateMachineController {
             }
         }
 
-        if (found) stateMachineContract.fireTransition(_stateMachineName);
+        if (found) stateMachineContract.fireTransition(_stateMachineName, _attachedData);
         return found;
     }
     /* /Roles */

@@ -8,6 +8,7 @@ contract StateMachine {
     // ---- STATES ---- //
     struct State {
         string name;
+        bytes32 attachedData;
         /* #Roles */
         string[] authorizedRoles;
         /* /Roles */
@@ -150,7 +151,7 @@ contract StateMachine {
         return nameToStates[_stateMachineName][_id];
     }
 
-    function fireTransition(string memory _stateMachineName)
+    function fireTransition(string memory _stateMachineName, bytes32 _attachedData)
         public
         onlyController
     {
@@ -160,8 +161,8 @@ contract StateMachine {
             "State machine is in final state."
         );
 
-        nameToCurrentState[_stateMachineName] =
-            nameToCurrentState[_stateMachineName] +
-            1;
+        uint currState = nameToCurrentState[_stateMachineName];
+        nameToStates[_stateMachineName][currState].attachedData = _attachedData;
+        nameToCurrentState[_stateMachineName] = currState + 1;
     }
 }

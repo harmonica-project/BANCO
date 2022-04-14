@@ -152,7 +152,7 @@
 				<graphics key="collapsed" value="false"/>
 				<and mandatory="true" name="DeploymentView">
 					<description>The deployment view is used to instantiate the on-chain traceability process. On this panel, the user can setup initial participants, roles, and traceability data. The user can then deploy the smart contract, passing them these data.</description>
-					<or mandatory="true" name="TraceabilitySetup">
+					<or abstract="true" mandatory="true" name="TraceabilitySetup">
 						<description>This feature allows to detail initial traceability data before smart contracts deployment. These data are used to instantiate these contracts later.</description>
 						<feature name="RecordsCollectionsSetup">
 							<description>This feature allows to detail the records collections names and access policies before smart contracts deployment. These data are used to instantiate these contracts later.</description>
@@ -193,10 +193,10 @@
 	</struct>
 	<constraints>
 		<rule>
-			<imp>
+			<eq>
 				<var>RecordRegistration</var>
 				<var>RecordHistory</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
 			<imp>
@@ -217,34 +217,34 @@
 			</imp>
 		</rule>
 		<rule>
-			<imp>
+			<eq>
 				<var>RecordHistory</var>
 				<var>RecordsCollectionsSetup</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
-			<imp>
-				<var>AssetTracking</var>
+			<eq>
+				<var>AssetsData</var>
 				<var>AssetSetup</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
-			<imp>
-				<var>StateMachine</var>
-				<var>StateMachineSetup</var>
-			</imp>
-		</rule>
-		<rule>
-			<imp>
+			<eq>
 				<var>AssetTracking</var>
 				<var>AssetsData</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
-			<imp>
+			<eq>
 				<var>StateMachine</var>
 				<var>StateData</var>
-			</imp>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>StateData</var>
+				<var>StateMachineSetup</var>
+			</eq>
 		</rule>
 	</constraints>
 </extendedFeatureModel>
