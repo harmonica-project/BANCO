@@ -15,41 +15,43 @@ contract StateMachine {
         address[] authorizedParticipants;
     }
 
-    mapping(string => State[]) nameToStates;
-    mapping(string => uint256) nameToCurrentState;
+    mapping(uint => State[]) stateMachineInstances;
+    mapping(string => State[]) stateMachineModels;
+    mapping(uint => uint256) currentStates;
+    
     Participants participantsContract;
     address factory;
     address controller;
+    uint maxInstanceId = 0;
 
     constructor(
         address _factory,
         address _participantsAddr,
-        State[][] memory _statesCollections,
-        string[] memory _collectionNames
+        State[][] memory _stateMachineModels,
+        string[] memory _stateMachineModelsNames
     ) {
         factory = _factory;
-
+        
         require(
-            _statesCollections.length == _collectionNames.length,
-            "Not exactly one unique collection name for every collection."
+            _stateMachineModelsNames.length == _stateMachineModelsNames.length,
+            "Not exactly one unique model name for every model."
         );
         require(
-            Helpers.doArrayHasDuplicates(_collectionNames),
-            "Not exactly one unique collection name for every collection."
+            Helpers.doArrayHasDuplicates(_stateMachineModelsNames),
+            "Not exactly one unique model name for every model."
         );
 
         participantsContract = Participants(_participantsAddr);
 
-        for (uint256 i = 0; i < _statesCollections.length; i++) {
+        for (uint256 i = 0; i < _stateMachineModels.length; i++) {
             require(
-                checkStateCollectionValidity(_statesCollections[i]),
-                "Invalid state machine."
+                checkStateCollectionValidity(_stateMachineModels[i]),
+                "Invalid state machine model."
             );
             
-            for (uint j = 0; j < _statesCollections[i].length; j++) {
-                nameToStates[_collectionNames[i]].push(_statesCollections[i][j]);
+            for (uint j = 0; j < _stateMachineModels[i].length; j++) {
+                stateMachineModels[_stateMachineModelsNames[i]].push(_stateMachineModels[i][j]);
             }
-            nameToCurrentState[_collectionNames[i]] = 0;
         }
     }
 
@@ -76,6 +78,17 @@ contract StateMachine {
 
     function assignController(address _controller) public onlyFactory {
         controller = _controller;
+    }
+
+    function createStateMachineInstance(string memory _model) public onlyController returns (uint) {
+        require(stateMachineModels[_model].length > 0, "State machine model does not exist.");
+
+        uint newInstanceId = maxInstanceId;
+        maxInstanceId = maxInstanceId + 1;
+
+        stateMachineInstances[newInstanceId] = stateMachineModels[_model];
+
+        return newInstanceId;
     }
 
     function checkStateCollectionValidity(State[] memory _states)
@@ -119,50 +132,50 @@ contract StateMachine {
         return true;
     }
 
-    function getStateMachineCurrentState(string memory _stateMachineName)
+    function getStateMachineCurrentState(uint _instanceId)
         public
         view
         returns (State memory)
     {
         return
-            nameToStates[_stateMachineName][
-                nameToCurrentState[_stateMachineName]
+            stateMachineInstances[_instanceId][
+                currentStates[_instanceId]
             ];
     }
 
-    function getStateMachine(string memory _stateMachineName)
+    function getStateMachine(uint _instanceId)
         public
         view
         returns (State[] memory)
     {
-        return nameToStates[_stateMachineName];
+        return stateMachineInstances[_instanceId];
     }
 
-    function getStateMachineState(string memory _stateMachineName, uint256 _id)
+    function getStateMachineState(uint _instanceId, uint256 _id)
         public
         view
         returns (State memory)
     {
         require(
-            _id < nameToStates[_stateMachineName].length,
+            _id < stateMachineInstances[_instanceId].length,
             "State id out-of-bounds"
         );
 
-        return nameToStates[_stateMachineName][_id];
+        return stateMachineInstances[_instanceId][_id];
     }
 
-    function fireTransition(string memory _stateMachineName, bytes32 _attachedData)
+    function fireTransition(uint _instanceId, bytes32 _attachedData)
         public
         onlyController
     {
         require(
-            nameToCurrentState[_stateMachineName] <
-                nameToStates[_stateMachineName].length - 1,
+            currentStates[_instanceId] <
+                stateMachineInstances[_instanceId].length - 1,
             "State machine is in final state."
         );
 
-        uint currState = nameToCurrentState[_stateMachineName];
-        nameToStates[_stateMachineName][currState].attachedData = _attachedData;
-        nameToCurrentState[_stateMachineName] = currState + 1;
+        uint currState = currentStates[_instanceId];
+        stateMachineInstances[_instanceId][currState].attachedData = _attachedData;
+        currentStates[_instanceId] = currState + 1;
     }
 }

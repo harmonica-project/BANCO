@@ -14,7 +14,7 @@ contract StateMachineController {
     /* #EventsEmission */
     // ---- EVENTS ---- //
 
-    event TransitionFired(address indexed _caller, string indexed _stateMachine, StateMachine.State indexed _newState);
+    event TransitionFired(address indexed _caller, uint indexed _stateMachine, StateMachine.State indexed _newState);
     /* /EventsEmission */
 
     constructor(
@@ -32,37 +32,43 @@ contract StateMachineController {
         return factory;
     }
 
-    function fireTransition(string memory _stateMachineName, bytes32 _attachedData) public {
+    function createStateMachineInstance(string memory _model) public returns (uint) {
+        // TODO: implement an access-control system to let only specific individuals/roles create instances
+
+        return stateMachineContract.createStateMachineInstance(_model);
+    }
+
+    function fireTransition(uint _instanceId, bytes32 _attachedData) public {
         bool fired;
 
-        fired = fireTransitionI(_stateMachineName, _attachedData);
+        fired = fireTransitionI(_instanceId, _attachedData);
 
         /* #Roles */
-        if (!fired) fired = fireTransitionR(_stateMachineName, _attachedData);
+        if (!fired) fired = fireTransitionR(_instanceId, _attachedData);
         /* /Roles */
 
         require(fired, "Caller cannot fire transition.");
 
         /* #EventsEmission */
-        emit TransitionFired(msg.sender, _stateMachineName, stateMachineContract.getStateMachineCurrentState(_stateMachineName));
+        emit TransitionFired(msg.sender, _instanceId, stateMachineContract.getStateMachineCurrentState(_instanceId));
         /* /EventsEmission */
     }
 
-    function fireTransitionI(string memory _stateMachineName, bytes32 _attachedData) private returns (bool) {
+    function fireTransitionI(uint _instanceId, bytes32 _attachedData) private returns (bool) {
         if (!participantsContract.doesParticipantExist(msg.sender)) return false;
 
-        address[] memory authorizedIndividuals = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedParticipants;
+        address[] memory authorizedIndividuals = stateMachineContract.getStateMachineCurrentState(_instanceId).authorizedParticipants;
 
         bool found = Helpers.searchAddressInArray(msg.sender, authorizedIndividuals) != -1;
-        if (found) stateMachineContract.fireTransition(_stateMachineName, _attachedData);
+        if (found) stateMachineContract.fireTransition(_instanceId, _attachedData);
         return found;
     }
 
     /* #Roles */
-    function fireTransitionR(string memory _stateMachineName, bytes32 _attachedData) private returns (bool) {
+    function fireTransitionR(uint _instanceId, bytes32 _attachedData) private returns (bool) {
         if (!participantsContract.doesParticipantExist(msg.sender)) return false;
 
-        string[] memory authorizedRoles = stateMachineContract.getStateMachineCurrentState(_stateMachineName).authorizedRoles;
+        string[] memory authorizedRoles = stateMachineContract.getStateMachineCurrentState(_instanceId).authorizedRoles;
         bool found;
 
         for (uint i = 0; i < authorizedRoles.length; i++) {
@@ -72,7 +78,7 @@ contract StateMachineController {
             }
         }
 
-        if (found) stateMachineContract.fireTransition(_stateMachineName, _attachedData);
+        if (found) stateMachineContract.fireTransition(_instanceId, _attachedData);
         return found;
     }
     /* /Roles */
