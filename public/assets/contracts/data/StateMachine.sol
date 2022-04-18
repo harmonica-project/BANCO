@@ -109,7 +109,7 @@ contract StateMachine {
             for (
                 uint256 j = 0;
                 j < _states[i].authorizedParticipants.length;
-                i++
+                j++
             ) {
                 address participant = _states[i].authorizedParticipants[j];
                 if (!participantsContract.doesParticipantExist(participant))

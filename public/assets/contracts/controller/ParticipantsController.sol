@@ -43,13 +43,20 @@ contract ParticipantsController {
 
     /* #CreateIndividualDynamically */
     function addParticipant(
-        address _participant,
-        Participants.ParticipantType _pType
+        address _participant
+        /* #IndividualType */
+        ,Participants.ParticipantType _pType
+        /* /IndividualType */
     ) 
         public 
     {
         if (verifyIsAdmin()) {
-            participantsContract.addParticipant(_participant, _pType);
+            participantsContract.addParticipant(
+                _participant
+                /* #IndividualType */
+                , _pType
+                /* /IndividualType */
+            );
 
             /* #EventsEmission */
             emit ParticipantAdded(msg.sender, _participant);

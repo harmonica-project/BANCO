@@ -66,9 +66,9 @@ contract Factory {
 
         participantsFactory(factoryParameters);
 
-        /* #RecordCollection */
+        /* #RecordRegistration */
         recordsFactory(factoryParameters);
-        /* /RecordCollection */
+        /* /RecordRegistration */
 
         /* #StateMachine */
         stateMachineFactory(factoryParameters);
@@ -98,7 +98,7 @@ contract Factory {
         contracts.participantsContract.assignController(address(contracts.participantsControllerContract));
     }
 
-    /* #RecordCollection */
+    /* #RecordRegistration */
     function recordsFactory(FactoryParameters memory factoryParameters) private {
         contracts.recordsContract = new Records(
             address(this),
@@ -113,7 +113,7 @@ contract Factory {
 
         contracts.recordsContract.assignController(address(contracts.recordsControllerContract));
     }
-    /* /RecordCollection */
+    /* /RecordRegistration */
 
     /* #StateMachine */
     function stateMachineFactory(FactoryParameters memory factoryParameters) private {
