@@ -140,13 +140,25 @@ contract Participants {
         _;
     }
 
-    function addParticipant(address _participant, ParticipantType _pType)
+    function addParticipant(
+        address _participant
+        /* #IndividualType */
+        ,ParticipantType _pType
+        /* /IndividualType */
+    )
         public
         onlyController
         participantNotExists(_participant)
     {
         participants.push(
-            Participant(_participant, false, new string[](0), _pType)
+            Participant(
+                _participant,
+                false,
+                new string[](0)
+                /* #IndividualType */
+                , _pType
+                /* /IndividualType */
+            )
         );
         addressToParticipantId[_participant] = participants.length - 1;
     }
