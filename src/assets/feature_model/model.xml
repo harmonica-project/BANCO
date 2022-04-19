@@ -45,7 +45,7 @@
 						<graphics key="collapsed" value="false"/>
 						<or mandatory="true" name="CreateIndividual">
 							<description>This feature allows the creation of new individuals to serve the traceability process.</description>
-							<graphics key="collapsed" value="false"/>
+							<graphics key="collapsed" value="true"/>
 							<feature name="CreateIndividualAtSetup">
 								<description>This feature allows the creation of new individuals when instantiating smart contracts.</description>
 							</feature>
@@ -69,7 +69,7 @@
 						</or>
 						<or name="DeleteIndividual">
 							<description>This feature allow the deletion of existing individuals from the participants.</description>
-							<graphics key="collapsed" value="false"/>
+							<graphics key="collapsed" value="true"/>
 							<feature name="DeleteIndividualByIndividual">
 								<description>This feature allow the deletion of existing individuals from the participants by individuals that are administrators of the traceability process.</description>
 							</feature>
@@ -80,7 +80,7 @@
 					</and>
 					<and name="Roles">
 						<description>This feature allow the definition of roles in the traceability process. Multiple roles can be assigned to individuals to further distinguish them (for instance, distinguish suppliers from retailers). They can notably be used for access control when storing traceability data.</description>
-						<graphics key="collapsed" value="false"/>
+						<graphics key="collapsed" value="true"/>
 						<feature mandatory="true" name="CreateRoleAtSetup">
 							<description>This feature allow the creation of roles in the traceability process when instantiating smart contracts.</description>
 						</feature>
@@ -89,7 +89,7 @@
 						</feature>
 						<or name="AddRole">
 							<description>This feature allow the assignation of roles in the traceability process to individuals.</description>
-							<graphics key="collapsed" value="false"/>
+							<graphics key="collapsed" value="true"/>
 							<feature name="AddRoleAtSetup">
 								<description>This feature allow the assignation of roles in the traceability process when instantiating smart contracts.</description>
 							</feature>
@@ -102,13 +102,13 @@
 			</and>
 			<and abstract="true" mandatory="true" name="Storage">
 				<description>This feature concerns the storage of data, either on the blockchain or off-chain (in a database).</description>
-				<graphics key="collapsed" value="false"/>
+				<graphics key="collapsed" value="true"/>
 				<and abstract="true" mandatory="true" name="StorageType">
 					<description>This feature concerns the format and emplacement of stored data.</description>
 					<graphics key="collapsed" value="false"/>
 					<and name="RecordHistory">
 						<description>This feature allow the storage of data on the blockchain, in arrays of records. Functions are also defined to access these arrays at any time.</description>
-						<graphics key="collapsed" value="false"/>
+						<graphics key="collapsed" value="true"/>
 						<feature mandatory="true" name="StructuredRecords">
 							<description>This feature allow the storage of data on the blockchain, in arrays of stuctured records. Thus, these records can hold various type of data.</description>
 						</feature>
@@ -130,7 +130,7 @@
 					<description>This feature concerns the emplacement of stored data.</description>
 					<and abstract="true" mandatory="true" name="OffChain">
 						<description>This feature allow the storage of data off the blockchain.</description>
-						<graphics key="collapsed" value="false"/>
+						<graphics key="collapsed" value="true"/>
 						<feature mandatory="true" name="Database">
 							<description>This feature allow the storage of data in databases.</description>
 						</feature>
@@ -149,7 +149,7 @@
 			</and>
 			<and abstract="true" mandatory="true" name="Frontend">
 				<description>The frontend part of the application is used both for deploying smart contracts and interacting with them.</description>
-				<graphics key="collapsed" value="false"/>
+				<graphics key="collapsed" value="true"/>
 				<and mandatory="true" name="DeploymentView">
 					<description>The deployment view is used to instantiate the on-chain traceability process. On this panel, the user can setup initial participants, roles, and traceability data. The user can then deploy the smart contract, passing them these data.</description>
 					<or abstract="true" mandatory="true" name="TraceabilitySetup">
@@ -205,16 +205,16 @@
 			</imp>
 		</rule>
 		<rule>
-			<imp>
+			<eq>
 				<var>CreateIndividualAtSetup</var>
 				<var>IndividualsSetup</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
-			<imp>
+			<eq>
 				<var>CreateRoleAtSetup</var>
 				<var>RolesSetup</var>
-			</imp>
+			</eq>
 		</rule>
 		<rule>
 			<eq>
