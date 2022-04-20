@@ -6,6 +6,7 @@ import RoleSetupForm from './RoleSetupForm';
 import StateMachineSetupForm from './StateMachineSetupForm';
 import StartConfig from './StartConfig';
 import { Snackbar, Alert } from '@mui/material';
+import AssetsSetupForm from './AssetsSetupForm';
 
 const defaultSnackbar = {
   open: false,
@@ -57,6 +58,7 @@ const Setup = () => {
     <StartConfig {...props} nextPage={handleSimpleNextPage} />,
     <RoleSetupForm {...props} />,
     <ParticipantSetupForm {...props} />,
+    <AssetsSetupForm {...props} />,
     <RecordsColSetupForm {...props} />,
     <StateMachineSetupForm {...props} />,
     <DisplayConfigResult {...props} />

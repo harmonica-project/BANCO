@@ -72,7 +72,7 @@ const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) =>
   
   const submitRecordCols = () => {
     if (recordsColsValid()) nextPage('recordsCols', recordsCols);
-    else displayError('Cannot submit: there is at least one recordCol that do not have a unique, non-null, and valid name.');
+    else displayError('Cannot submit: there is at least one record collection that do not have a unique, non-null, and valid name.');
   }
 
   const changeRecordColAddr = (recordsColId, e) => {

@@ -48,6 +48,31 @@ const parameters = [
     }
     */
 
+/* #RecordRegistration */
+function extractRecords() {
+  const parsedRecords = [];
+
+  for (let record of config.recordsCols) {
+    parsedRecords.push([true, record.name, record.participants, record.roles]);
+  }
+
+  return parsedRecords;
+}
+/* /RecordRegistration */
+
+/* #AssetTracking */
+function extractAssets() {
+  const parsedAssets = [];
+
+  for (let asset of config.assets) {
+    parsedAssets.push([asset.owner, asset.name, asset.data, true, []]);
+  }
+
+  return parsedAssets;
+}
+/* /AssetTracking */
+
+/* #Roles */
 function extractRoles() {
   const parsedRoles = [];
 
@@ -57,7 +82,9 @@ function extractRoles() {
 
   return parsedRoles;
 }
+/* /Roles */
 
+/* #CreateIndividualAtSetup */
 function extractParticipants() {
   const parsedParticipants = [];
 
@@ -67,15 +94,16 @@ function extractParticipants() {
 
   return parsedParticipants;
 }
+/* /CreateIndividualAtSetup */
 
-function getParameters() {
+function getParameters(account) {
   const parameters = [];
 
   // owners
-  parameters.push([]);
+  parameters.push(account ? [account] : []);
 
   /* #RecordRegistration */
-  parameters.push();
+  parameters.push(extractRecords());
   /* /RecordRegistration */
 
   /* #CreateIndividualAtSetup */
@@ -92,15 +120,15 @@ function getParameters() {
   /* /StateMachine */
 
   /* #AssetTracking */
-  parameters.push();
+  parameters.push(extractAssets());
   /* /AssetTracking */
 
   console.log('Configuration', parameters);
   return parameters;
 }
 
-module.exports = async function(deployer) {
+module.exports = async function(deployer, network, accounts) {
   await deployer.deploy(HelpersContract);
   await deployer.link(HelpersContract, FactoryContract);
-  await deployer.deploy(FactoryContract, getParameters(), { gas: 30000000 });
+  await deployer.deploy(FactoryContract, getParameters(accounts[0]), { gas: 30000000 });
 };
