@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import DisplayConfigResult from './DisplayConfigResult';
-import ParticipantSetupForm from './ParticipantSetupForm';
-import RecordsColSetupForm from './RecordsColSetupForm';
-import RoleSetupForm from './RoleSetupForm';
-import StateMachineSetupForm from './StateMachineSetupForm';
-import StartConfig from './StartConfig';
 import { Snackbar, Alert } from '@mui/material';
+
+import DisplayConfigResult from './DisplayConfigResult';
+import StartConfig from './StartConfig';
+
+/* #CreateIndividualAtSetup */
+import ParticipantSetupForm from './ParticipantSetupForm';
+/* /CreateIndividualAtSetup */
+/* #RecordRegistration */
+import RecordsColSetupForm from './RecordsColSetupForm';
+/* /RecordRegistration */
+/* #Roles */
+import RoleSetupForm from './RoleSetupForm';
+/* /Roles */
+/* #StateMachine */
+import StateMachineSetupForm from './StateMachineSetupForm';
+/* /StateMachine */
+/* #AssetTracking */
 import AssetsSetupForm from './AssetsSetupForm';
+/* /AssetTracking */
 
 const defaultSnackbar = {
   open: false,
@@ -56,11 +68,21 @@ const Setup = () => {
 
   const pages = [
     <StartConfig {...props} nextPage={handleSimpleNextPage} />,
+    /* #Roles */
     <RoleSetupForm {...props} />,
+    /* /Roles */
+    /* #CreateIndividualAtSetup */
     <ParticipantSetupForm {...props} />,
+    /* /CreateIndividualAtSetup */
+    /* #AssetTracking */
     <AssetsSetupForm {...props} />,
+    /* /AssetTracking */
+    /* #RecordRegistration */
     <RecordsColSetupForm {...props} />,
+    /* /RecordRegistration */
+    /* #StateMachine */
     <StateMachineSetupForm {...props} />,
+    /* /StateMachine */
     <DisplayConfigResult {...props} />
   ]
 
