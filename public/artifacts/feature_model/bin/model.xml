@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<extendedFeatureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendposition" value="1376,302"/>
+		<graphics key="legendautolayout" value="false"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" hidden="true" mandatory="true" name="OnChainTraceabilityApp">
+			<description>The root node of the feature model.</description>
+			<graphics key="collapsed" value="false"/>
+			<and abstract="true" mandatory="true" name="SmartContracts">
+				<description>This feature represents on-chain smart contracts, used in the traceability application.</description>
+				<graphics key="collapsed" value="false"/>
+				<or abstract="true" mandatory="true" name="TrackingMethod">
+					<description>This feature represents the tracking method employed in the traceability process.</description>
+					<graphics key="collapsed" value="false"/>
+					<feature name="StateMachine">
+						<description>This feature allow the usage of state machine as the main mechanism for on-chain traceability.</description>
+					</feature>
+					<alt name="AssetTracking">
+						<description>This feature allow to track assets as the main mechanism for on-chain traceability.</description>
+						<graphics key="collapsed" value="false"/>
+						<feature name="TokenizedAssets">
+							<description>This feature allow to track tokenized assets as the main mechanism for on-chain traceability. Tokenized assets are stored as ERC721 tokens that can be exchanged between individuals.</description>
+						</feature>
+						<feature name="DataStructAssets">
+							<description>This feature allow to track assets as data structures as the main mechanism for on-chain traceability. Compared to tokenized assets, they cannot be exchanged between individuals.</description>
+						</feature>
+					</alt>
+					<feature name="RecordRegistration">
+						<description>This feature allow the usage of record history as the main mechanism for on-chain traceability.</description>
+					</feature>
+				</or>
+				<and abstract="true" mandatory="true" name="Participants">
+					<description>This feature allows to create and manage participants on the blockchain to serve the traceability process.</description>
+					<graphics key="collapsed" value="false"/>
+					<and mandatory="true" name="Individuals">
+						<description>This feature allows to create and manage individuals in the traceability process, notably represented by an address in a smart contract.</description>
+						<graphics key="collapsed" value="false"/>
+						<or mandatory="true" name="CreateIndividual">
+							<description>This feature allows the creation of new individuals to serve the traceability process.</description>
+							<graphics key="collapsed" value="true"/>
+							<feature name="CreateIndividualAtSetup">
+								<description>This feature allows the creation of new individuals when instantiating smart contracts.</description>
+							</feature>
+							<feature name="CreateIndividualDynamically">
+								<description>This feature allows the creation of new individuals at any time after the smart contracts have been instantiated.</description>
+							</feature>
+						</or>
+						<or name="IndividualType">
+							<description>This feature allows to declare types on individuals. They are notably used to distinguish humans from services, and the different existing services (e.g. oracles).</description>
+							<graphics key="collapsed" value="false"/>
+							<feature name="Oracle">
+								<description>This feature allows to assign the type oracle to an individual. Using an oracle allow to request data from a smart contract to an external service, as this is not natively possible for a smart contract to query off-chain services.</description>
+								<graphics key="collapsed" value="false"/>
+							</feature>
+							<feature name="Human">
+								<description>This feature defines the human type, that represents human individuals in participants.</description>
+							</feature>
+							<feature name="Service">
+								<description>This feature further refines the type oracle by defining the type service, that push new data to blockchain smart contracts when requested.</description>
+							</feature>
+						</or>
+						<or name="DeleteIndividual">
+							<description>This feature allow the deletion of existing individuals from the participants.</description>
+							<graphics key="collapsed" value="true"/>
+							<feature name="DeleteIndividualByIndividual">
+								<description>This feature allow the deletion of existing individuals from the participants by individuals that are administrators of the traceability process.</description>
+							</feature>
+							<feature name="DeleteIndividualByRole">
+								<description>This feature allow the deletion of existing individuals from the participants by individuals that have a specific role which grants this right.</description>
+							</feature>
+						</or>
+					</and>
+					<and name="Roles">
+						<description>This feature allow the definition of roles in the traceability process. Multiple roles can be assigned to individuals to further distinguish them (for instance, distinguish suppliers from retailers). They can notably be used for access control when storing traceability data.</description>
+						<graphics key="collapsed" value="true"/>
+						<feature mandatory="true" name="CreateRoleAtSetup">
+							<description>This feature allow the creation of roles in the traceability process when instantiating smart contracts.</description>
+						</feature>
+						<feature name="RemoveRole">
+							<description>This feature allows to remove roles to individuals.</description>
+						</feature>
+						<or name="AddRole">
+							<description>This feature allow the assignation of roles in the traceability process to individuals.</description>
+							<graphics key="collapsed" value="true"/>
+							<feature name="AddRoleAtSetup">
+								<description>This feature allow the assignation of roles in the traceability process when instantiating smart contracts.</description>
+							</feature>
+							<feature name="AddRoleDynamically">
+								<description>This feature allow the assignation of roles in the traceability process at any time after the smart contracts have been instantiated.</description>
+							</feature>
+						</or>
+					</and>
+				</and>
+			</and>
+			<and abstract="true" mandatory="true" name="Storage">
+				<description>This feature concerns the storage of data, either on the blockchain or off-chain (in a database).</description>
+				<graphics key="collapsed" value="true"/>
+				<and abstract="true" mandatory="true" name="StorageType">
+					<description>This feature concerns the format and emplacement of stored data.</description>
+					<graphics key="collapsed" value="false"/>
+					<and name="RecordHistory">
+						<description>This feature allow the storage of data on the blockchain, in arrays of records. Functions are also defined to access these arrays at any time.</description>
+						<graphics key="collapsed" value="true"/>
+						<feature mandatory="true" name="StructuredRecords">
+							<description>This feature allow the storage of data on the blockchain, in arrays of stuctured records. Thus, these records can hold various type of data.</description>
+						</feature>
+						<feature name="HashRecords">
+							<description>This feature allow the storage of data on the blockchain, in arrays of hashes records. A hash record is simply a timestamped hash of a record stored off-chain in a database.</description>
+						</feature>
+					</and>
+					<feature mandatory="true" name="ContractsMetadata">
+						<description>Contracts metadata are stored data about instantiated smart contracts (addresses, owner).</description>
+					</feature>
+					<feature name="AssetsData">
+						<description>Assets data are stored data about traced assets.</description>
+					</feature>
+					<feature name="StateData">
+						<description>State data are stored data used in the traceability state machine.</description>
+					</feature>
+				</and>
+				<and abstract="true" mandatory="true" name="StorageEmplacement">
+					<description>This feature concerns the emplacement of stored data.</description>
+					<and abstract="true" mandatory="true" name="OffChain">
+						<description>This feature allow the storage of data off the blockchain.</description>
+						<graphics key="collapsed" value="true"/>
+						<feature mandatory="true" name="Database">
+							<description>This feature allow the storage of data in databases.</description>
+						</feature>
+					</and>
+					<and abstract="true" mandatory="true" name="OnChain">
+						<description>This feature allow the storage of data on the blockchain, in smart contracts.</description>
+						<graphics key="collapsed" value="false"/>
+						<feature name="EventsEmission">
+							<description>This feature allow the storage of data on the blockchain throughout the emission of events in smart contracts. Emitted events can then be retraced to form a traceability flow of actions or stored data.</description>
+						</feature>
+						<feature mandatory="true" name="DataContracts">
+							<description>On-chain data is stored inside data contracts. A data contract only contains some structured data and CRUD functions (Create-Read-Update-Delete). Access-control is managed elsewhere, in dedicated controllers.</description>
+						</feature>
+					</and>
+				</and>
+			</and>
+			<and abstract="true" mandatory="true" name="Frontend">
+				<description>The frontend part of the application is used both for deploying smart contracts and interacting with them.</description>
+				<graphics key="collapsed" value="true"/>
+				<and mandatory="true" name="DeploymentView">
+					<description>The deployment view is used to instantiate the on-chain traceability process. On this panel, the user can setup initial participants, roles, and traceability data. The user can then deploy the smart contract, passing them these data.</description>
+					<or abstract="true" mandatory="true" name="TraceabilitySetup">
+						<description>This feature allows to detail initial traceability data before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						<feature name="RecordsCollectionsSetup">
+							<description>This feature allows to detail the records collections names and access policies before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						</feature>
+						<feature name="AssetSetup">
+							<description>This feature allows to detail the traced assets names and access policies before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						</feature>
+						<feature name="StateMachineSetup">
+							<description>This feature allows to detail the traceability state machine possible states and transitions before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						</feature>
+					</or>
+					<alt abstract="true" mandatory="true" name="BlockchainNetwork">
+						<description>This feature represents the blockchain network used to deploy the application.</description>
+						<graphics key="collapsed" value="false"/>
+						<feature name="EthereumMainnet">
+							<description>This feature design the Ethereum mainnet as the blockchain network used for smart contracts deployment. On the mainnet, any transaction costs Ether (by extension, real money). More suitable for production application.</description>
+						</feature>
+						<feature name="EthereumTestnet">
+							<description>This feature design the Ethereum testnet as the blockchain network used for smart contracts deployment. On the testnet, transactions are free. More suitable for testing purposes.</description>
+						</feature>
+					</alt>
+					<and name="ParticipantsSetup">
+						<description>This feature allows to detail initial participants before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						<graphics key="collapsed" value="false"/>
+						<feature name="IndividualsSetup">
+							<description>This feature allows to detail initial individuals before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						</feature>
+						<feature name="RolesSetup">
+							<description>This feature allows to detail initial roles before smart contracts deployment. These data are used to instantiate these contracts later.</description>
+						</feature>
+					</and>
+				</and>
+				<feature mandatory="true" name="ManagementView">
+					<description>The management view can be used by individuals to interact with the smart contracts of the traceability application.</description>
+				</feature>
+			</and>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<eq>
+				<var>RecordRegistration</var>
+				<var>RecordHistory</var>
+			</eq>
+		</rule>
+		<rule>
+			<imp>
+				<var>DeleteIndividualByRole</var>
+				<var>Roles</var>
+			</imp>
+		</rule>
+		<rule>
+			<eq>
+				<var>CreateIndividualAtSetup</var>
+				<var>IndividualsSetup</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>CreateRoleAtSetup</var>
+				<var>RolesSetup</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>RecordHistory</var>
+				<var>RecordsCollectionsSetup</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>AssetsData</var>
+				<var>AssetSetup</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>AssetTracking</var>
+				<var>AssetsData</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>StateMachine</var>
+				<var>StateData</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>StateData</var>
+				<var>StateMachineSetup</var>
+			</eq>
+		</rule>
+	</constraints>
+</extendedFeatureModel>
