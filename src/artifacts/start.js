@@ -4,7 +4,7 @@ const { spawn } = require('child_process');
 const ganache = require("ganache");
 
 function main() {
-  if (!fs.existsSync('./migrations/config.json')) {
+  if (!fs.existsSync('./migrations/contracts_params.js')) {
     console.error('Error: configuration file not found. Generate it by launching the React application in this folder.');
     exit();
   }

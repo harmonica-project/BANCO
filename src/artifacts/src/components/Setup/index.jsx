@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Snackbar, Alert } from '@mui/material';
-
+// Used to remove components related to disabled features
+import activated from '../../config-app';
 import DisplayConfigResult from './DisplayConfigResult';
 import StartConfig from './StartConfig';
 
@@ -63,7 +64,8 @@ const Setup = () => {
     'previousPage': handlePreviousPage,
     config,
     setConfig,
-    displayError
+    displayError,
+    activated
   }
 
   const pages = [

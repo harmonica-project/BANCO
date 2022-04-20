@@ -24,7 +24,7 @@ const DisplayConfigResult = ({ previousPage, config }) => {
   const exportConfig = () => {
     var bb = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
-    a.download = 'config.json';
+    a.download = 'contracts_params.json';
     a.href = window.URL.createObjectURL(bb);
     a.click();
   };

@@ -55,7 +55,7 @@ const MenuProps = {
   },
 };
 
-const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) => {
+const RecordColSetupForm = ({ nextPage, previousPage, config, displayError, activated }) => {
   const classes = useStyles();
   const [recordsCols, setRecordCols] = useState(config.recordsCols || [blankRecordCol]);
 
@@ -146,41 +146,45 @@ const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) =>
                               className: classes.itemMargin
                             }}
                           />
-                          <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
-                            <InputLabel id="roles-list-label">Authorized roles</InputLabel>
-                            <Select
-                              labelId="roles-list-label"
-                              id="roles-list"
-                              multiple
-                              value={recordsCols[i].roles}
-                              onChange={changeRoles.bind(this, i)}
-                              input={<Input id="roles-list-chip" label="Roles" />}
-                              renderValue={(roles) => (
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                  {roles.map((value) => <Chip key={value} label={value} />)}
-                                </Box>
-                              )}
-                              MenuProps={MenuProps}
-                            >
-                              <MenuItem value="" disabled>
-                                <em>None</em>
-                              </MenuItem>
-                              {
-                                config.roles.flatMap((r, i) => {
-                                  if (r.name.length) {
-                                    return (
-                                      <MenuItem
-                                        key={`roleCol-${r.name}`}
-                                        value={r.name}
-                                      >
-                                        {r.name}
-                                      </MenuItem>
-                                    )
-                                  } else return [];
-                                })
-                              }
-                            </Select>
-                          </FormControl>
+                          {
+                            activated.roles && (
+                              <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
+                                <InputLabel id="roles-list-label">Authorized roles</InputLabel>
+                                <Select
+                                  labelId="roles-list-label"
+                                  id="roles-list"
+                                  multiple
+                                  value={recordsCols[i].roles}
+                                  onChange={changeRoles.bind(this, i)}
+                                  input={<Input id="roles-list-chip" label="Roles" />}
+                                  renderValue={(roles) => (
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                      {roles.map((value) => <Chip key={value} label={value} />)}
+                                    </Box>
+                                  )}
+                                  MenuProps={MenuProps}
+                                >
+                                  <MenuItem value="" disabled>
+                                    <em>None</em>
+                                  </MenuItem>
+                                  {
+                                    config.roles.flatMap((r, i) => {
+                                      if (r.name.length) {
+                                        return (
+                                          <MenuItem
+                                            key={`roleCol-${r.name}`}
+                                            value={r.name}
+                                          >
+                                            {r.name}
+                                          </MenuItem>
+                                        )
+                                      } else return [];
+                                    })
+                                  }
+                                </Select>
+                              </FormControl>
+                            )
+                          }
                           <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
                             <InputLabel id="participants-list-label">Authorized participants</InputLabel>
                             <Select

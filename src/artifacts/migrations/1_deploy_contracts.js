@@ -1,6 +1,6 @@
 const FactoryContract = artifacts.require("Factory");
 const HelpersContract = artifacts.require("Helpers");
-const config = require('./config.json');
+const config = require('./contracts_params.json');
 
 /* #RecordRegistration */
 function extractRecords() {
@@ -91,7 +91,6 @@ function getParameters(account) {
   parameters.push(extractAssets());
   /* /AssetTracking */
 
-  console.log('Configuration', JSON.stringify(parameters));
   return parameters;
 }
 

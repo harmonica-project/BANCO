@@ -43,16 +43,16 @@
 					<and mandatory="true" name="Individuals">
 						<description>This feature allows to create and manage individuals in the traceability process, notably represented by an address in a smart contract.</description>
 						<graphics key="collapsed" value="false"/>
-						<or mandatory="true" name="CreateIndividual">
+						<and mandatory="true" name="CreateIndividual">
 							<description>This feature allows the creation of new individuals to serve the traceability process.</description>
-							<graphics key="collapsed" value="true"/>
-							<feature name="CreateIndividualAtSetup">
+							<graphics key="collapsed" value="false"/>
+							<feature mandatory="true" name="CreateIndividualAtSetup">
 								<description>This feature allows the creation of new individuals when instantiating smart contracts.</description>
 							</feature>
 							<feature name="CreateIndividualDynamically">
 								<description>This feature allows the creation of new individuals at any time after the smart contracts have been instantiated.</description>
 							</feature>
-						</or>
+						</and>
 						<or name="IndividualType">
 							<description>This feature allows to declare types on individuals. They are notably used to distinguish humans from services, and the different existing services (e.g. oracles).</description>
 							<graphics key="collapsed" value="false"/>
