@@ -20,7 +20,6 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
@@ -32,7 +31,7 @@ const useStyles = makeStyles(() => ({
   itemMargin: {
     marginBottom: '10px'
   },
-  recordColCard: {
+  cardPadding: {
     padding: '10px'
   },
   stateIcon: {
@@ -43,10 +42,15 @@ const useStyles = makeStyles(() => ({
 
 const deepCopy = (item) => JSON.parse(JSON.stringify(item));
 
-const blankRecordCol = {
-  name: '',
-  roles: [],
-  participants: []
+const blankStateMachine = {
+  name: "",
+  states: []
+}
+
+const blankState = {
+  name: "",
+  participants: [],
+  roles: []
 }
 
 const ITEM_HEIGHT = 48;
@@ -62,55 +66,78 @@ const MenuProps = {
 
 const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError }) => {
   const classes = useStyles();
-  const [stateMachine, setStateMachine] = useState(config.stateMachine || [blankRecordCol]);
+  const [stateMachines, setStateMachines] = useState(config.stateMachines || [{ ...blankStateMachine, states: [blankState]}]);
 
-  const stateMachineValid = () => {
+  const stateMachinesValid = () => {
     const foundStateMachine = {};
   
-    for (let r of stateMachine) {
-      if (foundStateMachine[r.name] || !r.name.length) return false;
-      foundStateMachine[r.name] = true;
+    for (let s of stateMachines) {
+      if (foundStateMachine[s.name] || !s.name.length) return false;
+      foundStateMachine[s.name] = true;
     }
   
     return true;
   }
   
   const submitStateMachine = () => {
-    if (stateMachineValid()) nextPage('stateMachine', stateMachine);
+    if (stateMachinesValid()) nextPage('stateMachines', stateMachines);
     else displayError('Cannot submit: there is at least one recordCol that do not have a unique, non-null, and valid name.');
   }
 
-  const changeRecordColAddr = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
+  const changeStateMachineName = (smId, e) => {
+    const newStateMachine = deepCopy(stateMachines);
 
-    newStateMachine[recordsColId].name = e.target.value;
+    newStateMachine[smId].name = e.target.value;
 
-    setStateMachine(newStateMachine);
+    setStateMachines(newStateMachine);
   };
 
-  const changeRoles = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
-    newStateMachine[recordsColId].roles = e.target.value;
-    setStateMachine(newStateMachine);
+  const changeStateName = (smId, sId, e) => {
+    const newStateMachine = deepCopy(stateMachines);
+
+    newStateMachine[smId].states[sId].name = e.target.value;
+
+    setStateMachines(newStateMachine);
+  };
+  
+  const changeRoles = (smId, sId, e) => {
+    console.log(smId, sId, e)
+    const newStateMachine = deepCopy(stateMachines);
+    newStateMachine[smId].states[sId].roles = e.target.value;
+    setStateMachines(newStateMachine);
   };
 
-  const changeParticipants = (recordsColId, e) => {
-    const newStateMachine = deepCopy(stateMachine);
-    newStateMachine[recordsColId].participants = e.target.value;
-    setStateMachine(newStateMachine);
+  const changeParticipants = (smId, sId, e) => {
+    const newStateMachine = deepCopy(stateMachines);
+    newStateMachine[smId].states[sId].participants = e.target.value;
+    setStateMachines(newStateMachine);
   };
 
-  const deleteState = (stateId) => {
-    let newStateMachine = deepCopy(stateMachine);
+  const deleteStateMachine = (stateId) => {
+    let newStateMachine = deepCopy(stateMachines);
 
     newStateMachine = newStateMachine.filter((_, i) => i !== stateId);
 
-    setStateMachine(newStateMachine);
+    setStateMachines(newStateMachine);
   };
 
-  const newState = () => {
-    setStateMachine([...stateMachine, blankRecordCol])
+  const deleteState = (smId, sId) => {
+    let newStateMachine = deepCopy(stateMachines);
+    
+    newStateMachine[smId].states = newStateMachine[smId].states.filter((_, i) => i !== sId);
+
+    setStateMachines(newStateMachine);
   };
+
+  const newStateMachine = () => {
+    setStateMachines([...stateMachines, blankStateMachine])
+  };
+
+  const newState = (i, e) => {
+    const newStateMachines = deepCopy(stateMachines);
+    newStateMachines[i].states = [...newStateMachines[i].states, blankState];
+    setStateMachines(newStateMachines);
+  }
 
   return (
     <Box className={classes.boxPadding}>
@@ -118,114 +145,148 @@ const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError })
         State machine setup
       </Typography>
       <Box>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={newState}>
-          Add
+        <Button variant="contained" startIcon={<AddIcon />} onClick={newStateMachine}>
+          Add state machine
         </Button>
       </Box>
       
         {
-          stateMachine.length
+          stateMachines.length
           ? (
             <Grid container spacing={2}>
               {
-                stateMachine.map((r, i) => (
+                stateMachines.map((sm, i) => (
                   <Grid item xs={12} key={i}>
-                    <Card className={classes.recordColCard}>
+                    <Card className={classes.cardPadding}>
                       <CardHeader 
-                        title={`New state n°${i + 1}`} 
+                        title={`New state machine model n°${i + 1}`} 
                         action={
                           <IconButton aria-label="delete">
-                            <ClearIcon onClick={deleteState.bind(this, i)} />
+                            <ClearIcon onClick={deleteStateMachine.bind(this, i)} />
                           </IconButton>
                         }
-                      />
+                      >
+                      </CardHeader>
                       <CardContent>
-                        <FormGroup>
-                          <TextField 
-                            fullWidth
-                            variant="standard"
-                            label="Name"
-                            value={r.name} 
-                            onChange={changeRecordColAddr.bind(this, i)} 
-                            InputProps={{
-                              className: classes.itemMargin
-                            }}
-                          />
-                          <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
-                            <InputLabel id="roles-list-label">Authorized roles</InputLabel>
-                            <Select
-                              labelId="roles-list-label"
-                              id="roles-list"
-                              multiple
-                              value={stateMachine[i].roles}
-                              onChange={changeRoles.bind(this, i)}
-                              input={<Input id="roles-list-chip" label="Roles" />}
-                              renderValue={(roles) => (
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                  {roles.map((value) => <Chip key={value} label={value} />)}
-                                </Box>
-                              )}
-                              MenuProps={MenuProps}
-                            >
-                              {
-                                config.roles.flatMap((r, i) => {
-                                  if (r.name.length) {
-                                    return (
-                                      <MenuItem
-                                        key={`roleCol-${r.name}`}
-                                        value={r.name}
-                                      >
-                                        {r.name}
-                                      </MenuItem>
-                                    )
-                                  } else return [];
-                                })
-                              }
-                            </Select>
-                          </FormControl>
-                          <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
-                            <InputLabel id="participants-list-label">Authorized participants</InputLabel>
-                            <Select
-                              labelId="participants-list-label"
-                              id="participants-list"
-                              multiple
-                              value={stateMachine[i].participants}
-                              onChange={changeParticipants.bind(this, i)}
-                              input={<Input id="participants-list-chip" label="Roles" />}
-                              renderValue={(participants) => (
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                  {participants.map((value) => <Chip key={value} label={value} />)}
-                                </Box>
-                              )}
-                              MenuProps={MenuProps}
-                            >
-                              {
-                                config.participants.flatMap((r, i) => {
-                                  if (r.address.length) {
-                                    return (
-                                      <MenuItem
-                                        key={`participantCol-${r.address}`}
-                                        value={r.address}
-                                      >
-                                        {`${r.address.substr(0, 20)}...`}
-                                      </MenuItem>
-                                    )
-                                  } else return [];
-                                })
-                              }
-                            </Select>
-                          </FormControl>
-                        </FormGroup>
+                        <TextField 
+                          fullWidth
+                          variant="standard"
+                          label="State machine name"
+                          value={sm.name} 
+                          onChange={changeStateMachineName.bind(this, i)} 
+                          InputProps={{
+                            className: classes.itemMargin
+                          }}
+                        />
+                        <Button variant="contained" startIcon={<AddIcon />} onClick={newState.bind(this, i)}>
+                          Add state
+                        </Button>
+                      </CardContent>
+                      <CardContent>
+                        <Grid container spacing={2}>
+                          {
+                            stateMachines[i].states.map((s, j) => (
+                              <Grid item xs={12} sm={6} md={4} key={j}>
+                                <Card className={classes.cardPadding}>
+                                  <CardHeader 
+                                    title={`State n°${j + 1}`} 
+                                    action={
+                                      <IconButton aria-label="delete">
+                                        <ClearIcon onClick={deleteState.bind(this, i, j)} />
+                                      </IconButton>
+                                    }
+                                  />
+                                  <CardContent>
+                                    <FormGroup>
+                                      <TextField 
+                                        fullWidth
+                                        variant="standard"
+                                        label="Name"
+                                        value={s.name} 
+                                        onChange={changeStateName.bind(this, i, j)} 
+                                        InputProps={{
+                                          className: classes.itemMargin
+                                        }}
+                                      />
+                                      <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
+                                        <InputLabel id="roles-list-label">Authorized roles</InputLabel>
+                                        <Select
+                                          labelId="roles-list-label"
+                                          id="roles-list"
+                                          multiple
+                                          value={s.roles}
+                                          onChange={changeRoles.bind(this, i, j)}
+                                          input={<Input id="roles-list-chip" label="Roles" />}
+                                          renderValue={(roles) => (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                              {roles.map((value) => <Chip key={value} label={value} />)}
+                                            </Box>
+                                          )}
+                                          MenuProps={MenuProps}
+                                        >
+                                          <MenuItem value="" disabled>
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {
+                                            config.roles.flatMap((r) => {
+                                              if (r.name.length) {
+                                                return (
+                                                  <MenuItem
+                                                    key={`roleCol-${r.name}`}
+                                                    value={r.name}
+                                                  >
+                                                    {r.name}
+                                                  </MenuItem>
+                                                )
+                                              } else return [];
+                                            })
+                                          }
+                                        </Select>
+                                      </FormControl>
+                                      <FormControl sx={{ marginBottom: '15px'}} variant="standard" fullWidth>
+                                        <InputLabel id="participants-list-label">Authorized participants</InputLabel>
+                                        <Select
+                                          labelId="participants-list-label"
+                                          id="participants-list"
+                                          multiple
+                                          value={s.participants}
+                                          onChange={changeParticipants.bind(this, i, j)}
+                                          input={<Input id="participants-list-chip" label="Roles" />}
+                                          renderValue={(participants) => (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                              {participants.map((value) => <Chip key={value} label={value} />)}
+                                            </Box>
+                                          )}
+                                          MenuProps={MenuProps}
+                                        >
+                                          <MenuItem value="" disabled>
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {
+                                            config.participants.flatMap((r, i) => {
+                                              if (r.address.length) {
+                                                return (
+                                                  <MenuItem
+                                                    key={`participantCol-${r.address}`}
+                                                    value={r.address}
+                                                  >
+                                                    {`${r.address.substr(0, 20)}...`}
+                                                  </MenuItem>
+                                                )
+                                              } else return [];
+                                            })
+                                          }
+                                        </Select>
+                                      </FormControl>
+                                    </FormGroup>
+                                  </CardContent>
+                                </Card>
+                              </Grid>
+                            ))
+                          }
+                        </Grid>
                       </CardContent>
                     </Card>
-                    {
-                      stateMachine.length && i < stateMachine.length - 1 
-                      ? (
-                        <Grid className={classes.stateIcon} item xs={12}>
-                          <ArrowDownwardIcon sx={{ fontSize: 40 }} />
-                        </Grid>
-                      ) : <></>
-                    }
                   </Grid>
                 ))
               }

@@ -197,6 +197,9 @@ const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError
                               )}
                               MenuProps={MenuProps}
                             >
+                              <MenuItem value="" disabled>
+                                <em>None</em>
+                              </MenuItem>
                               {
                                 roles.flatMap((r, i) => {
                                   if (r.name.length) {

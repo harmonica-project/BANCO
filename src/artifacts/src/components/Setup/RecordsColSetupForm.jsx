@@ -162,6 +162,9 @@ const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) =>
                               )}
                               MenuProps={MenuProps}
                             >
+                              <MenuItem value="" disabled>
+                                <em>None</em>
+                              </MenuItem>
                               {
                                 config.roles.flatMap((r, i) => {
                                   if (r.name.length) {
@@ -194,6 +197,9 @@ const RecordColSetupForm = ({ nextPage, previousPage, config, displayError }) =>
                               )}
                               MenuProps={MenuProps}
                             >
+                              <MenuItem value="" disabled>
+                                <em>None</em>
+                              </MenuItem>
                               {
                                 config.participants.flatMap((r, i) => {
                                   if (r.address.length) {
