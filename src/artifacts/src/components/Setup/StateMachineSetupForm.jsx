@@ -65,6 +65,8 @@ const MenuProps = {
 };
 
 const StateMachineSetupForm = ({ nextPage, previousPage, config, displayError, activated }) => {
+  if (!activated.stateMachine) nextPage();
+
   const classes = useStyles();
   const [stateMachines, setStateMachines] = useState(config.stateMachines || [{ ...blankStateMachine, states: [blankState]}]);
 

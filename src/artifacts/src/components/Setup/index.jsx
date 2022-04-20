@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
 import { Snackbar, Alert } from '@mui/material';
-// Used to remove components related to disabled features
-import activated from '../../config-app';
 import DisplayConfigResult from './DisplayConfigResult';
 import StartConfig from './StartConfig';
 
-/* #CreateIndividualAtSetup */
+// Used to remove components related to disabled features
+import activated from '../../config-app';
+
 import ParticipantSetupForm from './ParticipantSetupForm';
-/* /CreateIndividualAtSetup */
-/* #RecordRegistration */
 import RecordsColSetupForm from './RecordsColSetupForm';
-/* /RecordRegistration */
-/* #Roles */
 import RoleSetupForm from './RoleSetupForm';
-/* /Roles */
-/* #StateMachine */
 import StateMachineSetupForm from './StateMachineSetupForm';
-/* /StateMachine */
-/* #AssetTracking */
 import AssetsSetupForm from './AssetsSetupForm';
-/* /AssetTracking */
 
 const defaultSnackbar = {
   open: false,
@@ -46,7 +37,7 @@ const Setup = () => {
     setSnackbarProps(defaultSnackbar);
   };
 
-  const handleNextPage = (source, content = {}) => {
+  const handleNextPage = (source = '', content = {}) => {
     setCurrent(current + 1);
     if (source.length) setConfig({ ...config, [source]: content });
   };

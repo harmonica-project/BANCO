@@ -62,6 +62,8 @@ const MenuProps = {
 };
 
 const ParticipantSetupForm = ({ nextPage, previousPage, config, setConfig, displayError, activated }) => {
+  if (!activated.participants) nextPage();
+  
   const classes = useStyles();
   const [participants, setParticipants] = useState(config.participants || [blankParticipant]);
 

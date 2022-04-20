@@ -56,6 +56,8 @@ const MenuProps = {
 };
 
 const RecordColSetupForm = ({ nextPage, previousPage, config, displayError, activated }) => {
+  if (!activated.records) nextPage();
+
   const classes = useStyles();
   const [recordsCols, setRecordCols] = useState(config.recordsCols || [blankRecordCol]);
 

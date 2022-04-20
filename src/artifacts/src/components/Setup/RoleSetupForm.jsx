@@ -57,7 +57,9 @@ const MenuProps = {
   },
 };
 
-const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError }) => {
+const RoleSetupForm = ({ nextPage, previousPage, config, setConfig, displayError, activated }) => {
+  if (!activated.roles) nextPage();
+
   const classes = useStyles();
   const [roles, setRoles] = useState(config.roles || [blankRole]);
 

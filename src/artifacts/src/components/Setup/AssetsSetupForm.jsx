@@ -43,7 +43,9 @@ const blankAssetCol = {
   data: ''
 }
 
-const AssetsSetupForm = ({ nextPage, previousPage, config, displayError }) => {
+const AssetsSetupForm = ({ nextPage, previousPage, config, displayError, activated }) => {
+  if (!activated.assets) nextPage();
+    
   const classes = useStyles();
   const [assets, setAssetCols] = useState(config.assets || [blankAssetCol]);
 
