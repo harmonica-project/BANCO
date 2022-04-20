@@ -122,7 +122,7 @@ contract StateMachine {
                 _states[i].authorizedRoles.length == 0
             ) return false;
 
-            for (uint256 j = 0; j < _states[i].authorizedRoles.length; i++) {
+            for (uint256 j = 0; j < _states[i].authorizedRoles.length; j++) {
                 string memory role = _states[i].authorizedRoles[j];
                 if (!participantsContract.doesRoleExist(role)) return false;
             }
