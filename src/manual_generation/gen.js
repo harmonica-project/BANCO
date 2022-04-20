@@ -44,7 +44,7 @@ function purgeProducts() {
 }
 
 function finalizeProduct(configName, folder) {
-  fs.copyFileSync(`../assets/feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
+  fs.copyFileSync(`../artifacts/feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
   // Prettify the result to erase blank spaces left by the template engine
   exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol' --tab-width 4`);
   exec(`npx prettier --write './products/product-${folder}/Factory.sol' --tab-width 4`);
@@ -53,7 +53,7 @@ function finalizeProduct(configName, folder) {
 
 async function getConfiguration(filename) {
   try {
-    let rawFile = fs.readFileSync(`../assets/feature_model/configs/${filename}.xml`).toString();
+    let rawFile = fs.readFileSync(`../artifacts/feature_model/configs/${filename}.xml`).toString();
     let rawConfig = await parseStringPromise(rawFile);
     
     return parseConfigFile(rawConfig);
@@ -67,7 +67,7 @@ function parseTemplate(path, contract, config) {
   console.log(`Parsing ${contract.name} ...`);
   
   // Read template
-  var template = fs.readFileSync(`../assets/contracts/${path}${path ? '/' : ''}${contract.name}.sol`).toString();
+  var template = fs.readFileSync(`../artifacts/contracts/${path}${path ? '/' : ''}${contract.name}.sol`).toString();
 
   // Render template
   var output = Mustache.render(template, config);

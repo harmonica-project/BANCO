@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -14,6 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import Setup from './components/Setup';
 import { makeStyles } from '@mui/styles';
+import Web3 from 'web3';
 
 const useStyles = makeStyles(() => ({
   containerMargin: {
@@ -25,6 +26,33 @@ function App() {
   let classes = useStyles();
   let navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [web3pack, setWeb3pack] = useState(null);
+
+  const changeNetwork = async () => {
+    return await web3pack.web3.currentProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x4" }]
+    });
+  }
+
+  const getWeb3 = async () => {
+    let newWeb3 = new Web3(Web3.givenProvider || "https://rinkeby-light.eth.linkpool.io");
+    await newWeb3.currentProvider.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0x4" }]
+    });
+    
+    return {
+      web3: newWeb3,
+      verifyNetwork: async () => await newWeb3.eth.net.getId() === 4,
+      retryNetwork: changeNetwork
+    }
+  }
+
+  useEffect(() => {
+    const setWeb3Wrapper = async () => setWeb3pack(await getWeb3());
+    setWeb3Wrapper();
+  }, [])
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -126,7 +154,7 @@ function App() {
       <Container className={classes.containerMargin}>
         <Routes>
           <Route path="/setup" element={<Setup />} />
-          <Route path="/app" element={<h1>Work in progress!</h1>} />
+          <Route path="/app" element={<span>Yo</span>} />
           <Route path="/" element={<h1>Work in progress!</h1>} />
         </Routes>
       </Container>
