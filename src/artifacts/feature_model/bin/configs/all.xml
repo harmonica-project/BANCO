@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<feature automatic="selected" name="OnChainTraceabilityApp"/>
+	<feature automatic="selected" name="SmartContracts"/>
+	<feature automatic="selected" name="TrackingMethod"/>
+	<feature manual="selected" name="StateMachine"/>
+	<feature automatic="selected" manual="selected" name="AssetTracking"/>
+	<feature automatic="unselected" name="TokenizedAssets"/>
+	<feature manual="selected" name="DataStructAssets"/>
+	<feature automatic="selected" manual="selected" name="RecordRegistration"/>
+	<feature automatic="selected" name="Participants"/>
+	<feature automatic="selected" name="Individuals"/>
+	<feature automatic="selected" name="CreateIndividual"/>
+	<feature manual="selected" name="CreateIndividualAtSetup"/>
+	<feature manual="selected" name="CreateIndividualDynamically"/>
+	<feature automatic="selected" manual="selected" name="IndividualType"/>
+	<feature manual="selected" name="Oracle"/>
+	<feature manual="selected" name="Human"/>
+	<feature manual="selected" name="Service"/>
+	<feature automatic="selected" manual="selected" name="DeleteIndividual"/>
+	<feature manual="selected" name="DeleteIndividualByIndividual"/>
+	<feature manual="selected" name="DeleteIndividualByRole"/>
+	<feature automatic="selected" manual="selected" name="Roles"/>
+	<feature automatic="selected" name="CreateRoleAtSetup"/>
+	<feature manual="selected" name="RemoveRole"/>
+	<feature automatic="selected" manual="selected" name="AddRole"/>
+	<feature manual="selected" name="AddRoleAtSetup"/>
+	<feature manual="selected" name="AddRoleDynamically"/>
+	<feature automatic="selected" name="Storage"/>
+	<feature automatic="selected" name="StorageType"/>
+	<feature automatic="selected" name="RecordHistory"/>
+	<feature automatic="selected" name="StructuredRecords"/>
+	<feature manual="selected" name="HashRecords"/>
+	<feature automatic="selected" name="ContractsMetadata"/>
+	<feature automatic="selected" name="AssetsData"/>
+	<feature automatic="selected" name="StateData"/>
+	<feature automatic="selected" name="StorageEmplacement"/>
+	<feature automatic="selected" name="OffChain"/>
+	<feature automatic="selected" name="Database"/>
+	<feature automatic="selected" name="OnChain"/>
+	<feature manual="selected" name="EventsEmission"/>
+	<feature automatic="selected" name="DataContracts"/>
+	<feature automatic="selected" name="Frontend"/>
+	<feature automatic="selected" name="DeploymentView"/>
+	<feature automatic="selected" name="TraceabilitySetup"/>
+	<feature automatic="selected" name="RecordsCollectionsSetup"/>
+	<feature automatic="selected" name="AssetSetup"/>
+	<feature automatic="selected" name="StateMachineSetup"/>
+	<feature automatic="selected" name="BlockchainNetwork"/>
+	<feature manual="selected" name="EthereumMainnet"/>
+	<feature automatic="unselected" name="EthereumTestnet"/>
+	<feature automatic="selected" name="ParticipantsSetup"/>
+	<feature automatic="selected" name="IndividualsSetup"/>
+	<feature automatic="selected" name="RolesSetup"/>
+	<feature automatic="selected" name="ManagementView"/>
+</configuration>

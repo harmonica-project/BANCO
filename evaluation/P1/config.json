@@ -1,0 +1,97 @@
+{
+  "roles": [],
+  "participants": [
+    {
+      "address": "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE",
+      "isAdmin": true,
+      "roles": []
+    }
+  ],
+  "recordsCols": [],
+  "stateMachine": [
+    {
+      "name": "SubmitPurchaseRequest",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ApproveRequest",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ConfirmUnavailabilityLocally",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "SubmitPurchaseQuotationsIPFS",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "SubmitEvaluationResult",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ApproveEvaluation",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ConfirmSparePartAvailability",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "SubmitPurchaseOrder",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ApprovePurchaseOrder",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "ConfirmPurchaseOrder",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "AnnounceAvailabilityInInventory",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    },
+    {
+      "name": "CollectRequestedSparePart",
+      "roles": [],
+      "participants": [
+        "0x79277e4eb7734F5533cB9D9b15bB5c130915ADAE"
+      ]
+    }
+  ]
+}

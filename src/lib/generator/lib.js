@@ -20,7 +20,7 @@ function parseConfig(rawFile) {
 }
 
 async function parseTemplate(path, contract, config) {
-    const template = await (await fetch(`./assets/contracts/${path}/${contract.name}.sol`)).text()
+    const template = await (await fetch(`./artifacts/contracts/${path}/${contract.name}.sol`)).text()
 
     // Render template
     var output = Mustache.render(template, config);
@@ -34,8 +34,13 @@ async function parseTemplate(path, contract, config) {
 
 const bundleArtifacts = async (artifacts, xmlConfig) => {
     const zip = jszip();
-    zip.file('config.xml', xmlConfig);
+    const appZip = await (await fetch('./artifacts/app.zip')).blob();
+    const readme = await (await fetch('./artifacts/README.md')).text();
 
+    zip.file('config.xml', xmlConfig);
+    zip.file('app.zip', appZip);
+    zip.file('README.md', readme);
+    
     const contracts = zip.folder("contracts");
     artifacts.forEach(a => {
         let folder = contracts.folder(a.path);

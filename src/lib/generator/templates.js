@@ -3,7 +3,7 @@ const templates = [
         path: '',
         contracts: [
             {
-                name: 'Proxy'
+                name: 'Factory'
             }
         ]
     },
@@ -16,7 +16,15 @@ const templates = [
             {
                 name: 'Records',
                 feature: 'RecordHistory'
-            }
+            },
+            {
+                name: 'StateMachine',
+                feature: 'StateMachine'
+            },
+            {
+                name: 'Assets',
+                feature: 'AssetTracking'
+            },
         ]
     },
     {
@@ -28,7 +36,15 @@ const templates = [
             {
                 name: 'RecordsController',
                 feature: 'RecordHistory'
-            }
+            },
+            {
+                name: 'StateMachineController',
+                feature: 'StateMachine'
+            },
+            {
+                name: 'AssetsController',
+                feature: 'AssetTracking'
+            },
         ]
     },
     {

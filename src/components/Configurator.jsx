@@ -55,10 +55,21 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
     }
 
     // display/hide the subfeatures of a feature if clicked
-    const toggleFeaturePanel = (name) => {
+    const toggleFeaturePanel = (name, depth) => {
         const id = configuration.model.nameToId[name];
-        const newFeatures = JSON.parse(JSON.stringify(configuration.model.features));
+        let newFeatures = JSON.parse(JSON.stringify(configuration.model.features));
         newFeatures[id].open = !newFeatures[id].open;
+
+        if (depth === 1 && newFeatures[id].open) {
+            // TODO: recursively close child features from layer 1 features
+            const root = configuration.model.getFeature(newFeatures[id].parent.name);
+            root.childrenForTree.forEach(name => {
+                if (newFeatures[id].name !== name) {
+                    const childId = newFeatures.findIndex(f => f.name === name);
+                    newFeatures[childId].open = false;
+                }
+            })
+        }
 
         setConfiguration({
             ...configuration,
@@ -115,18 +126,6 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
         return newConfiguration;
     };
 
-    const unfoldFeatures = () => {
-        let newFeatures = JSON.parse(JSON.stringify(configuration.model.features));
-        newFeatures = newFeatures.map(f => ({ ...f, open: true }));
-        setConfiguration({
-            ...configuration,
-            model: {
-                ...configuration.model,
-                features: newFeatures
-            }
-        })
-    };
-
     const foldFeatures = () => {
         let newFeatures = JSON.parse(JSON.stringify(configuration.model.features));
         newFeatures = newFeatures.map(f => ({ ...f, open: false }));
@@ -154,6 +153,7 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
                     displayPopover={handlePopoverOpen}
                     closePopover={handlePopoverClose}
                     depth={0}
+                    forceOpen
                 />
             </List>
         );
@@ -174,7 +174,7 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
     };
 
     useEffect(() => {
-        fetch("./assets/model.xml")
+        fetch("./artifacts/model.xml")
         .then((response) => response.text())
         .then(xml => {
             let parsedXml = $.parseXML(xml);
@@ -189,13 +189,6 @@ const Configurator = ({ configuration, setConfiguration, actions, setActions, dr
             }
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        if (actions.unfoldAll) {
-            unfoldFeatures();
-            setActions({ ...actions, unfoldAll: false });
-        }
-    }, [actions.unfoldAll]); // eslint-disable-line react-hooks/exhaustive-deps
  
     useEffect(() => {
         if (actions.foldAll) {
