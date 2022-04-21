@@ -12,6 +12,9 @@ function main() {
 
         fse.copySync('./artifacts/feature_model/model.xml', '../public/artifacts/model.xml');
         console.log('model.xml successfully exported to /public/artifacts/model.xml');
+
+        fse.copySync('./artifacts/README.md', '../public/artifacts/README.md');
+        console.log('README.md successfully exported to /public/artifacts/README.md');
     } catch (e) {
         console.error('Failed to export artifacts to /public: ')
         console.error(e);

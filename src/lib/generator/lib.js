@@ -34,11 +34,13 @@ async function parseTemplate(path, contract, config) {
 
 const bundleArtifacts = async (artifacts, xmlConfig) => {
     const zip = jszip();
-    const appZip = await (await fetch('./artifacts/app.zip')).blob()
-    
+    const appZip = await (await fetch('./artifacts/app.zip')).blob();
+    const readme = await (await fetch('./artifacts/README.md')).text();
+
     zip.file('config.xml', xmlConfig);
     zip.file('app.zip', appZip);
-
+    zip.file('README.md', readme);
+    
     const contracts = zip.folder("contracts");
     artifacts.forEach(a => {
         let folder = contracts.folder(a.path);

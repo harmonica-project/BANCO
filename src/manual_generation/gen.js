@@ -45,6 +45,9 @@ function purgeProducts() {
 
 function finalizeProduct(configName, folder) {
   fs.copyFileSync(`../artifacts/feature_model/configs/${configName}.xml`, `./products/product-${folder}/config.xml`);
+  fs.copyFileSync(`../artifacts/README.md`, `./products/product-${folder}/README.md`);
+  fs.copyFileSync(`../artifacts/app.zip`, `./products/product-${folder}/app.zip`);
+  
   // Prettify the result to erase blank spaces left by the template engine
   exec(`npx prettier --write './products/product-${folder}/contracts/**/*.sol' --tab-width 4`);
   exec(`npx prettier --write './products/product-${folder}/Factory.sol' --tab-width 4`);
