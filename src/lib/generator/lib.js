@@ -34,7 +34,10 @@ async function parseTemplate(path, contract, config) {
 
 const bundleArtifacts = async (artifacts, xmlConfig) => {
     const zip = jszip();
+    const appZip = await (await fetch('./artifacts/app.zip')).blob()
+    
     zip.file('config.xml', xmlConfig);
+    zip.file('app.zip', appZip);
 
     const contracts = zip.folder("contracts");
     artifacts.forEach(a => {
