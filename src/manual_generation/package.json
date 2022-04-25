@@ -1,10 +1,10 @@
 {
-    "name": "banco-script",
+    "name": "<REDACTED>-script",
     "version": "0.2.0",
     "description": "Create your blockchain application effortless! Manual execution.",
     "main": "gen.js",
     "scripts": {},
-    "author": "Nicolas Six",
+    "author": "<REDACTED>",
     "license": "ISC",
     "devDependencies": {
         "fs-extra": "^10.0.1",

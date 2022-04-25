@@ -25,7 +25,7 @@ const StartConfig = ({ nextPage }) => {
       </Typography> 
       <Typography component="p" variant="body1">
         In this section, you can configure your traceability application (e.g. roles, participants, traced assets and records, ...).
-        The choices you will be able to make depend on the selected features in BANCO.
+        The choices you will be able to make depend on the selected features.
       </Typography> 
       <Box>
         <Button variant="contained" onClick={nextPage}>Start configuration</Button>

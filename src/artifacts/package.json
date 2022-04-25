@@ -1,5 +1,5 @@
 {
-  "name": "banco-traceability-app",
+  "name": "<REDACTED>-traceability-app",
   "version": "0.1.0",
   "description": "On-chain traceability application",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
-  "author": "Nicolas Six",
+  "author": "<REDACTED>",
   "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.8.2",
