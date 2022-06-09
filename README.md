@@ -1,3 +1,4 @@
+[![dockeri.co](https://dockeri.co/image/bladesorbonne/banco)](https://hub.docker.com/r/bladesorbonne/banco)
 # The BANCO project - Blockchain ApplicatioN Configurator
 
 <div align="center">
@@ -24,6 +25,9 @@ This first project iteration will allow the creation of blockchain products for 
 
 A publication, currently in review, will be referenced here in the future. It describes in-depth the method used to build a software product line for blockchain applications (the feature model and the web platform introduced in this repository) and evaluates the relevancy of the approach by assessing the cost, the code quality, and the generalisability of the approach to other traceability applications. It also gives insights into the benefits of applying SPLE for blockchain applications.
 
+## Quickstart
+
+There are two ways to run banco: from sources or from the prebuilt docker image.
 ## Repository organization
 
 The following list enumerates the important folders of this repository.
@@ -35,7 +39,23 @@ The following list enumerates the important folders of this repository.
         - __/contracts__ - contains the smart contracts templates.
     - __/manual_generation__ - contains a script to generate a product without requiring the deployment of the web platform.
 
-## How to start BANCO
+## How to start BANCO from Docker
+
+
+To use our pre-built docker image, type the following command in your terminal
+
+```bash
+docker run -p 3000:3000 bladesorbonne/banco:splc2022
+```
+
+After a few seconds, you'll see the message `You can now view banco in the browser`. You can go to [http://localhost:3000](http://localhost:3000) and use the tool.
+
+To build the docker image locally (for example, if you have change the source code and want to see your patch running on docker), you can use the following command at the root of the repository.
+
+```bash
+docker build -f ./docker/Dockerfile . -t bladesorbonne/banco
+```
+## How to start BANCO from Source
 
 Make sure that Node.js and NPM are installed on your computer. If it is not the case, install the [latest version of Node.js here](https://nodejs.org/en/). Then, type the following commands:
 
