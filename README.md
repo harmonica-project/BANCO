@@ -23,11 +23,11 @@ After the selection of features, a generator is able to assemble a working block
 
 This first project iteration will allow the creation of blockchain products for on-chain traceability of assets and processes. Future works will consist in extending this approach to other domains and address further aspects of software product line engineering, such as product updates when modifying the software product line.
 
-A publication, currently in review, will be referenced here in the future. It describes in-depth the method used to build a software product line for blockchain applications (the feature model and the web platform introduced in this repository) and evaluates the relevancy of the approach by assessing the cost, the code quality, and the generalisability of the approach to other traceability applications. It also gives insights into the benefits of applying SPLE for blockchain applications.
+A publication, currently in review, will be referenced here in the future. It describes in-depth the method used to build a software product line for blockchain applications (the feature model and the web platform introduced in this repository) and evaluates the relevancy of the approach by assessing the cost, the code quality, and the generalizability of the approach to other traceability applications. It also gives insights into the benefits of applying SPLE for blockchain applications.
 
 ## Quickstart
 
-There are two ways to run banco: from sources or from the prebuilt docker image.
+There are two ways to run banco: from [the sources](#how-to-start-banco-from-source) or from the prebuilt [docker image](#how-to-start-banco-from-docker).
 ## Repository organization
 
 The following list enumerates the important folders of this repository.
@@ -42,7 +42,7 @@ The following list enumerates the important folders of this repository.
 ## How to start BANCO from Docker
 
 
-To use our pre-built docker image, type the following command in your terminal
+To use our prebuilt docker image, type the following command in your terminal.
 
 ```bash
 docker run -p 3000:3000 bladesorbonne/banco:splc2022
@@ -50,7 +50,7 @@ docker run -p 3000:3000 bladesorbonne/banco:splc2022
 
 After a few seconds, you'll see the message `You can now view banco in the browser`. You can go to [http://localhost:3000](http://localhost:3000) and use the tool.
 
-To build the docker image locally (for example, if you have change the source code and want to see your patch running on docker), you can use the following command at the root of the repository.
+To build the docker image locally (for example, if you have changed the source code and want to see your patch running on docker), you can use the following command at the root of the repository.
 
 ```bash
 docker build -f ./docker/Dockerfile . -t bladesorbonne/banco
@@ -73,7 +73,7 @@ If you want to modify this software product line, you have to:
 1. Change the feature model in Eclipse with FeatureIDE. You can find this feature model in __/src/artifacts/feature_model__.
 2. Update or add new templates in the __/src/artifacts/contracts__ folder, to reflect the changes you made in the feature model. Make sure that your changes do not conflict with existing features. To better understand the process of creating templates, please read our publication (to be added).
 3. Update the __/src/lib/generator/templates.js__ and the __/src/manual_generation/templates.js__ to include your features in the generation process or modify the existing ones.
-4. Execute the following script while being located in __/src__ to export your templates and feature model to the __/public__ folder of BANCO, allowing the web platform to access the templates for generation purposes:
+4. Execute the following script while being located in __/src__ to export your templates and feature models to the __/public__ folder of BANCO, allowing the web platform to access the templates for generation purposes:
 
 ```
 node export-assets
