@@ -1,3 +1,6 @@
+// TEMPLATE FILE
+// used to declare what smart contract is linked to what feature
+
 const templates = [
     {
         path: '',

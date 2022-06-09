@@ -10,6 +10,7 @@ import {
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
+// displays the feature tree for configuration
 const FeatureBlock = ({
     features, 
     blockFeatures, 

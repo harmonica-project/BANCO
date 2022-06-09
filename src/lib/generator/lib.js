@@ -3,6 +3,7 @@ import convert from 'xml-js';
 import jszip from 'jszip';
 import templates from './templates';
 
+// parse a SPL configuration file into a JSON object
 function parseConfig(rawFile) {
     try {
         let rawConfig = JSON.parse(convert.xml2json(rawFile));
@@ -19,6 +20,7 @@ function parseConfig(rawFile) {
     }
 }
 
+// parse a Mustache template file into a working smart contract
 async function parseTemplate(path, contract, config) {
     const template = await (await fetch(`./artifacts/contracts/${path}/${contract.name}.sol`)).text()
 
@@ -32,6 +34,7 @@ async function parseTemplate(path, contract, config) {
     }
 }
 
+// takes all generated files and creates a bundle as a zip file
 const bundleArtifacts = async (artifacts, xmlConfig) => {
     const zip = jszip();
     const appZip = await (await fetch('./artifacts/app.zip')).blob();
@@ -50,6 +53,7 @@ const bundleArtifacts = async (artifacts, xmlConfig) => {
     return await zip.generateAsync({type: "blob"});
 }
 
+// entry point to generate a working product from a config file
 const generateProduct = async (xmlConfig) => {
     const mustacheConfig = parseConfig(xmlConfig);
 

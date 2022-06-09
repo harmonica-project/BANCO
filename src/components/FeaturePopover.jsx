@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
+// displays some info about a feature when placing the cursor on it
 export default function FeaturePopover({ anchorEl, handlePopoverClose, configuration }) {
   const open = Boolean(anchorEl);
   const [desc, setDesc] = useState('');

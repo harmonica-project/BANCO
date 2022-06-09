@@ -27,7 +27,8 @@ A publication, currently in review, will be referenced here in the future. It de
 
 ## Quickstart
 
-There are two ways to run banco: from [the sources](#how-to-start-banco-from-source) or from the prebuilt [docker image](#how-to-start-banco-from-docker).
+There are two ways to run BANCO: from [the sources](#how-to-start-banco-from-source) or the prebuilt [docker image](#how-to-start-banco-from-docker).
+
 ## Repository organization
 
 The following list enumerates the important folders of this repository.
@@ -55,7 +56,7 @@ To build the docker image locally (for example, if you have changed the source c
 ```bash
 docker build -f ./docker/Dockerfile . -t bladesorbonne/banco
 ```
-## How to start BANCO from Source
+## How to start BANCO from source
 
 Make sure that Node.js and NPM are installed on your computer. If it is not the case, install the [latest version of Node.js here](https://nodejs.org/en/). Then, type the following commands:
 

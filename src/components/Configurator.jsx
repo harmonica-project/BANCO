@@ -12,6 +12,7 @@ import { XmlModel, Model } from '../lib/feature-configurator/model';
 import { Configuration } from '../lib/feature-configurator/configuration';
 import FeaturePopover from './FeaturePopover';
 
+// Configurator is the component that holds the feature tree, options, and states
 const Configurator = ({ configuration, setConfiguration, actions, setActions, draggableMode }) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
