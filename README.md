@@ -1,4 +1,9 @@
 [![dockeri.co](https://dockeri.co/image/bladesorbonne/banco)](https://hub.docker.com/r/bladesorbonne/banco)
+
+
+[![DOI](https://zenodo.org/badge/454501847.svg)](https://zenodo.org/badge/latestdoi/454501847)
+
+
 # The BANCO project - Blockchain ApplicatioN Configurator
 
 <div align="center">
